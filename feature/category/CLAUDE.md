@@ -15,7 +15,7 @@ Category topics screen with topic grid and search functionality.
 
 ## Key Files
 
-- `CategoryScreen.kt` — Main composable with `LazyVerticalGrid` (2-column layout)
+- `CategoryScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), fixed bottom search/breadcrumbs
 - `CategoryRoute.kt` — Navigation wrapper
 - `CategoryViewModel.kt` — `@HiltViewModel` with `StateFlow<CategoryUiState>`, search filtering, mock topics
 - `CategoryUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
@@ -30,4 +30,4 @@ Category topics screen with topic grid and search functionality.
 - ViewModel exposes `uiState: StateFlow<CategoryUiState>` collected via `collectAsStateWithLifecycle()`
 - Navigation args extracted via `savedStateHandle.toRoute<CategoryDestination>()`
 - Search filters the local topic list via `onSearchQueryChanged(query: String)`
-- Uses shared `BreadcrumbBar` and `SearchBar` from `:core:ui`
+- Uses `BottomSearchBar` from `:core:ui` for fixed bottom placement with keyboard awareness
