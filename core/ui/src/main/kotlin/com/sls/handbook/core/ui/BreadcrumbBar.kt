@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-private val ChipShape = RoundedCornerShape(16.dp)
+private val ChipShape = RoundedCornerShape(21.dp)
 
 @Composable
 fun BreadcrumbBar(
@@ -59,7 +59,7 @@ fun BreadcrumbBar(
                     imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
                     tint = colors.onSurfaceVariant,
-                    modifier = Modifier.size(16.dp),
+                    modifier = Modifier.size(21.dp),
                 )
             }
         }
@@ -85,9 +85,9 @@ private fun BreadcrumbChip(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelLarge,
             color = contentColor,
-            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
         )
     }
 }
