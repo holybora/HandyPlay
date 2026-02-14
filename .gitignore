@@ -7,7 +7,7 @@
 /captures
 .externalNativeBuild
 .cxx
-local.properties
 .env
-.claude/settings.local.json
+.claude/
 /e2e-screenshots
+gradle/wrapper/gradle-wrapper.jar
