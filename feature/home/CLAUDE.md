@@ -15,7 +15,7 @@ Home screen with category grid and search functionality.
 
 ## Key Files
 
-- `HomeScreen.kt` — Main composable with `LazyVerticalGrid` (2-column layout)
+- `HomeScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), fixed bottom search/breadcrumbs
 - `HomeRoute.kt` — Navigation wrapper
 - `HomeViewModel.kt` — `@HiltViewModel` with `StateFlow<HomeUiState>`, search filtering
 - `HomeUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
@@ -23,9 +23,10 @@ Home screen with category grid and search functionality.
 
 ## Source
 
-- `src/main/java/com/sls/handbook/feature/home/`
+- `src/main/kotlin/com/sls/handbook/feature/home/`
 
 ## Patterns
 
 - ViewModel exposes `uiState: StateFlow<HomeUiState>` collected via `collectAsStateWithLifecycle()`
 - Search filters the local category list via `onSearchQueryChanged(query: String)`
+- Uses `BottomSearchBar` from `:core:ui` for fixed bottom placement with keyboard awareness

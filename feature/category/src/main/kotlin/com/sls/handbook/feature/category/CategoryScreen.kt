@@ -2,11 +2,10 @@ package com.sls.handbook.feature.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,8 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Topic
-import com.sls.handbook.core.ui.BreadcrumbBar
-import com.sls.handbook.core.ui.SearchBar
+import com.sls.handbook.core.ui.BottomSearchBar
 import com.sls.handbook.feature.category.components.TopicCard
 
 @Composable
@@ -54,34 +52,30 @@ fun CategoryScreen(
         }
 
         is CategoryUiState.Success -> {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = modifier.fillMaxSize(),
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    BreadcrumbBar(pathSegments = listOf("Home", uiState.categoryName))
+            Column(modifier = modifier.fillMaxSize()) {
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.weight(1f),
+                    contentPadding = PaddingValues(16.dp),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    items(
+                        items = uiState.topics,
+                        key = { it.id },
+                    ) { topic ->
+                        TopicCard(
+                            topic = topic,
+                            onClick = { onTopicClick(topic.id) },
+                        )
+                    }
                 }
 
-                item(span = { GridItemSpan(maxLineSpan) }) {
-                    SearchBar(
-                        query = uiState.searchQuery,
-                        onQueryChange = onSearchQueryChange,
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
-
-                items(
-                    items = uiState.topics,
-                    key = { it.id },
-                ) { topic ->
-                    TopicCard(
-                        topic = topic,
-                        onClick = { onTopicClick(topic.id) },
-                    )
-                }
+                BottomSearchBar(
+                    query = uiState.searchQuery,
+                    onQueryChange = onSearchQueryChange,
+                    pathSegments = listOf("Home", uiState.categoryName),
+                )
             }
         }
     }
