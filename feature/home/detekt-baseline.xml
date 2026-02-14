@@ -1,9 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>NoUnusedImports:HomeUiStateTest.kt$com.sls.handbook.feature.home.HomeUiStateTest.kt</ID>
-    <ID>NoUnusedImports:HomeViewModelTest.kt$com.sls.handbook.feature.home.HomeViewModelTest.kt</ID>
-    <ID>ParameterNaming:HomeScreen.kt$onSearchQueryChanged</ID>
-  </CurrentIssues>
-</SmellBaseline>

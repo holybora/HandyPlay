@@ -37,7 +37,6 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ./gradlew detekt                    # All modules, all source sets
 ./gradlew detektMain                # Main sources only
 ./gradlew :feature:home:detektMain  # Single module
-./gradlew detektBaseline            # Generate baseline for existing issues
 ./gradlew installGitHooks           # Install pre-commit hook manually
 ```
 

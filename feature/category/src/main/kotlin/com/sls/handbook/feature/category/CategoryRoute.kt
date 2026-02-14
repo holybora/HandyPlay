@@ -16,7 +16,7 @@ fun CategoryRoute(
 
     CategoryScreen(
         uiState = uiState,
-        onSearchQueryChanged = viewModel::onSearchQueryChanged,
+        onSearchQueryChange = viewModel::onSearchQueryChanged,
         onTopicClick = onTopicClick,
         modifier = modifier,
     )

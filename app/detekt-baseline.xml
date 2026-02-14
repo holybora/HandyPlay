@@ -1,8 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>ForbiddenComment:HandyPlayApp.kt$/* TODO: navigate to topic detail */</ID>
-    <ID>ModifierMissing:HandyPlayApp.kt$HandyPlayApp</ID>
-  </CurrentIssues>
-</SmellBaseline>

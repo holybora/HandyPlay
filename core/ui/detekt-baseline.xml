@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>ParameterNaming:SearchBar.kt$onQueryChanged</ID>
-  </CurrentIssues>
-</SmellBaseline>

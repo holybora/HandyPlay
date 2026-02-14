@@ -26,7 +26,7 @@ import com.sls.handbook.feature.home.components.CategoryCard
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-    onSearchQueryChanged: (String) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +68,7 @@ fun HomeScreen(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     SearchBar(
                         query = uiState.searchQuery,
-                        onQueryChanged = onSearchQueryChanged,
+                        onQueryChange = onSearchQueryChange,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -102,7 +102,7 @@ private fun HomeScreenLightPreview() {
     HandyPlayTheme(darkTheme = false) {
         HomeScreen(
             uiState = HomeUiState.Success(categories = sampleCategories),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -114,7 +114,7 @@ private fun HomeScreenDarkPreview() {
     HandyPlayTheme(darkTheme = true) {
         HomeScreen(
             uiState = HomeUiState.Success(categories = sampleCategories),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -126,7 +126,7 @@ private fun HomeScreenLoadingPreview() {
     HandyPlayTheme {
         HomeScreen(
             uiState = HomeUiState.Loading,
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -138,7 +138,7 @@ private fun HomeScreenEmptyPreview() {
     HandyPlayTheme {
         HomeScreen(
             uiState = HomeUiState.Success(categories = emptyList(), searchQuery = "xyz"),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }

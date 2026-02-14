@@ -14,7 +14,6 @@ class DetektConventionPlugin : Plugin<Project> {
                 buildUponDefaultConfig = true
                 allRules = false
                 config.setFrom(files("${rootProject.projectDir}/config/detekt/detekt.yml"))
-                baseline = file("detekt-baseline.xml")
                 parallel = true
                 autoCorrect = false
             }

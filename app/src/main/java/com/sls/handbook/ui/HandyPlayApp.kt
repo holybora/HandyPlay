@@ -17,11 +17,11 @@ import com.sls.handbook.navigation.HomeDestination
 import com.sls.handbook.navigation.WelcomeDestination
 
 @Composable
-fun HandyPlayApp() {
+fun HandyPlayApp(modifier: Modifier = Modifier) {
     HandyPlayTheme {
         val navController = rememberNavController()
 
-        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = WelcomeDestination,
@@ -29,7 +29,7 @@ fun HandyPlayApp() {
             ) {
                 composable<WelcomeDestination> {
                     WelcomeRoute(
-                        onGetStarted = {
+                        onStart = {
                             navController.navigate(HomeDestination)
                         }
                     )
@@ -50,7 +50,7 @@ fun HandyPlayApp() {
 
                 composable<CategoryDestination> {
                     CategoryRoute(
-                        onTopicClick = { /* TODO: navigate to topic detail */ },
+                        onTopicClick = { },
                     )
                 }
             }

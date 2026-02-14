@@ -1,7 +1,0 @@
-<?xml version="1.0" ?>
-<SmellBaseline>
-  <ManuallySuppressedIssues/>
-  <CurrentIssues>
-    <ID>NoUnusedImports:CategoryTest.kt$com.sls.handbook.core.model.CategoryTest.kt</ID>
-  </CurrentIssues>
-</SmellBaseline>

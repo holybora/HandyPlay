@@ -2,7 +2,6 @@ package com.sls.handbook.feature.home
 
 import com.sls.handbook.core.model.Category
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 

@@ -21,8 +21,8 @@ import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 
 @Composable
 fun WelcomeScreen(
-    onGetStarted: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onStart: () -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -40,7 +40,7 @@ fun WelcomeScreen(
 
         Spacer(modifier = Modifier.height(24.dp))
         Button(
-            onClick = onGetStarted,
+            onClick = onStart,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp),

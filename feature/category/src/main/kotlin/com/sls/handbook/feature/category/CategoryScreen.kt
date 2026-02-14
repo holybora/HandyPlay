@@ -26,7 +26,7 @@ import com.sls.handbook.feature.category.components.TopicCard
 @Composable
 fun CategoryScreen(
     uiState: CategoryUiState,
-    onSearchQueryChanged: (String) -> Unit,
+    onSearchQueryChange: (String) -> Unit,
     onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +68,7 @@ fun CategoryScreen(
                 item(span = { GridItemSpan(maxLineSpan) }) {
                     SearchBar(
                         query = uiState.searchQuery,
-                        onQueryChanged = onSearchQueryChanged,
+                        onQueryChange = onSearchQueryChange,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -104,7 +104,7 @@ private fun CategoryScreenLightPreview() {
                 categoryName = "Kotlin Fundamentals",
                 topics = sampleTopics,
             ),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -119,7 +119,7 @@ private fun CategoryScreenDarkPreview() {
                 categoryName = "Kotlin Fundamentals",
                 topics = sampleTopics,
             ),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -131,7 +131,7 @@ private fun CategoryScreenLoadingPreview() {
     HandyPlayTheme {
         CategoryScreen(
             uiState = CategoryUiState.Loading,
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -147,7 +147,7 @@ private fun CategoryScreenEmptyPreview() {
                 topics = emptyList(),
                 searchQuery = "xyz",
             ),
-            onSearchQueryChanged = {},
+            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }

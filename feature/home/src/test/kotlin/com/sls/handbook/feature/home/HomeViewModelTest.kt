@@ -1,7 +1,6 @@
 package com.sls.handbook.feature.home
 
 import app.cash.turbine.test
-import com.sls.handbook.core.model.Category
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

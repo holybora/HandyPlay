@@ -5,11 +5,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun WelcomeRoute(
-    onGetStarted: () -> Unit,
-    modifier: Modifier = Modifier
+    onStart: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     WelcomeScreen(
-        onGetStarted = onGetStarted,
-        modifier = modifier
+        modifier = modifier,
+        onStart = onStart,
     )
 }
