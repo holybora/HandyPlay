@@ -37,7 +37,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **Kotlin:** 2.0.21 with Compose compiler plugin
 - **AGP:** 9.0.0
 - **Java compatibility:** 11
-- **Compose BOM:** 2024.09.00
+- **Compose BOM:** 2026.01.01
 - **Hilt:** 2.59
 - **Navigation Compose:** 2.9.0 (type-safe with kotlinx.serialization)
 - **Dependency versions:** `gradle/libs.versions.toml`
