@@ -13,9 +13,14 @@ Shared composable components reused across feature modules.
 - `:core:designsystem` — theme tokens
 - `:core:model` — data models for composable parameters
 
+## Key Files
+
+- `BreadcrumbBar.kt` — Breadcrumb navigation bar with path segments joined by arrows
+- `SearchBar.kt` — Search input composable with Material3 styling
+
 ## Source
 
-- `src/main/java/com/sls/handbook/core/ui/`
+- `src/main/kotlin/com/sls/handbook/core/ui/`
 
 ## Notes
 

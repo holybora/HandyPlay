@@ -1,4 +1,4 @@
-package com.sls.handbook.feature.home.components
+package com.sls.handbook.core.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth

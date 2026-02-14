@@ -1,4 +1,4 @@
-package com.sls.handbook.feature.home
+package com.sls.handbook.feature.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,20 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
-import com.sls.handbook.core.model.Category
+import com.sls.handbook.core.model.Topic
 import com.sls.handbook.core.ui.BreadcrumbBar
 import com.sls.handbook.core.ui.SearchBar
-import com.sls.handbook.feature.home.components.CategoryCard
+import com.sls.handbook.feature.category.components.TopicCard
 
 @Composable
-fun HomeScreen(
-    uiState: HomeUiState,
+fun CategoryScreen(
+    uiState: CategoryUiState,
     onSearchQueryChanged: (String) -> Unit,
-    onCategoryClick: (Category) -> Unit,
+    onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
-        is HomeUiState.Loading -> {
+        is CategoryUiState.Loading -> {
             Box(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
@@ -40,7 +40,7 @@ fun HomeScreen(
             }
         }
 
-        is HomeUiState.Error -> {
+        is CategoryUiState.Error -> {
             Box(
                 modifier = modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
@@ -53,7 +53,7 @@ fun HomeScreen(
             }
         }
 
-        is HomeUiState.Success -> {
+        is CategoryUiState.Success -> {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 modifier = modifier.fillMaxSize(),
@@ -62,7 +62,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    BreadcrumbBar(pathSegments = listOf("Home"))
+                    BreadcrumbBar(pathSegments = listOf("Home", uiState.categoryName))
                 }
 
                 item(span = { GridItemSpan(maxLineSpan) }) {
@@ -74,12 +74,12 @@ fun HomeScreen(
                 }
 
                 items(
-                    items = uiState.categories,
+                    items = uiState.topics,
                     key = { it.id },
-                ) { category ->
-                    CategoryCard(
-                        category = category,
-                        onClick = { onCategoryClick(category) },
+                ) { topic ->
+                    TopicCard(
+                        topic = topic,
+                        onClick = { onTopicClick(topic.id) },
                     )
                 }
             }
@@ -87,59 +87,68 @@ fun HomeScreen(
     }
 }
 
-private val sampleCategories = listOf(
-    Category(id = "1", name = "Kotlin Fundamentals"),
-    Category(id = "2", name = "Android Core"),
-    Category(id = "3", name = "Jetpack Compose"),
-    Category(id = "4", name = "Architecture"),
-    Category(id = "5", name = "Testing"),
-    Category(id = "6", name = "Performance"),
+private val sampleTopics = listOf(
+    Topic(id = "1", name = "Variables & Types", categoryId = "kotlin_fundamentals"),
+    Topic(id = "2", name = "Control Flow", categoryId = "kotlin_fundamentals"),
+    Topic(id = "3", name = "Functions", categoryId = "kotlin_fundamentals"),
+    Topic(id = "4", name = "Classes & Objects", categoryId = "kotlin_fundamentals"),
+    Topic(id = "5", name = "Coroutines", categoryId = "kotlin_fundamentals"),
 )
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenLightPreview() {
+private fun CategoryScreenLightPreview() {
     HandyPlayTheme(darkTheme = false) {
-        HomeScreen(
-            uiState = HomeUiState.Success(categories = sampleCategories),
+        CategoryScreen(
+            uiState = CategoryUiState.Success(
+                categoryName = "Kotlin Fundamentals",
+                topics = sampleTopics,
+            ),
             onSearchQueryChanged = {},
-            onCategoryClick = {},
+            onTopicClick = {},
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenDarkPreview() {
+private fun CategoryScreenDarkPreview() {
     HandyPlayTheme(darkTheme = true) {
-        HomeScreen(
-            uiState = HomeUiState.Success(categories = sampleCategories),
+        CategoryScreen(
+            uiState = CategoryUiState.Success(
+                categoryName = "Kotlin Fundamentals",
+                topics = sampleTopics,
+            ),
             onSearchQueryChanged = {},
-            onCategoryClick = {},
+            onTopicClick = {},
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenLoadingPreview() {
+private fun CategoryScreenLoadingPreview() {
     HandyPlayTheme {
-        HomeScreen(
-            uiState = HomeUiState.Loading,
+        CategoryScreen(
+            uiState = CategoryUiState.Loading,
             onSearchQueryChanged = {},
-            onCategoryClick = {},
+            onTopicClick = {},
         )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeScreenEmptyPreview() {
+private fun CategoryScreenEmptyPreview() {
     HandyPlayTheme {
-        HomeScreen(
-            uiState = HomeUiState.Success(categories = emptyList(), searchQuery = "xyz"),
+        CategoryScreen(
+            uiState = CategoryUiState.Success(
+                categoryName = "Kotlin Fundamentals",
+                topics = emptyList(),
+                searchQuery = "xyz",
+            ),
             onSearchQueryChanged = {},
-            onCategoryClick = {},
+            onTopicClick = {},
         )
     }
 }

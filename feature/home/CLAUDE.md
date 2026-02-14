@@ -20,8 +20,6 @@ Home screen with category grid and search functionality.
 - `HomeViewModel.kt` — `@HiltViewModel` with `StateFlow<HomeUiState>`, search filtering
 - `HomeUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
 - `components/CategoryCard.kt` — Card composable for category display
-- `components/HomeSearchBar.kt` — Search input composable
-- `components/BreadcrumbBar.kt` — Breadcrumb navigation composable
 
 ## Source
 

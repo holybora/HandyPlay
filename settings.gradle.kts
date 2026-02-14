@@ -41,3 +41,4 @@ include(":navigation")
 // Features
 include(":feature:welcome")
 include(":feature:home")
+include(":feature:category")
