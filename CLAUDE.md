@@ -32,6 +32,13 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 
 # Clean build
 ./gradlew clean assembleDebug
+
+# Static analysis (detekt)
+./gradlew detekt                    # All modules, all source sets
+./gradlew detektMain                # Main sources only
+./gradlew :feature:home:detektMain  # Single module
+./gradlew detektBaseline            # Generate baseline for existing issues
+./gradlew installGitHooks           # Install pre-commit hook manually
 ```
 
 ## SDK & Tooling
@@ -43,6 +50,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **Compose BOM:** 2026.01.01
 - **Hilt:** 2.59
 - **Navigation Compose:** 2.9.0 (type-safe with kotlinx.serialization)
+- **Detekt:** 1.23.8 with Compose rules (`io.nlopez.compose.rules`)
 - **Dependency versions:** `gradle/libs.versions.toml`
 
 ## Module Structure
@@ -74,6 +82,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `handyplay.android.hilt` | KSP + Dagger Hilt |
 | `handyplay.android.test` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test) |
 | `handyplay.jvm.library` | Pure JVM Kotlin (Java 11) |
+| `handyplay.detekt` | Detekt static analysis + Compose rules |
 
 ## Dependency Graph
 

@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>FinalNewline:ExampleUnitTest.kt$com.sls.handbook.ExampleUnitTest.kt</ID>
+    <ID>ForbiddenComment:HandyPlayApp.kt$/* TODO: navigate to category detail */</ID>
+    <ID>ModifierMissing:HandyPlayApp.kt$HandyPlayApp</ID>
+    <ID>NewLineAtEndOfFile:ExampleUnitTest.kt$com.sls.handbook.ExampleUnitTest.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>

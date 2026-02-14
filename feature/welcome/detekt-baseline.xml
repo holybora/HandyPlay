@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComposableParamOrder:WelcomeScreen.kt$WelcomeScreen</ID>
+    <ID>ParameterNaming:WelcomeRoute.kt$onGetStarted</ID>
+    <ID>ParameterNaming:WelcomeScreen.kt$onGetStarted</ID>
+  </CurrentIssues>
+</SmellBaseline>

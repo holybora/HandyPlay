@@ -23,6 +23,7 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.detekt.gradlePlugin)
 }
 
 tasks {
@@ -61,6 +62,10 @@ gradlePlugin {
         register("androidTest") {
             id = "handyplay.android.test"
             implementationClass = "AndroidTestConventionPlugin"
+        }
+        register("detekt") {
+            id = "handyplay.detekt"
+            implementationClass = "DetektConventionPlugin"
         }
     }
 }
