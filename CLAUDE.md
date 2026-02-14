@@ -14,6 +14,9 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ./gradlew assembleDebug
 ./gradlew assembleRelease
 
+# Install and Run
+./gradlew installAndRun  # Installs debug APK and launches app on connected device
+
 # Unit tests (JVM) — all modules
 ./gradlew test
 
