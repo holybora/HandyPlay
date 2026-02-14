@@ -14,9 +14,11 @@ import androidx.navigation.compose.rememberNavController
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.feature.category.CategoryRoute
 import com.sls.handbook.feature.home.HomeRoute
+import com.sls.handbook.feature.ttlcache.TtlCacheRoute
 import com.sls.handbook.feature.welcome.WelcomeRoute
 import com.sls.handbook.navigation.CategoryDestination
 import com.sls.handbook.navigation.HomeDestination
+import com.sls.handbook.navigation.TtlCacheDestination
 import com.sls.handbook.navigation.WelcomeDestination
 
 @Composable
@@ -57,8 +59,16 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
 
                 composable<CategoryDestination> {
                     CategoryRoute(
-                        onTopicClick = { },
+                        onTopicClick = { topicId ->
+                            when (topicId) {
+                                "kf_7" -> navController.navigate(TtlCacheDestination)
+                            }
+                        },
                     )
+                }
+
+                composable<TtlCacheDestination> {
+                    TtlCacheRoute()
                 }
             }
         }

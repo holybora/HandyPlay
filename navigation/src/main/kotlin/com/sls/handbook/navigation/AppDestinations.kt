@@ -13,3 +13,6 @@ data class CategoryDestination(
     val categoryId: String,
     val categoryName: String,
 )
+
+@Serializable
+object TtlCacheDestination

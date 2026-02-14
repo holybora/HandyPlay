@@ -11,6 +11,7 @@ dependencies {
     api(project(":core:domain"))
     api(project(":core:model"))
     implementation(project(":core:common"))
+    implementation(project(":core:network"))
 
     implementation(libs.androidx.core.ktx)
     testImplementation(libs.junit)
