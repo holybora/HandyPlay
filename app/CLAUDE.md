@@ -11,16 +11,22 @@ Application entry point for HandyPlay.
 
 ## Dependencies
 
-- All `:core:*` modules, `:navigation`, all `:feature:*` modules
+- `:core:common`, `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:data`, `:core:model`, `:core:network`
+- `:navigation`
+- `:feature:welcome`, `:feature:home`
 - AndroidX Core, Lifecycle, Activity Compose
 - Compose BOM + Material3
 - Navigation Compose, Hilt Navigation Compose
 
 ## Key Files
 
-- `MainActivity.kt` — `@AndroidEntryPoint` single Activity, sets up edge-to-edge + `HandyPlayApp`
+- `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge, sets content to `HandyPlayApp`
 - `HandyPlayApplication.kt` — `@HiltAndroidApp` Application class
-- `ui/HandyPlayApp.kt` — Root composable with `NavHost` (start: `WelcomeDestination`)
+- `ui/HandyPlayApp.kt` — Root composable: `HandyPlayTheme` → `Scaffold` → `NavHost` (start: `WelcomeDestination`, routes: `WelcomeDestination`, `HomeDestination`)
+
+## Source
+
+- `src/main/java/com/sls/handbook/`
 
 ## Build Commands
 
