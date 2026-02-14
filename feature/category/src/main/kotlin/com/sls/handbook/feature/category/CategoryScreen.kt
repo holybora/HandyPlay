@@ -27,6 +27,7 @@ fun CategoryScreen(
     onSearchQueryChange: (String) -> Unit,
     onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onBreadcrumbClick: (Int) -> Unit = {},
 ) {
     when (uiState) {
         is CategoryUiState.Loading -> {
@@ -75,6 +76,7 @@ fun CategoryScreen(
                     query = uiState.searchQuery,
                     onQueryChange = onSearchQueryChange,
                     pathSegments = listOf("Home", uiState.categoryName),
+                    onSegmentClick = onBreadcrumbClick,
                 )
             }
         }

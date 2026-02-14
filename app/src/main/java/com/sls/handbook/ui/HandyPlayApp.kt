@@ -53,13 +53,21 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                                     categoryName = category.name,
                                 )
                             )
-                        }
+                        },
                     )
                 }
 
                 composable<CategoryDestination> {
                     CategoryRoute(
                         onTopicClick = { },
+                        onBreadcrumbClick = { index ->
+                            when (index) {
+                                0 -> navController.popBackStack(
+                                    route = HomeDestination,
+                                    inclusive = false,
+                                )
+                            }
+                        },
                     )
                 }
             }

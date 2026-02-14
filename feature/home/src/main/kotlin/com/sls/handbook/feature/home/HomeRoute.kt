@@ -11,6 +11,7 @@ import com.sls.handbook.core.model.Category
 fun HomeRoute(
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
+    onBreadcrumbClick: (Int) -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -20,5 +21,6 @@ fun HomeRoute(
         onSearchQueryChange = viewModel::onSearchQueryChanged,
         onCategoryClick = onCategoryClick,
         modifier = modifier,
+        onBreadcrumbClick = onBreadcrumbClick,
     )
 }

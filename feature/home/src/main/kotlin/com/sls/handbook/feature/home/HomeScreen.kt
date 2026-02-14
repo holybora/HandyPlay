@@ -27,6 +27,7 @@ fun HomeScreen(
     onSearchQueryChange: (String) -> Unit,
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
+    onBreadcrumbClick: (Int) -> Unit = {},
 ) {
     when (uiState) {
         is HomeUiState.Loading -> {
@@ -75,6 +76,7 @@ fun HomeScreen(
                     query = uiState.searchQuery,
                     onQueryChange = onSearchQueryChange,
                     pathSegments = listOf("Home"),
+                    onSegmentClick = onBreadcrumbClick,
                 )
             }
         }
