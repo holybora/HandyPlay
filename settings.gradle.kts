@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -11,6 +12,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -20,5 +22,22 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "HandyPlay"
+
+// App
 include(":app")
- 
+
+// Core
+include(":core:common")
+include(":core:designsystem")
+include(":core:ui")
+include(":core:domain")
+include(":core:data")
+include(":core:model")
+include(":core:network")
+
+// Navigation
+include(":navigation")
+
+// Features
+include(":feature:welcome")
+include(":feature:home")
