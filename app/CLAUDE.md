@@ -13,7 +13,7 @@ Application entry point for HandyPlay.
 
 - `:core:common`, `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:data`, `:core:model`, `:core:network`
 - `:navigation`
-- `:feature:welcome`, `:feature:home`
+- `:feature:welcome`, `:feature:home`, `:feature:category`, `:feature:topic`
 - AndroidX Core, Lifecycle, Activity Compose
 - Compose BOM + Material3
 - Navigation Compose, Hilt Navigation Compose
@@ -22,7 +22,7 @@ Application entry point for HandyPlay.
 
 - `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge, sets content to `HandyPlayApp`
 - `HandyPlayApplication.kt` — `@HiltAndroidApp` Application class
-- `ui/HandyPlayApp.kt` — Root composable: `HandyPlayTheme` → `Scaffold` → `NavHost` (start: `WelcomeDestination`, routes: `WelcomeDestination`, `HomeDestination`)
+- `ui/HandyPlayApp.kt` — Root composable: `HandyPlayTheme` → `Scaffold` → `NavHost` with fade transitions (start: `WelcomeDestination`, routes: `WelcomeDestination`, `HomeDestination`, `CategoryDestination`, `TopicDestination`)
 
 ## Source
 

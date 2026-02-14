@@ -17,6 +17,7 @@ Shared composable components reused across feature modules.
 
 - `BreadcrumbBar.kt` — Breadcrumb navigation bar with path segments joined by arrows
 - `SearchBar.kt` — Search input composable with Material3 styling
+- `BottomSearchBar.kt` — Combined search + breadcrumb in fixed bottom bar with `imePadding()`
 
 ## Source
 
