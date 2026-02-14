@@ -34,7 +34,9 @@ fun HandyPlayApp() {
                 }
 
                 composable<HomeDestination> {
-                    HomeRoute()
+                    HomeRoute(
+                        onCategoryClick = { /* TODO: navigate to category detail */ }
+                    )
                 }
             }
         }
