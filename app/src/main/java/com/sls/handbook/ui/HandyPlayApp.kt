@@ -29,9 +29,6 @@ fun HandyPlayApp() {
                     WelcomeRoute(
                         onGetStarted = {
                             navController.navigate(HomeDestination)
-                        },
-                        onSignIn = {
-                            // TODO: Navigate to sign in
                         }
                     )
                 }
