@@ -1,4 +1,4 @@
-package com.sls.handbook.ui.theme
+package com.sls.handbook.core.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

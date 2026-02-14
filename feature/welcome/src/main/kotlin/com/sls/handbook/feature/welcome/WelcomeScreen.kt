@@ -1,4 +1,4 @@
-package com.sls.handbook.ui
+package com.sls.handbook.feature.welcome
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -36,10 +36,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sls.handbook.ui.theme.AccentBlue
-import com.sls.handbook.ui.theme.AccentEmerald
-import com.sls.handbook.ui.theme.AccentViolet
-import com.sls.handbook.ui.theme.HandyPlayTheme
+import com.sls.handbook.core.designsystem.theme.AccentBlue
+import com.sls.handbook.core.designsystem.theme.AccentEmerald
+import com.sls.handbook.core.designsystem.theme.AccentViolet
+import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 
 @Composable
 fun WelcomeScreen(
