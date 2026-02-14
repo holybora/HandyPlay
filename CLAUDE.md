@@ -4,8 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-HandyPlay is an Android application built with Jetpack Compose and Material 3. Package: `com.sls.handbook`.
-Single-module project (`:app`).
+HandyPlay is an Android application built with Jetpack Compose and Material 3.
+Package: `com.sls.handbook`. Multi-module clean architecture project.
 
 ## Build & Test Commands
 
@@ -14,8 +14,12 @@ Single-module project (`:app`).
 ./gradlew assembleDebug
 ./gradlew assembleRelease
 
-# Unit tests (JVM)
+# Unit tests (JVM) — all modules
 ./gradlew test
+
+# Single module tests
+./gradlew :app:testDebugUnitTest
+./gradlew :feature:home:testDebugUnitTest
 
 # Single test class
 ./gradlew testDebugUnitTest --tests "com.sls.handbook.ExampleUnitTest"
@@ -34,22 +38,61 @@ Single-module project (`:app`).
 - **AGP:** 9.0.0
 - **Java compatibility:** 11
 - **Compose BOM:** 2024.09.00
-- **Dependency versions:** defined in `gradle/libs.versions.toml`
+- **Hilt:** 2.59
+- **Navigation Compose:** 2.9.0 (type-safe with kotlinx.serialization)
+- **Dependency versions:** `gradle/libs.versions.toml`
 
-## Architecture
+## Module Structure
 
-Currently a bootstrap project with a single Activity entry point. No navigation, DI, or layered architecture is set up
-yet.
+| Module | Type | Purpose |
+|--------|------|---------|
+| `:app` | Application | Entry point, NavHost, Hilt setup |
+| `:core:common` | Android Library | Shared utilities |
+| `:core:model` | JVM Library | Data models (`@Serializable`) |
+| `:core:domain` | JVM Library | Use cases / business logic |
+| `:core:data` | Android Library | Repositories, data sources |
+| `:core:network` | Android Library | API client, network DI |
+| `:core:designsystem` | Android Library | Material3 theme (Color, Type, Theme) |
+| `:core:ui` | Android Library | Shared composables |
+| `:navigation` | Android Library | Type-safe route definitions |
+| `:feature:welcome` | Feature | Welcome/onboarding screen |
+| `:feature:home` | Feature | Home screen with category grid + search |
+| `:build-logic` | Included Build | Convention plugins |
 
-- `MainActivity` → `HandyPlayTheme` → `Scaffold` → composable content
-- Theme supports dynamic colors (API 31+) with static color fallbacks
-- Edge-to-edge display enabled
+## Convention Plugins (`build-logic/`)
 
-## Key Paths
+| Plugin ID | What it provides |
+|-----------|-----------------|
+| `handyplay.android.application` | Android app config (SDK, Kotlin, Java 11) |
+| `handyplay.android.library` | Android library config (SDK, Kotlin, Java 11) |
+| `handyplay.android.library.compose` | Compose compiler + BOM |
+| `handyplay.android.feature` | Library + Compose + Hilt + core module deps |
+| `handyplay.android.hilt` | KSP + Dagger Hilt |
+| `handyplay.jvm.library` | Pure JVM Kotlin (Java 11) |
 
-- App build config: `app/build.gradle.kts`
-- Version catalog: `gradle/libs.versions.toml`
-- Main source: `app/src/main/java/com/sls/handbook/`
-- Theme: `app/src/main/java/com/sls/handbook/ui/theme/`
-- Unit tests: `app/src/test/java/com/sls/handbook/`
-- Instrumented tests: `app/src/androidTest/java/com/sls/handbook/`
+## Dependency Graph
+
+```
+:app
+├── :core:common, :core:designsystem, :core:ui, :core:domain, :core:data, :core:model, :core:network
+├── :navigation
+└── :feature:welcome, :feature:home
+
+:feature:* (via handyplay.android.feature plugin)
+├── :core:ui, :core:designsystem, :core:domain, :core:model
+└── :navigation
+
+:core:data → :core:domain (api), :core:model (api), :core:common
+:core:domain → :core:model
+:core:ui → :core:designsystem (api), :core:model (api)
+:core:network → :core:common
+```
+
+## Architecture Patterns
+
+- **Single Activity:** `MainActivity` with Compose `NavHost`
+- **DI:** Hilt (`@AndroidEntryPoint`, `@HiltViewModel`, `@Module`)
+- **State:** ViewModel + `StateFlow` + sealed `UiState` interfaces
+- **Navigation:** Type-safe destinations via `@Serializable` objects
+- **Theming:** Material3 dynamic colors (API 31+) with static fallbacks
+- **Edge-to-edge** display enabled
