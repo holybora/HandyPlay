@@ -9,8 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
+import com.sls.handbook.feature.category.CategoryRoute
 import com.sls.handbook.feature.home.HomeRoute
 import com.sls.handbook.feature.welcome.WelcomeRoute
+import com.sls.handbook.navigation.CategoryDestination
 import com.sls.handbook.navigation.HomeDestination
 import com.sls.handbook.navigation.WelcomeDestination
 
@@ -35,7 +37,20 @@ fun HandyPlayApp() {
 
                 composable<HomeDestination> {
                     HomeRoute(
-                        onCategoryClick = { /* TODO: navigate to category detail */ }
+                        onCategoryClick = { category ->
+                            navController.navigate(
+                                CategoryDestination(
+                                    categoryId = category.id,
+                                    categoryName = category.name,
+                                )
+                            )
+                        }
+                    )
+                }
+
+                composable<CategoryDestination> {
+                    CategoryRoute(
+                        onTopicClick = { /* TODO: navigate to topic detail */ },
                     )
                 }
             }

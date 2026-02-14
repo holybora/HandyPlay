@@ -47,6 +47,7 @@ dependencies {
     // Features
     implementation(project(":feature:welcome"))
     implementation(project(":feature:home"))
+    implementation(project(":feature:category"))
 
     // AndroidX
     implementation(libs.androidx.core.ktx)
