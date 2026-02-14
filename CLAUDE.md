@@ -72,6 +72,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `handyplay.android.library.compose` | Compose compiler + BOM |
 | `handyplay.android.feature` | Library + Compose + Hilt + core module deps |
 | `handyplay.android.hilt` | KSP + Dagger Hilt |
+| `handyplay.android.test` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test) |
 | `handyplay.jvm.library` | Pure JVM Kotlin (Java 11) |
 
 ## Dependency Graph

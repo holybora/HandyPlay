@@ -10,6 +10,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 apply("handyplay.android.library")
                 apply("handyplay.android.library.compose")
                 apply("handyplay.android.hilt")
+                apply("handyplay.android.test")
             }
 
             dependencies {

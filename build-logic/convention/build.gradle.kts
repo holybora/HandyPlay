@@ -58,5 +58,9 @@ gradlePlugin {
             id = "handyplay.jvm.library"
             implementationClass = "JvmLibraryConventionPlugin"
         }
+        register("androidTest") {
+            id = "handyplay.android.test"
+            implementationClass = "AndroidTestConventionPlugin"
+        }
     }
 }

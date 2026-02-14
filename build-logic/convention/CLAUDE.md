@@ -11,6 +11,7 @@ Convention plugins for standardised Gradle module configuration.
 | `handyplay.android.library.compose` | `AndroidLibraryComposeConventionPlugin` | Adds Compose compiler plugin + Compose BOM |
 | `handyplay.android.feature` | `AndroidFeatureConventionPlugin` | Library + Compose + Hilt + core module deps + Lifecycle |
 | `handyplay.android.hilt` | `AndroidHiltConventionPlugin` | KSP + Dagger Hilt (android + compiler) |
+| `handyplay.android.test` | `AndroidTestConventionPlugin` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test) |
 | `handyplay.jvm.library` | `JvmLibraryConventionPlugin` | Pure JVM Kotlin (Java 11, no Android) |
 
 ## Key Files
