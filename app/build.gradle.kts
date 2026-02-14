@@ -76,3 +76,33 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
+
+tasks.register("installAndRun") {
+    group = "install"
+    description = "Installs the Debug build and launches the app on a connected device"
+
+    dependsOn("installDebug")
+
+    doLast {
+        val packageName = android.defaultConfig.applicationId ?: "com.sls.handbook"
+
+        println("Launching $packageName...")
+
+        project.providers.exec {
+            commandLine(
+                "adb",
+                "shell",
+                "am",
+                "start",
+                "-n",
+                "$packageName/.MainActivity",
+                "-a",
+                "android.intent.action.MAIN",
+                "-c",
+                "android.intent.category.LAUNCHER"
+            )
+        }.result.get().assertNormalExitValue()
+
+        println("App launched successfully!")
+    }
+}
