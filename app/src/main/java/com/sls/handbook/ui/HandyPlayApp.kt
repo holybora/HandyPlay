@@ -37,7 +37,9 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                 composable<WelcomeDestination> {
                     WelcomeRoute(
                         onStart = {
-                            navController.navigate(HomeDestination)
+                            navController.navigate(HomeDestination) {
+                                popUpTo<WelcomeDestination> { inclusive = true }
+                            }
                         }
                     )
                 }
