@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SearchBar(
     query: String,
-    onQueryChanged: (String) -> Unit,
+    onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     TextField(
         value = query,
-        onValueChange = onQueryChanged,
+        onValueChange = onQueryChange,
         modifier = modifier,
         singleLine = true,
         placeholder = {

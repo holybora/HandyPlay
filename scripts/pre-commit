@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# Pre-commit hook: runs detekt on the project before allowing a commit.
+# Installed by: ./gradlew installGitHooks
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+# Only run if there are staged Kotlin files (skip .gradle.kts build scripts)
+STAGED_KT_FILES=$(git diff --cached --name-only --diff-filter=ACMR -- '*.kt' '*.kts' | grep -v 'build\.gradle\.kts$' || true)
+
+if [ -z "$STAGED_KT_FILES" ]; then
+  exit 0
+fi
+
+echo "Running detekt on staged Kotlin files..."
+
+cd "$REPO_ROOT"
+if ./gradlew detekt --no-daemon -q; then
+  echo "detekt passed."
+else
+  echo ""
+  echo "detekt found issues. Please fix them before committing."
+  echo "Run './gradlew detekt' to see full details."
+  exit 1
+fi

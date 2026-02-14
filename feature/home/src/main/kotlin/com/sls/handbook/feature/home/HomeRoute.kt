@@ -17,7 +17,7 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        onSearchQueryChanged = viewModel::onSearchQueryChanged,
+        onSearchQueryChange = viewModel::onSearchQueryChanged,
         onCategoryClick = onCategoryClick,
         modifier = modifier,
     )
