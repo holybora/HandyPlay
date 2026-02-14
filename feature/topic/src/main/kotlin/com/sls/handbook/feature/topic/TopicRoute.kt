@@ -1,24 +1,20 @@
-package com.sls.handbook.feature.category
+package com.sls.handbook.feature.topic
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.sls.handbook.core.model.Topic
 
 @Composable
-fun CategoryRoute(
-    onTopicClick: (Topic) -> Unit,
+fun TopicRoute(
     modifier: Modifier = Modifier,
-    viewModel: CategoryViewModel = hiltViewModel(),
+    viewModel: TopicViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    CategoryScreen(
+    TopicScreen(
         uiState = uiState,
-        onSearchQueryChange = viewModel::onSearchQueryChanged,
-        onTopicClick = onTopicClick,
         modifier = modifier,
     )
 }

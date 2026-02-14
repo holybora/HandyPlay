@@ -27,7 +27,7 @@ import com.sls.handbook.feature.category.components.TopicCard
 fun CategoryScreen(
     uiState: CategoryUiState,
     onSearchQueryChange: (String) -> Unit,
-    onTopicClick: (String) -> Unit,
+    onTopicClick: (Topic) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState) {
@@ -79,7 +79,7 @@ fun CategoryScreen(
                 ) { topic ->
                     TopicCard(
                         topic = topic,
-                        onClick = { onTopicClick(topic.id) },
+                        onClick = { onTopicClick(topic) },
                     )
                 }
             }
