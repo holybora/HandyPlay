@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
+import com.sls.handbook.core.model.Topic
 import com.sls.handbook.feature.category.CategoryRoute
 import com.sls.handbook.feature.home.HomeRoute
 import com.sls.handbook.feature.ttlcache.TtlCacheRoute
@@ -63,7 +64,7 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                     CategoryRoute(
                         onTopicClick = { topicId ->
                             when (topicId) {
-                                "kf_7" -> navController.navigate(TtlCacheDestination)
+                                Topic.ID_TTL_CACHE -> navController.navigate(TtlCacheDestination)
                             }
                         },
                         onBreadcrumbClick = { index ->

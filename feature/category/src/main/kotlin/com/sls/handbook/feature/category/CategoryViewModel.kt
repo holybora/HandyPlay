@@ -58,7 +58,7 @@ private fun mockTopicsForCategory(categoryId: String): List<Topic> =
             Topic("kf_4", "Classes & Objects", categoryId),
             Topic("kf_5", "Coroutines", categoryId),
             Topic("kf_6", "Collections", categoryId),
-            Topic("kf_7", "TTL Cache", categoryId),
+            Topic(Topic.ID_TTL_CACHE, "TTL Cache", categoryId),
         )
         "android_core" -> listOf(
             Topic("ac_1", "Activities", categoryId),

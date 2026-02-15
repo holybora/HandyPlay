@@ -22,7 +22,7 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 
 - `TtlCacheScreen.kt` — Main composable with scrollable column, TTL dropdown, labeled text, code display, and GET button
 - `TtlCacheRoute.kt` — Navigation wrapper with `hiltViewModel()` and `collectAsStateWithLifecycle()`
-- `TtlCacheViewModel.kt` — `@HiltViewModel` with `StateFlow<TtlCacheUiState>`, fetches jokes via `JokeRepository`
+- `TtlCacheViewModel.kt` — `@HiltViewModel` with `StateFlow<TtlCacheUiState>`, fetches jokes via `JokeRepository` with `Exception` error handling
 - `TtlCacheUiState.kt` — Sealed interface: `Idle` (ttlSeconds, lastFetchedTime, data, isLoading), `Error`
 
 ## Source

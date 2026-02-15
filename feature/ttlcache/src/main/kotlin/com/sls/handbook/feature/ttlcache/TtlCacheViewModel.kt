@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,7 +53,7 @@ class TtlCacheViewModel @Inject constructor(
                     data = "Setup: ${result.joke.setup}\n\nPunchline: ${result.joke.punchline}",
                     isLoading = false,
                 )
-            } catch (e: IOException) {
+            } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 _uiState.value = TtlCacheUiState.Idle(
                     ttlSeconds = currentState.ttlSeconds,
                     lastFetchedTime = currentState.lastFetchedTime,
