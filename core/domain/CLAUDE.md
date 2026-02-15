@@ -11,6 +11,10 @@ Business logic and use cases layer. **JVM-only** — no Android dependencies.
 
 - `:core:model`
 
+## Key Files
+
+- `repository/JokeRepository.kt` — Repository interface `getJoke(ttlMillis)` + `JokeResult` data class
+
 ## Source
 
 - `src/main/kotlin/com/sls/handbook/core/domain/`

@@ -1,9 +1,9 @@
 package com.sls.handbook.feature.ttlcache
 
 import app.cash.turbine.test
-import com.sls.handbook.core.domain.repository.CatFactsRepository
-import com.sls.handbook.core.domain.repository.CatFactsResult
-import com.sls.handbook.core.model.CatFacts
+import com.sls.handbook.core.domain.repository.JokeRepository
+import com.sls.handbook.core.domain.repository.JokeResult
+import com.sls.handbook.core.model.Joke
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ import org.junit.Test
 class TtlCacheViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
-    private val repository: CatFactsRepository = mockk()
+    private val repository: JokeRepository = mockk()
     private lateinit var viewModel: TtlCacheViewModel
 
     @Before
@@ -41,7 +41,7 @@ class TtlCacheViewModelTest {
     fun `initial state is Idle with default TTL`() = runTest {
         viewModel.uiState.test {
             val state = awaitItem() as TtlCacheUiState.Idle
-            assertEquals("10", state.ttlSeconds)
+            assertEquals(5, state.ttlSeconds)
             assertEquals("", state.data)
             assertEquals("", state.lastFetchedTime)
             assertFalse(state.isLoading)
@@ -52,28 +52,19 @@ class TtlCacheViewModelTest {
     fun `onTtlChange updates TTL value`() = runTest {
         viewModel.uiState.test {
             awaitItem() // initial state
-            viewModel.onTtlChange("30")
+            viewModel.onTtlChange(3)
             val updated = awaitItem() as TtlCacheUiState.Idle
-            assertEquals("30", updated.ttlSeconds)
+            assertEquals(3, updated.ttlSeconds)
         }
     }
 
     @Test
-    fun `onGetClick with invalid TTL shows error in data`() = runTest {
-        viewModel.uiState.test {
-            awaitItem() // initial state
-            viewModel.onTtlChange("abc")
-            awaitItem() // TTL updated
-            viewModel.onGetClick()
-            val errorState = awaitItem() as TtlCacheUiState.Idle
-            assertTrue(errorState.data.contains("Error"))
-        }
-    }
-
-    @Test
-    fun `onGetClick fetches data successfully`() = runTest {
-        coEvery { repository.getCatFacts(any()) } returns CatFactsResult(
-            catFacts = CatFacts(facts = listOf("Cats sleep 16 hours a day")),
+    fun `onGetClick fetches joke successfully`() = runTest {
+        coEvery { repository.getJoke(any()) } returns JokeResult(
+            joke = Joke(
+                setup = "Why did the chicken cross the road?",
+                punchline = "To get to the other side",
+            ),
             fetchTimeMillis = 1_700_000_000_000L,
             fromCache = false,
         )
@@ -83,7 +74,10 @@ class TtlCacheViewModelTest {
             viewModel.onGetClick()
             // With UnconfinedTestDispatcher, loading and result may be conflated
             val result = expectMostRecentItem() as TtlCacheUiState.Idle
-            assertEquals("Cats sleep 16 hours a day", result.data)
+            assertEquals(
+                "Setup: Why did the chicken cross the road?\n\nPunchline: To get to the other side",
+                result.data,
+            )
             assertTrue(result.lastFetchedTime.contains("(fresh)"))
             assertFalse(result.isLoading)
         }
@@ -91,8 +85,8 @@ class TtlCacheViewModelTest {
 
     @Test
     fun `onGetClick shows from cache label when cached`() = runTest {
-        coEvery { repository.getCatFacts(any()) } returns CatFactsResult(
-            catFacts = CatFacts(facts = listOf("Cached fact")),
+        coEvery { repository.getJoke(any()) } returns JokeResult(
+            joke = Joke(setup = "Cached setup", punchline = "Cached punchline"),
             fetchTimeMillis = 1_700_000_000_000L,
             fromCache = true,
         )
@@ -107,7 +101,7 @@ class TtlCacheViewModelTest {
 
     @Test
     fun `onGetClick handles network error`() = runTest {
-        coEvery { repository.getCatFacts(any()) } throws java.io.IOException("Network error")
+        coEvery { repository.getJoke(any()) } throws java.io.IOException("Network error")
 
         viewModel.uiState.test {
             awaitItem() // initial state

@@ -2,7 +2,7 @@ package com.sls.handbook.feature.ttlcache
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sls.handbook.core.domain.repository.CatFactsRepository
+import com.sls.handbook.core.domain.repository.JokeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TtlCacheViewModel @Inject constructor(
-    private val catFactsRepository: CatFactsRepository,
+    private val jokeRepository: JokeRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<TtlCacheUiState>(TtlCacheUiState.Idle())
@@ -43,7 +43,7 @@ class TtlCacheViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                val result = catFactsRepository.getCatFacts(ttlMillis = ttlSeconds * 1000)
+                val result = jokeRepository.getJoke(ttlMillis = ttlSeconds * 1000)
                 val timeFormatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
                 val fetchedTimeStr = timeFormatter.format(Date(result.fetchTimeMillis))
                 val sourceLabel = if (result.fromCache) " (from cache)" else " (fresh)"
@@ -51,7 +51,7 @@ class TtlCacheViewModel @Inject constructor(
                 _uiState.value = TtlCacheUiState.Idle(
                     ttlSeconds = currentState.ttlSeconds,
                     lastFetchedTime = fetchedTimeStr + sourceLabel,
-                    data = result.catFacts.facts.joinToString("\n\n"),
+                    data = "Setup: ${result.joke.setup}\n\nPunchline: ${result.joke.punchline}",
                     isLoading = false,
                 )
             } catch (e: IOException) {

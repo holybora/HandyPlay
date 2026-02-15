@@ -1,7 +1,7 @@
 package com.sls.handbook.core.data.di
 
-import com.sls.handbook.core.data.repository.CatFactsRepositoryImpl
-import com.sls.handbook.core.domain.repository.CatFactsRepository
+import com.sls.handbook.core.data.repository.JokeRepositoryImpl
+import com.sls.handbook.core.domain.repository.JokeRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,7 +12,7 @@ import dagger.hilt.components.SingletonComponent
 abstract class DataModule {
 
     @Binds
-    abstract fun bindCatFactsRepository(
-        impl: CatFactsRepositoryImpl,
-    ): CatFactsRepository
+    abstract fun bindJokeRepository(
+        impl: JokeRepositoryImpl,
+    ): JokeRepository
 }

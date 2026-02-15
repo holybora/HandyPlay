@@ -1,6 +1,6 @@
 package com.sls.handbook.core.network.di
 
-import com.sls.handbook.core.network.api.CatFactsApi
+import com.sls.handbook.core.network.api.JokeApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +31,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://catfact.ninja/")
+            .baseUrl("https://official-joke-api.appspot.com/")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -39,7 +39,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideCatFactsApi(retrofit: Retrofit): CatFactsApi {
-        return retrofit.create(CatFactsApi::class.java)
+    fun provideJokeApi(retrofit: Retrofit): JokeApi {
+        return retrofit.create(JokeApi::class.java)
     }
 }

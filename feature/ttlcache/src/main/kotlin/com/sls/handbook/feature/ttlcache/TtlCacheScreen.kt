@@ -243,7 +243,7 @@ private fun TtlCacheScreenWithDataPreview() {
         TtlCacheScreen(
             uiState = TtlCacheUiState.Idle(
                 lastFetchedTime = "14:30:25 (fresh)",
-                data = "Cats have over 20 muscles that control their ears.",
+                data = "Setup: Why don't scientists trust atoms?\n\nPunchline: Because they make up everything!",
             ),
             onTtlChange = {},
             onGetClick = {},
