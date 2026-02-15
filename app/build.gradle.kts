@@ -1,6 +1,7 @@
 plugins {
     id("handyplay.android.application")
     id("handyplay.android.hilt")
+    id("handyplay.android.test")
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }

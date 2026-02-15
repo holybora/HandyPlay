@@ -2,7 +2,6 @@ package com.sls.handbook.feature.category
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,16 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Topic
-import com.sls.handbook.core.ui.BottomSearchBar
 import com.sls.handbook.feature.category.components.TopicCard
 
 @Composable
 fun CategoryScreen(
     uiState: CategoryUiState,
-    onSearchQueryChange: (String) -> Unit,
     onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onBreadcrumbClick: (Int) -> Unit = {},
 ) {
     when (uiState) {
         is CategoryUiState.Loading -> {
@@ -53,31 +49,22 @@ fun CategoryScreen(
         }
 
         is CategoryUiState.Success -> {
-            Column(modifier = modifier.fillMaxSize()) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    items(
-                        items = uiState.topics,
-                        key = { it.id },
-                    ) { topic ->
-                        TopicCard(
-                            topic = topic,
-                            onClick = { onTopicClick(topic.id) },
-                        )
-                    }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(
+                    items = uiState.topics,
+                    key = { it.id },
+                ) { topic ->
+                    TopicCard(
+                        topic = topic,
+                        onClick = { onTopicClick(topic.id) },
+                    )
                 }
-
-                BottomSearchBar(
-                    query = uiState.searchQuery,
-                    onQueryChange = onSearchQueryChange,
-                    pathSegments = listOf("Home", uiState.categoryName),
-                    onSegmentClick = onBreadcrumbClick,
-                )
             }
         }
     }
@@ -100,7 +87,6 @@ private fun CategoryScreenLightPreview() {
                 categoryName = "Kotlin Fundamentals",
                 topics = sampleTopics,
             ),
-            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -115,7 +101,6 @@ private fun CategoryScreenDarkPreview() {
                 categoryName = "Kotlin Fundamentals",
                 topics = sampleTopics,
             ),
-            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -127,7 +112,6 @@ private fun CategoryScreenLoadingPreview() {
     HandyPlayTheme {
         CategoryScreen(
             uiState = CategoryUiState.Loading,
-            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }
@@ -143,7 +127,6 @@ private fun CategoryScreenEmptyPreview() {
                 topics = emptyList(),
                 searchQuery = "xyz",
             ),
-            onSearchQueryChange = {},
             onTopicClick = {},
         )
     }

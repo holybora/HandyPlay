@@ -2,7 +2,6 @@ package com.sls.handbook.feature.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -18,16 +17,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Category
-import com.sls.handbook.core.ui.BottomSearchBar
 import com.sls.handbook.feature.home.components.CategoryCard
 
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
-    onSearchQueryChange: (String) -> Unit,
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
-    onBreadcrumbClick: (Int) -> Unit = {},
 ) {
     when (uiState) {
         is HomeUiState.Loading -> {
@@ -53,31 +49,22 @@ fun HomeScreen(
         }
 
         is HomeUiState.Success -> {
-            Column(modifier = modifier.fillMaxSize()) {
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(2),
-                    modifier = Modifier.weight(1f),
-                    contentPadding = PaddingValues(16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) {
-                    items(
-                        items = uiState.categories,
-                        key = { it.id },
-                    ) { category ->
-                        CategoryCard(
-                            category = category,
-                            onClick = { onCategoryClick(category) },
-                        )
-                    }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(
+                    items = uiState.categories,
+                    key = { it.id },
+                ) { category ->
+                    CategoryCard(
+                        category = category,
+                        onClick = { onCategoryClick(category) },
+                    )
                 }
-
-                BottomSearchBar(
-                    query = uiState.searchQuery,
-                    onQueryChange = onSearchQueryChange,
-                    pathSegments = listOf("Home"),
-                    onSegmentClick = onBreadcrumbClick,
-                )
             }
         }
     }
@@ -98,7 +85,6 @@ private fun HomeScreenLightPreview() {
     HandyPlayTheme(darkTheme = false) {
         HomeScreen(
             uiState = HomeUiState.Success(categories = sampleCategories),
-            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -110,7 +96,6 @@ private fun HomeScreenDarkPreview() {
     HandyPlayTheme(darkTheme = true) {
         HomeScreen(
             uiState = HomeUiState.Success(categories = sampleCategories),
-            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -122,7 +107,6 @@ private fun HomeScreenLoadingPreview() {
     HandyPlayTheme {
         HomeScreen(
             uiState = HomeUiState.Loading,
-            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }
@@ -134,7 +118,6 @@ private fun HomeScreenEmptyPreview() {
     HandyPlayTheme {
         HomeScreen(
             uiState = HomeUiState.Success(categories = emptyList(), searchQuery = "xyz"),
-            onSearchQueryChange = {},
             onCategoryClick = {},
         )
     }

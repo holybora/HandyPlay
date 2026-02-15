@@ -15,8 +15,8 @@ Home screen with category grid and search functionality.
 
 ## Key Files
 
-- `HomeScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), fixed bottom search/breadcrumbs
-- `HomeRoute.kt` — Navigation wrapper with `onCategoryClick` and `onBreadcrumbClick` callbacks
+- `HomeScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), no UI chrome (search moved to app level)
+- `HomeRoute.kt` — Navigation wrapper receiving `searchQuery` from app level, syncs to ViewModel via `LaunchedEffect`
 - `HomeViewModel.kt` — `@HiltViewModel` with `StateFlow<HomeUiState>`, search filtering
 - `HomeUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
 - `components/CategoryCard.kt` — Card composable for category display
@@ -28,5 +28,5 @@ Home screen with category grid and search functionality.
 ## Patterns
 
 - ViewModel exposes `uiState: StateFlow<HomeUiState>` collected via `collectAsStateWithLifecycle()`
-- Search filters the local category list via `onSearchQueryChanged(query: String)`
-- Uses `BottomSearchBar` from `:core:ui` for fixed bottom placement with keyboard awareness
+- Search filtering triggered by `onSearchQueryChanged(query: String)` from app-level BottomSearchBar
+- Route receives search query via parameter and syncs to ViewModel via `LaunchedEffect` for filtering
