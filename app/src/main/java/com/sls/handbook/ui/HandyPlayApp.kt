@@ -1,5 +1,9 @@
 package com.sls.handbook.ui
 
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.End
+import androidx.compose.animation.AnimatedContentTransitionScope.SlideDirection.Companion.Start
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -32,10 +36,10 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                 navController = navController,
                 startDestination = WelcomeDestination,
                 modifier = Modifier.padding(innerPadding),
-                enterTransition = { fadeIn(animationSpec = tween(300)) },
-                exitTransition = { fadeOut(animationSpec = tween(300)) },
-                popEnterTransition = { fadeIn(animationSpec = tween(300)) },
-                popExitTransition = { fadeOut(animationSpec = tween(300)) },
+                enterTransition = { fadeIn(tween(300)) + slideIntoContainer(Start, tween(300, easing = EaseOut)) },
+                exitTransition = { fadeOut(tween(300)) + slideOutOfContainer(Start, tween(300, easing = EaseIn)) },
+                popEnterTransition = { fadeIn(tween(300)) + slideIntoContainer(End, tween(300, easing = EaseOut)) },
+                popExitTransition = { fadeOut(tween(300)) + slideOutOfContainer(End, tween(300, easing = EaseIn)) },
             ) {
                 composable<WelcomeDestination> {
                     WelcomeRoute(

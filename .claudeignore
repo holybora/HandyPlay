@@ -11,3 +11,6 @@
 .claude/settings.local.json
 /e2e-screenshots
 gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
+gradlew
+gradlew.bat

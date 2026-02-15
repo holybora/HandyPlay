@@ -1,5 +1,10 @@
 package com.sls.handbook.core.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandHorizontally
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,28 +45,44 @@ fun BreadcrumbBar(
         pathSegments.forEachIndexed { index, segment ->
             val isLast = index == pathSegments.lastIndex
 
-            BreadcrumbChip(
-                text = segment,
-                containerColor = if (isLast) {
-                    if (isDark) colors.surfaceVariant else colors.primary
-                } else {
-                    if (isDark) colors.surface else colors.surfaceVariant
-                },
-                contentColor = if (isLast) {
-                    if (isDark) colors.onSurfaceVariant else colors.onPrimary
-                } else {
-                    if (isDark) colors.onSurfaceVariant else colors.onSurface
-                },
-                onClick = if (isLast) null else ({ onSegmentClick(index) }),
-            )
+            val chipVisibleState = remember(index) {
+                MutableTransitionState(false).apply { targetState = true }
+            }
+            val delayMillis = index * 80
 
-            if (!isLast) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                    contentDescription = null,
-                    tint = colors.onSurfaceVariant,
-                    modifier = Modifier.size(21.dp),
-                )
+            AnimatedVisibility(
+                visibleState = chipVisibleState,
+                enter = fadeIn(tween(150, delayMillis = delayMillis)) +
+                    expandHorizontally(
+                        animationSpec = tween(150, delayMillis = delayMillis),
+                        expandFrom = Alignment.Start,
+                    ),
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    BreadcrumbChip(
+                        text = segment,
+                        containerColor = if (isLast) {
+                            if (isDark) colors.surfaceVariant else colors.primary
+                        } else {
+                            if (isDark) colors.surface else colors.surfaceVariant
+                        },
+                        contentColor = if (isLast) {
+                            if (isDark) colors.onSurfaceVariant else colors.onPrimary
+                        } else {
+                            if (isDark) colors.onSurfaceVariant else colors.onSurface
+                        },
+                        onClick = if (isLast) null else ({ onSegmentClick(index) }),
+                    )
+
+                    if (!isLast) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = colors.onSurfaceVariant,
+                            modifier = Modifier.size(21.dp),
+                        )
+                    }
+                }
             }
         }
     }
