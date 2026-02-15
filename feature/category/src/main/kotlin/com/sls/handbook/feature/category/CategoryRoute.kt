@@ -10,6 +10,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun CategoryRoute(
     onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onBreadcrumbClick: (Int) -> Unit = {},
     viewModel: CategoryViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -19,5 +20,6 @@ fun CategoryRoute(
         onSearchQueryChange = viewModel::onSearchQueryChanged,
         onTopicClick = onTopicClick,
         modifier = modifier,
+        onBreadcrumbClick = onBreadcrumbClick,
     )
 }

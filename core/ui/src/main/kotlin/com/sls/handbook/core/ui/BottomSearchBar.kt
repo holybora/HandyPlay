@@ -16,6 +16,7 @@ fun BottomSearchBar(
     onQueryChange: (String) -> Unit,
     pathSegments: List<String>,
     modifier: Modifier = Modifier,
+    onSegmentClick: (Int) -> Unit = {},
 ) {
     Column(
         modifier = modifier
@@ -29,7 +30,10 @@ fun BottomSearchBar(
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(8.dp))
-        BreadcrumbBar(pathSegments = pathSegments)
+        BreadcrumbBar(
+            pathSegments = pathSegments,
+            onSegmentClick = onSegmentClick,
+        )
         Spacer(modifier = Modifier.height(8.dp))
     }
 }

@@ -39,7 +39,9 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                 composable<WelcomeDestination> {
                     WelcomeRoute(
                         onStart = {
-                            navController.navigate(HomeDestination)
+                            navController.navigate(HomeDestination) {
+                                popUpTo<WelcomeDestination> { inclusive = true }
+                            }
                         }
                     )
                 }
@@ -53,7 +55,7 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                                     categoryName = category.name,
                                 )
                             )
-                        }
+                        },
                     )
                 }
 
@@ -62,6 +64,14 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                         onTopicClick = { topicId ->
                             when (topicId) {
                                 "kf_7" -> navController.navigate(TtlCacheDestination)
+                            }
+                        },
+                        onBreadcrumbClick = { index ->
+                            when (index) {
+                                0 -> navController.popBackStack(
+                                    route = HomeDestination,
+                                    inclusive = false,
+                                )
                             }
                         },
                     )

@@ -15,9 +15,9 @@ Shared composable components reused across feature modules.
 
 ## Key Files
 
-- `BreadcrumbBar.kt` — Breadcrumb navigation bar with path segments joined by arrows
+- `BreadcrumbBar.kt` — Clickable breadcrumb chips per segment with arrow icon separators and `onSegmentClick` callback
 - `SearchBar.kt` — Search input composable with Material3 styling
-- `BottomSearchBar.kt` — Combined search + breadcrumb in fixed bottom bar with `imePadding()`
+- `BottomSearchBar.kt` — Combined search + breadcrumb in fixed bottom bar with `imePadding()` and `onSegmentClick` passthrough
 
 ## Source
 
