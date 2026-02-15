@@ -1,6 +1,7 @@
 package com.sls.handbook.feature.home
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -9,18 +10,20 @@ import com.sls.handbook.core.model.Category
 
 @Composable
 fun HomeRoute(
+    searchQuery: String,
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
-    onBreadcrumbClick: (Int) -> Unit = {},
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
+    LaunchedEffect(searchQuery) {
+        viewModel.onSearchQueryChanged(searchQuery)
+    }
+
     HomeScreen(
         uiState = uiState,
-        onSearchQueryChange = viewModel::onSearchQueryChanged,
         onCategoryClick = onCategoryClick,
         modifier = modifier,
-        onBreadcrumbClick = onBreadcrumbClick,
     )
 }

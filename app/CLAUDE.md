@@ -22,7 +22,9 @@ Application entry point for HandyPlay.
 
 - `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge, sets content to `HandyPlayApp`
 - `HandyPlayApplication.kt` — `@HiltAndroidApp` Application class
-- `ui/HandyPlayApp.kt` — Root composable: `HandyPlayTheme` → `Scaffold` → `NavHost` (start: `WelcomeDestination`, routes: `WelcomeDestination` → `HomeDestination` (pops Welcome), `HomeDestination` → `CategoryDestination`, `CategoryDestination` → `TtlCacheDestination` via `Topic.ID_TTL_CACHE`)
+- `ui/HandyPlayApp.kt` — Root composable with `BottomSearchBarViewModel`, manages search state and destination-based visibility
+- `ui/HandyPlayNavHost.kt` — NavHost routes: `WelcomeDestination` → `HomeDestination` (pops Welcome), `HomeDestination` → `CategoryDestination`, `CategoryDestination` → `TtlCacheDestination` via `Topic.ID_TTL_CACHE`
+- `ui/BottomSearchBarViewModel.kt` — `@HiltViewModel` managing search query, breadcrumb segments, bar visibility, and navigation events via Channel
 
 ## Source
 
@@ -38,5 +40,5 @@ Application entry point for HandyPlay.
 
 ## Tests
 
-- `src/test/` — JVM unit tests
+- `src/test/` — JVM unit tests, including `BottomSearchBarViewModelTest.kt`
 - `src/androidTest/` — Compose UI / instrumented tests
