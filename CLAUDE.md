@@ -68,6 +68,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `:feature:welcome` | Feature | Welcome/onboarding screen |
 | `:feature:home` | Feature | Home screen with category grid + search |
 | `:feature:category` | Feature | Category topics screen with topic grid + search |
+| `:feature:ttlcache` | Feature | TTL Cache demo screen with joke fetching |
 | `:build-logic` | Included Build | Convention plugins |
 
 ## Convention Plugins (`build-logic/`)
@@ -89,7 +90,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 :app
 ├── :core:common, :core:designsystem, :core:ui, :core:domain, :core:data, :core:model, :core:network
 ├── :navigation
-└── :feature:welcome, :feature:home, :feature:category
+└── :feature:welcome, :feature:home, :feature:category, :feature:ttlcache
 
 :feature:* (via handyplay.android.feature plugin)
 ├── :core:ui, :core:designsystem, :core:domain, :core:model

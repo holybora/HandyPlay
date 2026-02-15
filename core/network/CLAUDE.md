@@ -26,5 +26,5 @@ Network/API layer with HTTP client setup and DI.
 ## Notes
 
 - All API service interfaces and network configuration live here
-- Uses kotlinx.serialization for JSON parsing
+- Uses Gson for JSON parsing
 - Hilt provides singleton network instances (HTTP client, API services)
