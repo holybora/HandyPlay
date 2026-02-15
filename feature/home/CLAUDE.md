@@ -16,7 +16,7 @@ Home screen with category grid and search functionality.
 ## Key Files
 
 - `HomeScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), fixed bottom search/breadcrumbs
-- `HomeRoute.kt` — Navigation wrapper
+- `HomeRoute.kt` — Navigation wrapper with `onCategoryClick` and `onBreadcrumbClick` callbacks
 - `HomeViewModel.kt` — `@HiltViewModel` with `StateFlow<HomeUiState>`, search filtering
 - `HomeUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
 - `components/CategoryCard.kt` — Card composable for category display

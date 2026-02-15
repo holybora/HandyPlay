@@ -13,6 +13,12 @@ Repository implementations and data sources.
 - `:core:domain` (api) — repository interfaces
 - `:core:model` (api) — data models
 - `:core:common` — utilities
+- `:core:network` — API clients
+
+## Key Files
+
+- `repository/JokeRepositoryImpl.kt` — `@Singleton` implementation using `DynamicTtlCache` and `JokeApi`
+- `di/DataModule.kt` — Hilt `@Binds` mapping `JokeRepositoryImpl` to `JokeRepository`
 
 ## Source
 

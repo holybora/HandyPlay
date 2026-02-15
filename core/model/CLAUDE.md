@@ -15,7 +15,8 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 ## Key Files
 
 - `Category.kt` — `@Serializable` data class with `id: String`, `name: String`
-- `Topic.kt` — `@Serializable` data class with `id: String`, `name: String`, `categoryId: String`
+- `Topic.kt` — `@Serializable` data class with `id: String`, `name: String`, `categoryId: String`, plus companion with `ID_TTL_CACHE` constant
+- `Joke.kt` — `@Serializable` data class with `setup: String`, `punchline: String`
 
 ## Source
 

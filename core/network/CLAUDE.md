@@ -15,14 +15,16 @@ Network/API layer with HTTP client setup and DI.
 
 ## Key Files
 
-- `di/NetworkModule.kt` — Hilt `@Module` providing network dependencies
+- `api/JokeApi.kt` — Retrofit interface: `@GET("random_joke") suspend fun getRandomJoke(): JokeResponse`
+- `model/JokeResponse.kt` — Gson-annotated response model with `type`, `setup`, `punchline`, `id`
+- `di/NetworkModule.kt` — Hilt `@Module` providing OkHttp, Retrofit (base URL: `official-joke-api.appspot.com`), and `JokeApi`
 
 ## Source
 
-- `src/main/java/com/sls/handbook/core/network/`
+- `src/main/kotlin/com/sls/handbook/core/network/`
 
 ## Notes
 
 - All API service interfaces and network configuration live here
-- Uses kotlinx.serialization for JSON parsing
+- Uses Gson for JSON parsing
 - Hilt provides singleton network instances (HTTP client, API services)
