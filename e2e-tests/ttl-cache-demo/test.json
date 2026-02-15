@@ -1,0 +1,93 @@
+{
+  "metadata": {
+    "appPackage": "com.sls.handbook",
+    "deviceModel": "sdk_gphone64_arm64",
+    "screenWidth": 1280,
+    "screenHeight": 2856,
+    "density": 3,
+    "recordedAt": "2026-02-15T10:18:54.708487Z"
+  },
+  "events": [
+    {
+      "type": "TAP",
+      "x": 626.953125,
+      "y": 771.9599609375,
+      "timestampMs": 4588
+    },
+    {
+      "type": "TAP",
+      "x": 384.9609375,
+      "y": 471.9619140625,
+      "timestampMs": 8490
+    },
+    {
+      "type": "TAP",
+      "x": 415.9765625,
+      "y": 1763.908203125,
+      "timestampMs": 11872
+    },
+    {
+      "type": "TAP",
+      "x": 671.953125,
+      "y": 1057.9267578125,
+      "timestampMs": 15090
+    },
+    {
+      "type": "SWIPE",
+      "startX": 132.96875,
+      "startY": 806.9111328125,
+      "endX": 145.9765625,
+      "endY": 819.8974609375,
+      "durationMs": 1693,
+      "timestampMs": 23209
+    },
+    {
+      "type": "TAP",
+      "x": 176.9921875,
+      "y": 833.9296875,
+      "timestampMs": 23543
+    },
+    {
+      "type": "TAP",
+      "x": 176.9921875,
+      "y": 833.9296875,
+      "timestampMs": 23735
+    },
+    {
+      "type": "TAP",
+      "x": 176.9921875,
+      "y": 833.9296875,
+      "timestampMs": 23873
+    },
+    {
+      "type": "TAP",
+      "x": 768.9453125,
+      "y": 467.9521484375,
+      "timestampMs": 24762
+    },
+    {
+      "type": "TAP",
+      "x": 701.953125,
+      "y": 1194.939453125,
+      "timestampMs": 29700
+    },
+    {
+      "type": "TAP",
+      "x": 648.9453125,
+      "y": 1132.8828125,
+      "timestampMs": 32967
+    },
+    {
+      "type": "TAP",
+      "x": 688.9453125,
+      "y": 1198.9482421875,
+      "timestampMs": 35229
+    },
+    {
+      "type": "TAP",
+      "x": 688.9453125,
+      "y": 1198.9482421875,
+      "timestampMs": 36757
+    }
+  ]
+}
