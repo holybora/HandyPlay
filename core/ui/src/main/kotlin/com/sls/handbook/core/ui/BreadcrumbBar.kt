@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.theapache64.rebugger.Rebugger
 
 private val ChipShape = RoundedCornerShape(21.dp)
 
@@ -35,6 +36,13 @@ fun BreadcrumbBar(
     modifier: Modifier = Modifier,
     onSegmentClick: (Int) -> Unit = {},
 ) {
+    Rebugger(
+        composableName = "BreadcrumbBar",
+        trackMap = mapOf(
+            "pathSegments" to pathSegments,
+        ),
+    )
+
     val isDark = isSystemInDarkTheme()
     val colors = MaterialTheme.colorScheme
 

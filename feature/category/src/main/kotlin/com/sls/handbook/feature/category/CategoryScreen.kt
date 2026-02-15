@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Topic
 import com.sls.handbook.feature.category.components.TopicCard
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun CategoryScreen(
@@ -25,6 +26,14 @@ fun CategoryScreen(
     onTopicClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "CategoryScreen",
+        trackMap = mapOf(
+            "uiState" to uiState,
+            "onTopicClick" to onTopicClick,
+        ),
+    )
+
     when (uiState) {
         is CategoryUiState.Loading -> {
             Box(

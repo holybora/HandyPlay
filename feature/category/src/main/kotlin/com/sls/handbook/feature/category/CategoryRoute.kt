@@ -6,6 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun CategoryRoute(
@@ -15,6 +16,14 @@ fun CategoryRoute(
     viewModel: CategoryViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Rebugger(
+        composableName = "CategoryRoute",
+        trackMap = mapOf(
+            "searchQuery" to searchQuery,
+            "uiState" to uiState,
+        ),
+    )
 
     LaunchedEffect(searchQuery) {
         viewModel.onSearchQueryChanged(searchQuery)

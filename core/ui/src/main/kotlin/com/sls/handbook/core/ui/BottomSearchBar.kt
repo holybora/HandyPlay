@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun BottomSearchBar(
@@ -18,6 +19,14 @@ fun BottomSearchBar(
     modifier: Modifier = Modifier,
     onSegmentClick: (Int) -> Unit = {},
 ) {
+    Rebugger(
+        composableName = "BottomSearchBar",
+        trackMap = mapOf(
+            "query" to query,
+            "pathSegments" to pathSegments,
+        ),
+    )
+
     Column(
         modifier = modifier
             .fillMaxWidth()
