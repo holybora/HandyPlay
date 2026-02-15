@@ -30,6 +30,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
                 add("implementation", libs.findLibrary("androidx-lifecycle-viewmodel-compose").get())
                 add("implementation", libs.findLibrary("androidx-hilt-navigation-compose").get())
 
+                add("implementation", libs.findLibrary("rebugger").get())
+
                 add("debugImplementation", libs.findLibrary("androidx-compose-ui-tooling").get())
             }
         }

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Category
 import com.sls.handbook.feature.home.components.CategoryCard
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun HomeScreen(
@@ -25,6 +26,14 @@ fun HomeScreen(
     onCategoryClick: (Category) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "HomeScreen",
+        trackMap = mapOf(
+            "uiState" to uiState,
+            "onCategoryClick" to onCategoryClick,
+        ),
+    )
+
     when (uiState) {
         is HomeUiState.Loading -> {
             Box(

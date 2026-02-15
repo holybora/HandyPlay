@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun SearchBar(
@@ -19,6 +20,13 @@ fun SearchBar(
     onQueryChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "SearchBar",
+        trackMap = mapOf(
+            "query" to query,
+        ),
+    )
+
     TextField(
         value = query,
         onValueChange = onQueryChange,

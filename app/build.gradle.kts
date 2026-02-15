@@ -29,6 +29,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -75,6 +76,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
+    implementation(libs.rebugger)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

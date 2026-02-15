@@ -38,7 +38,9 @@ import com.sls.handbook.navigation.CategoryDestination
 import com.sls.handbook.navigation.HomeDestination
 import com.sls.handbook.navigation.TtlCacheDestination
 import com.sls.handbook.navigation.WelcomeDestination
+import com.theapache64.rebugger.Rebugger
 
+@Suppress("LongMethod")
 @Composable
 fun HandyPlayApp(
     modifier: Modifier = Modifier,
@@ -49,6 +51,16 @@ fun HandyPlayApp(
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
         val bottomBarState by bottomSearchBarViewModel.uiState.collectAsStateWithLifecycle()
+
+        Rebugger(
+            composableName = "HandyPlayApp",
+            trackMap = mapOf(
+                "currentDestination" to currentDestination,
+                "bottomBarState.isVisible" to bottomBarState.isVisible,
+                "bottomBarState.searchQuery" to bottomBarState.searchQuery,
+                "bottomBarState.pathSegments" to bottomBarState.pathSegments,
+            ),
+        )
 
         LaunchedEffect(currentDestination) {
             val screen = when {
@@ -110,6 +122,13 @@ private fun HandyPlayNavHost(
     searchQuery: String,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "HandyPlayNavHost",
+        trackMap = mapOf(
+            "searchQuery" to searchQuery,
+        ),
+    )
+
     NavHost(
         navController = navController,
         startDestination = WelcomeDestination,

@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.AccentAmber
 import com.sls.handbook.core.model.Topic
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun TopicCard(
@@ -22,6 +23,14 @@ fun TopicCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "TopicCard",
+        trackMap = mapOf(
+            "topic" to topic,
+            "onClick" to onClick,
+        ),
+    )
+
     Card(
         onClick = onClick,
         modifier = modifier.aspectRatio(1.4f),
