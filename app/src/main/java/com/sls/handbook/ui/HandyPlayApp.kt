@@ -19,10 +19,12 @@ import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Topic
 import com.sls.handbook.feature.category.CategoryRoute
 import com.sls.handbook.feature.home.HomeRoute
+import com.sls.handbook.feature.listvssequence.ListVsSequenceRoute
 import com.sls.handbook.feature.ttlcache.TtlCacheRoute
 import com.sls.handbook.feature.welcome.WelcomeRoute
 import com.sls.handbook.navigation.CategoryDestination
 import com.sls.handbook.navigation.HomeDestination
+import com.sls.handbook.navigation.ListVsSequenceDestination
 import com.sls.handbook.navigation.TtlCacheDestination
 import com.sls.handbook.navigation.WelcomeDestination
 
@@ -69,6 +71,8 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                         onTopicClick = { topicId ->
                             when (topicId) {
                                 Topic.ID_TTL_CACHE -> navController.navigate(TtlCacheDestination)
+                                Topic.ID_LIST_VS_SEQUENCE ->
+                                    navController.navigate(ListVsSequenceDestination)
                             }
                         },
                         onBreadcrumbClick = { index ->
@@ -82,9 +86,9 @@ fun HandyPlayApp(modifier: Modifier = Modifier) {
                     )
                 }
 
-                composable<TtlCacheDestination> {
-                    TtlCacheRoute()
-                }
+                composable<TtlCacheDestination> { TtlCacheRoute() }
+
+                composable<ListVsSequenceDestination> { ListVsSequenceRoute() }
             }
         }
     }

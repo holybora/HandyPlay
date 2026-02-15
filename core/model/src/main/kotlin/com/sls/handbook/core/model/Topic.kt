@@ -10,5 +10,6 @@ data class Topic(
 ) {
     companion object {
         const val ID_TTL_CACHE = "kf_7"
+        const val ID_LIST_VS_SEQUENCE = "kf_8"
     }
 }
