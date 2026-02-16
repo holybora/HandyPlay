@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pre-commit hook: runs detekt on the project before allowing a commit.
+# Pre-commit hook: runs detekt and generates kover report before allowing a commit.
 # Installed by: ./gradlew installGitHooks
 set -euo pipefail
 
@@ -21,5 +21,14 @@ else
   echo ""
   echo "detekt found issues. Please fix them before committing."
   echo "Run './gradlew detekt' to see full details."
+  exit 1
+fi
+
+echo "Generating Kover coverage report..."
+if ./gradlew test :app:koverHtmlReport --no-daemon -q; then
+  echo "Kover report generated at app/build/reports/kover/html/index.html"
+else
+  echo ""
+  echo "Kover report generation failed."
   exit 1
 fi

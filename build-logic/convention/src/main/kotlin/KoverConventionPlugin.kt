@@ -14,6 +14,7 @@ class KoverConventionPlugin : Plugin<Project> {
                         excludes {
                             androidGeneratedClasses()
                             annotatedBy(
+                                "androidx.compose.runtime.Composable",
                                 "androidx.compose.ui.tooling.preview.Preview",
                                 "dagger.Module",
                                 "dagger.hilt.InstallIn",
