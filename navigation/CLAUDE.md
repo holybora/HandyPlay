@@ -21,6 +21,11 @@ Type-safe navigation route definitions.
 
 - `src/main/java/com/sls/handbook/navigation/`
 
+## Tests
+
+- `src/test/` — JVM unit tests
+  - `AppDestinationsTest.kt` — Navigation destination construction, properties, equality, copy operations
+
 ## Notes
 
 - All navigation destinations are `@Serializable` objects/data classes

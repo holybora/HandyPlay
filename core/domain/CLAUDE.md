@@ -20,6 +20,11 @@ Business logic and use cases layer. **JVM-only** — no Android dependencies.
 
 - `src/main/kotlin/com/sls/handbook/core/domain/`
 
+## Tests
+
+- `src/test/` — JVM unit tests
+  - `JokeResultTest.kt` — Data class properties, equality, copy operations tests
+
 ## Notes
 
 - Place use case classes and repository interfaces here

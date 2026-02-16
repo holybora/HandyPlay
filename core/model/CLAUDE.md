@@ -22,6 +22,12 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 
 - `src/main/kotlin/com/sls/handbook/core/model/`
 
+## Tests
+
+- `src/test/` — JVM unit tests
+  - `TopicTest.kt` — Data class properties, equality, copy, hashCode, companion constant tests
+  - `JokeTest.kt` — Data class properties, equality, copy operations tests
+
 ## Notes
 
 - All models use `@Serializable` for kotlinx.serialization

@@ -25,6 +25,11 @@ Repository implementations and data sources.
 
 - `src/main/java/com/sls/handbook/core/data/`
 
+## Tests
+
+- `src/test/` — JVM unit tests
+  - `JokeRepositoryImplTest.kt` — Repository implementation, MockK-based API mocking, cache behavior, error propagation tests
+
 ## Notes
 
 - Implements repository interfaces from `:core:domain`
