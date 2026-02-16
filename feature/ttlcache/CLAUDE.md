@@ -31,7 +31,9 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 
 ## Tests
 
-- `src/test/` — JVM unit tests for `TtlCacheViewModel` using MockK + Turbine
+- `src/test/` — JVM unit tests
+  - `TtlCacheViewModelTest.kt` — ViewModel using MockK + Turbine
+  - `TtlCacheUiStateTest.kt` — Sealed interface (Idle, Error) variants tests
 
 ## Patterns
 

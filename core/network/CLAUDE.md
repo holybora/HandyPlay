@@ -23,6 +23,11 @@ Network/API layer with HTTP client setup and DI.
 
 - `src/main/kotlin/com/sls/handbook/core/network/`
 
+## Tests
+
+- `src/test/` — JVM unit tests
+  - `JokeResponseTest.kt` — Data class properties, equality, copy operations tests
+
 ## Notes
 
 - All API service interfaces and network configuration live here

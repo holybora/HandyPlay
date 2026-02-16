@@ -12,6 +12,8 @@ class AndroidTestConventionPlugin : Plugin<Project> {
                 add("testImplementation", libs.findLibrary("turbine").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("testImplementation", libs.findLibrary("robolectric").get())
+                add("testImplementation", libs.findLibrary("androidx-compose-ui-test-junit4").get())
+                add("debugImplementation", libs.findLibrary("androidx-compose-ui-test-manifest").get())
             }
         }
     }

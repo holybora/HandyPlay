@@ -33,6 +33,7 @@ Shared utilities and helpers used across all modules.
 - `src/test/java/com/sls/handbook/core/common/cache/`
   - `DynamicTtlCacheTest.kt`
   - `CachedNetworkPropertyTest.kt`
+  - `CachedNetworkPropertyProviderTest.kt` — Factory validation (positive/zero/negative TTL)
 
 Run tests: `./gradlew :core:common:testDebugUnitTest`
 

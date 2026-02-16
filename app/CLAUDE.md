@@ -51,9 +51,11 @@ Application entry point for HandyPlay. Single-activity Compose app with type-saf
 ```
 
 ## Tests
-
-- `src/test/` — JVM unit tests, including `BottomSearchBarViewModelTest.kt`
+- `src/test/` — JVM unit tests
+  - `BottomSearchBarViewModelTest.kt` — ViewModel state management tests
+  - `BottomSearchBarModelsTest.kt` — `BottomSearchBarUiState`, `CurrentScreen`, navigation events tests
 - `src/androidTest/` — Compose UI / instrumented tests
+
 
 ## Notes
 
