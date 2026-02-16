@@ -14,6 +14,7 @@ Business logic and use cases layer. **JVM-only** — no Android dependencies.
 ## Key Files
 
 - `repository/JokeRepository.kt` — Repository interface `getJoke(ttlMillis)` + `JokeResult` data class
+- `repository/CategoryRepository.kt` — Repository interface `getCategories()` + `getTopicsByCategoryId()`
 
 ## Source
 

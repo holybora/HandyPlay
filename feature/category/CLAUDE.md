@@ -17,7 +17,7 @@ Category topics screen with topic grid and search functionality.
 
 - `CategoryScreen.kt` — Main composable with scrollable `LazyVerticalGrid` (2-column layout), no UI chrome (search moved to app level)
 - `CategoryRoute.kt` — Navigation wrapper receiving `searchQuery` from app level, syncs to ViewModel via `LaunchedEffect`
-- `CategoryViewModel.kt` — `@HiltViewModel` with `StateFlow<CategoryUiState>`, search filtering, mock topics using `Topic.ID_TTL_CACHE` constants
+- `CategoryViewModel.kt` — `@HiltViewModel` with `StateFlow<CategoryUiState>`, search filtering, uses `CategoryRepository` for topic data
 - `CategoryUiState.kt` — Sealed interface: `Loading`, `Success`, `Error`
 - `components/TopicCard.kt` — Card composable for topic display (AccentAmber)
 

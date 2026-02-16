@@ -1,7 +1,7 @@
 package com.sls.handbook.feature.home
 
 import androidx.lifecycle.ViewModel
-import com.sls.handbook.core.model.Category
+import com.sls.handbook.core.domain.repository.CategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,16 +10,11 @@ import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor() : ViewModel() {
+class HomeViewModel @Inject constructor(
+    categoryRepository: CategoryRepository,
+) : ViewModel() {
 
-    private val allCategories = listOf(
-        Category(id = "kotlin_fundamentals", name = "Kotlin Fundamentals"),
-        Category(id = "android_core", name = "Android Core"),
-        Category(id = "jetpack_compose", name = "Jetpack Compose"),
-        Category(id = "architecture", name = "Architecture"),
-        Category(id = "testing", name = "Testing"),
-        Category(id = "performance", name = "Performance"),
-    )
+    private val allCategories = categoryRepository.getCategories()
 
     private val _uiState = MutableStateFlow<HomeUiState>(
         HomeUiState.Success(categories = allCategories)

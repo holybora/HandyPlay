@@ -1,6 +1,9 @@
 package com.sls.handbook.feature.home
 
 import app.cash.turbine.test
+import com.sls.handbook.core.domain.repository.CategoryRepository
+import com.sls.handbook.core.model.Category
+import com.sls.handbook.core.model.Topic
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -11,9 +14,22 @@ class HomeViewModelTest {
 
     private lateinit var viewModel: HomeViewModel
 
+    private val fakeRepository = object : CategoryRepository {
+        override fun getCategories(): List<Category> = listOf(
+            Category(id = "kotlin_fundamentals", name = "Kotlin Fundamentals"),
+            Category(id = "android_core", name = "Android Core"),
+            Category(id = "jetpack_compose", name = "Jetpack Compose"),
+            Category(id = "architecture", name = "Architecture"),
+            Category(id = "testing", name = "Testing"),
+            Category(id = "performance", name = "Performance"),
+        )
+
+        override fun getTopicsByCategoryId(categoryId: String): List<Topic> = emptyList()
+    }
+
     @Before
     fun setUp() {
-        viewModel = HomeViewModel()
+        viewModel = HomeViewModel(fakeRepository)
     }
 
     @Test
