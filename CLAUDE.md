@@ -33,6 +33,11 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 # Clean build
 ./gradlew clean assembleDebug
 
+# Code coverage (Kover — aggregated in :app module)
+./gradlew test :app:koverHtmlReport      # HTML report → app/build/reports/kover/html/
+./gradlew test :app:koverXmlReport       # XML report → app/build/reports/kover/report.xml
+./gradlew test :app:koverVerify          # Check coverage thresholds
+
 # Static analysis (detekt)
 ./gradlew detekt                    # All modules, all source sets
 ./gradlew detektMain                # Main sources only
@@ -49,6 +54,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **Compose BOM:** 2026.01.01
 - **Hilt:** 2.59
 - **Navigation Compose:** 2.9.0 (type-safe with kotlinx.serialization)
+- **Kover:** 0.9.7 (per-project plugin, aggregated in `:app` via `kover()` dependencies)
 - **Detekt:** 1.23.8 with Compose rules (`io.nlopez.compose.rules`)
 - **Dependency versions:** `gradle/libs.versions.toml`
 

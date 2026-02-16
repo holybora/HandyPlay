@@ -52,6 +52,20 @@ dependencies {
     implementation(project(":feature:category"))
     implementation(project(":feature:ttlcache"))
 
+    // Coverage aggregation — pulls coverage from all modules into one report
+    kover(project(":core:common"))
+    kover(project(":core:designsystem"))
+    kover(project(":core:ui"))
+    kover(project(":core:domain"))
+    kover(project(":core:data"))
+    kover(project(":core:model"))
+    kover(project(":core:network"))
+    kover(project(":navigation"))
+    kover(project(":feature:welcome"))
+    kover(project(":feature:home"))
+    kover(project(":feature:category"))
+    kover(project(":feature:ttlcache"))
+
     // AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

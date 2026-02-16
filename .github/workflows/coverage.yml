@@ -1,0 +1,82 @@
+name: Code Coverage
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run tests with coverage
+        run: ./gradlew test :app:koverXmlReport :app:koverHtmlReport
+
+      - name: Post coverage to PR comment
+        if: github.event_name == 'pull_request'
+        uses: mi-kas/kover-report@v1
+        with:
+          path: app/build/reports/kover/report.xml
+          title: Code Coverage
+          update-comment: true
+          min-coverage-overall: 0
+          min-coverage-changed-files: 0
+
+      - name: Upload HTML coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: app/build/reports/kover/html/
+          retention-days: 30
+
+      - name: Generate coverage badge
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          LINE_DATA=$(grep '<counter type="LINE"' app/build/reports/kover/report.xml | tail -1)
+          MISSED=$(echo "$LINE_DATA" | grep -oE 'missed="[0-9]+"' | grep -oE '[0-9]+')
+          COVERED=$(echo "$LINE_DATA" | grep -oE 'covered="[0-9]+"' | grep -oE '[0-9]+')
+          TOTAL=$((MISSED + COVERED))
+          if [ "$TOTAL" -gt 0 ]; then
+            COVERAGE=$((COVERED * 100 / TOTAL))
+          else
+            COVERAGE=0
+          fi
+          if [ "$COVERAGE" -ge 80 ]; then COLOR="brightgreen"
+          elif [ "$COVERAGE" -ge 60 ]; then COLOR="green"
+          elif [ "$COVERAGE" -ge 40 ]; then COLOR="yellowgreen"
+          elif [ "$COVERAGE" -ge 20 ]; then COLOR="yellow"
+          else COLOR="red"; fi
+          mkdir -p .badges
+          echo "{\"schemaVersion\":1,\"label\":\"coverage\",\"message\":\"${COVERAGE}%\",\"color\":\"${COLOR}\"}" > .badges/coverage.json
+
+      - name: Deploy badge to gh-pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .badges
+          destination_dir: badges
+          keep_files: true

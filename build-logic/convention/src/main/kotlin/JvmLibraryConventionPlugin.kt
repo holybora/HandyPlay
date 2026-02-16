@@ -13,6 +13,7 @@ class JvmLibraryConventionPlugin : Plugin<Project> {
             with(pluginManager) {
                 apply("org.jetbrains.kotlin.jvm")
                 apply("handyplay.detekt")
+                apply("handyplay.kover")
             }
 
             extensions.configure<JavaPluginExtension> {

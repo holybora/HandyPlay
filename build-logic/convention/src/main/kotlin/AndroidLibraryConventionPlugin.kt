@@ -9,6 +9,7 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
         with(target) {
             pluginManager.apply("com.android.library")
             pluginManager.apply("handyplay.detekt")
+            pluginManager.apply("handyplay.kover")
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
