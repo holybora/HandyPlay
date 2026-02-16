@@ -18,7 +18,8 @@ Repository implementations and data sources.
 ## Key Files
 
 - `repository/JokeRepositoryImpl.kt` — `@Singleton` implementation using `DynamicTtlCache` and `JokeApi`
-- `di/DataModule.kt` — Hilt `@Binds` mapping `JokeRepositoryImpl` to `JokeRepository`
+- `repository/CategoryRepositoryImpl.kt` — `@Singleton` implementation with static category and topic data
+- `di/DataModule.kt` — Hilt `@Binds` mapping repository implementations to interfaces
 
 ## Source
 
