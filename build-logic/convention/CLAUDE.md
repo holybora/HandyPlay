@@ -6,18 +6,21 @@ Convention plugins for standardised Gradle module configuration.
 
 | Plugin ID | Class | What it does |
 |-----------|-------|-------------|
-| `handyplay.android.application` | `AndroidApplicationConventionPlugin` | Android app defaults (SDK 36/33, Kotlin, Java 11) |
-| `handyplay.android.library` | `AndroidLibraryConventionPlugin` | Android library defaults (SDK, Kotlin, Java 11) |
+| `handyplay.android.application` | `AndroidApplicationConventionPlugin` | Android app defaults (SDK 36/33, Kotlin, Java 11, auto-applies detekt + kover) |
+| `handyplay.android.library` | `AndroidLibraryConventionPlugin` | Android library defaults (SDK, Kotlin, Java 11, auto-applies detekt + kover) |
 | `handyplay.android.library.compose` | `AndroidLibraryComposeConventionPlugin` | Adds Compose compiler plugin + Compose BOM |
 | `handyplay.android.feature` | `AndroidFeatureConventionPlugin` | Library + Compose + Hilt + core module deps + Lifecycle |
 | `handyplay.android.hilt` | `AndroidHiltConventionPlugin` | KSP + Dagger Hilt (android + compiler) |
 | `handyplay.android.test` | `AndroidTestConventionPlugin` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test, Robolectric, Compose UI test) |
-| `handyplay.jvm.library` | `JvmLibraryConventionPlugin` | Pure JVM Kotlin (Java 11, no Android) |
-| `handyplay.kover` | `KoverConventionPlugin` | Kover code coverage with generated-code exclusions |
+| `handyplay.jvm.library` | `JvmLibraryConventionPlugin` | Pure JVM Kotlin (Java 11, no Android, auto-applies detekt + kover) |
+| `handyplay.detekt` | `DetektConventionPlugin` | Static analysis with detekt + formatting + Compose rules |
+| `handyplay.kover` | `KoverConventionPlugin` | Code coverage with exclusions for generated code, Hilt, and Compose (`@Composable`) |
 
 ## Key Files
 
 - `AndroidFeatureConventionPlugin.kt` — Most complex; auto-adds `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation` + Compose/Lifecycle/Hilt deps
+- `KoverConventionPlugin.kt` — Excludes `@Composable`, `@Preview`, Hilt, and generated Android classes from coverage reports
+- `DetektConventionPlugin.kt` — Configures detekt with custom rules from `config/detekt/detekt.yml`
 - `KotlinAndroid.kt` — Shared Kotlin/Android configuration (SDK levels, JVM target)
 - `ProjectExtensions.kt` — `libs` extension for accessing version catalog
 
