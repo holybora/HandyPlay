@@ -27,8 +27,6 @@ Category topics screen with topic grid and search functionality.
 
 ## Tests
 
-## Tests
-
 - `src/test/` — JVM unit tests
   - `CategoryUiStateTest.kt` — Sealed interface variants (Loading, Success, Error) tests
 
