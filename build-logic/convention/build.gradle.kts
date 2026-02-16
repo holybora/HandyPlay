@@ -24,6 +24,7 @@ dependencies {
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
     compileOnly(libs.detekt.gradlePlugin)
+    compileOnly(libs.kover.gradlePlugin)
 }
 
 tasks {
@@ -66,6 +67,10 @@ gradlePlugin {
         register("detekt") {
             id = "handyplay.detekt"
             implementationClass = "DetektConventionPlugin"
+        }
+        register("kover") {
+            id = "handyplay.kover"
+            implementationClass = "KoverConventionPlugin"
         }
     }
 }
