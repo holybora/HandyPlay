@@ -1,6 +1,8 @@
 package com.sls.handbook.core.data.di
 
+import com.sls.handbook.core.data.repository.CategoryRepositoryImpl
 import com.sls.handbook.core.data.repository.JokeRepositoryImpl
+import com.sls.handbook.core.domain.repository.CategoryRepository
 import com.sls.handbook.core.domain.repository.JokeRepository
 import dagger.Binds
 import dagger.Module
@@ -15,4 +17,9 @@ abstract class DataModule {
     abstract fun bindJokeRepository(
         impl: JokeRepositoryImpl,
     ): JokeRepository
+
+    @Binds
+    abstract fun bindCategoryRepository(
+        impl: CategoryRepositoryImpl,
+    ): CategoryRepository
 }
