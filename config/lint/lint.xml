@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <!-- Dependency version checks are handled by Renovate / version catalog -->
+    <issue id="GradleDependency" severity="ignore" />
+    <issue id="NewerVersionAvailable" severity="ignore" />
+    <issue id="AndroidGradlePluginVersion" severity="ignore" />
+    <!-- Overly strict for composable-heavy codebase -->
+    <issue id="ObsoleteLintCustomCheck" severity="warning" />
+</lint>
