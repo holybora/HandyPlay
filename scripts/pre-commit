@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Pre-commit hook: runs detekt and generates kover report before allowing a commit.
+# Pre-commit hook: runs detekt, lint, and generates kover report before allowing a commit.
 # Installed by: ./gradlew installGitHooks
 set -euo pipefail
 
@@ -21,6 +21,16 @@ else
   echo ""
   echo "detekt found issues. Please fix them before committing."
   echo "Run './gradlew detekt' to see full details."
+  exit 1
+fi
+
+echo "Running Android Lint..."
+if ./gradlew lint --no-daemon -q; then
+  echo "lint passed."
+else
+  echo ""
+  echo "Android Lint found issues. Please fix them before committing."
+  echo "Run './gradlew lint' to see full details."
   exit 1
 fi
 

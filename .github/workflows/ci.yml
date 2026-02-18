@@ -28,3 +28,6 @@ jobs:
 
       - name: Detekt
         run: ./gradlew detekt
+
+      - name: Lint
+        run: ./gradlew lint
