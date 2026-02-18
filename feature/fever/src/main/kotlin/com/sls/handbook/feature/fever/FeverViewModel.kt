@@ -31,7 +31,7 @@ class FeverViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val weather = weatherRepository.getWeatherForRandomLocation()
-                _uiState.value = FeverUiState.Success(weather)
+                _uiState.value = FeverUiState.Success(weather.toDisplayData())
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 _uiState.value = FeverUiState.Error(e.message ?: "Unknown error")
             }

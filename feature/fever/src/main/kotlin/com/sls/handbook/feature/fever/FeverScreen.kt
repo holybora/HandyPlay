@@ -37,12 +37,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.sls.handbook.core.model.Weather
 import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
-import java.util.Locale
 
 @Composable
 fun FeverScreen(
@@ -65,7 +63,7 @@ fun FeverScreen(
         when (uiState) {
             is FeverUiState.Loading -> Unit
             is FeverUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRefresh)
-            is FeverUiState.Success -> WeatherContent(weather = uiState.weather)
+            is FeverUiState.Success -> WeatherContent(weatherDisplay = uiState.weatherDisplay)
         }
 
         FloatingActionButton(
@@ -121,18 +119,21 @@ private fun ErrorContent(
 }
 
 @Composable
-private fun WeatherContent(weather: Weather) {
+private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
-        HeroSection(weather = weather)
+        HeroSection(weatherDisplay = weatherDisplay)
         Spacer(modifier = Modifier.height(24.dp))
-        LocationHeader(weather = weather)
+        LocationHeader(locationName = weatherDisplay.locationName)
         Spacer(modifier = Modifier.height(12.dp))
-        WeatherDescription(weather = weather)
+        WeatherDescription(
+            descriptionText = weatherDisplay.descriptionText,
+            feelsLikeText = weatherDisplay.feelsLikeText,
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Details",
@@ -140,13 +141,13 @@ private fun WeatherContent(weather: Weather) {
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        DetailsSection(weather = weather)
+        DetailsSection(weatherDisplay = weatherDisplay)
         Spacer(modifier = Modifier.height(96.dp))
     }
 }
 
 @Composable
-private fun HeroSection(weather: Weather) {
+private fun HeroSection(weatherDisplay: WeatherDisplayData) {
     val feverColors = LocalFeverColors.current
     Row(
         modifier = Modifier
@@ -155,7 +156,9 @@ private fun HeroSection(weather: Weather) {
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         WeatherIconCard(
-            weather = weather,
+            iconUrl = weatherDisplay.iconUrl,
+            iconContentDescription = weatherDisplay.iconContentDescription,
+            temperatureText = weatherDisplay.temperatureText,
             modifier = Modifier.weight(1.2f).fillMaxHeight(),
         )
         Column(
@@ -165,21 +168,21 @@ private fun HeroSection(weather: Weather) {
             StatPill(
                 icon = Icons.Default.Thermostat,
                 iconBackgroundColor = feverColors.iconOrange,
-                value = "H:${weather.tempMax.toInt()}° L:${weather.tempMin.toInt()}°",
+                value = weatherDisplay.highLowText,
                 label = "High / Low",
                 modifier = Modifier.weight(1f),
             )
             StatPill(
                 icon = Icons.Default.Air,
                 iconBackgroundColor = feverColors.iconBlue,
-                value = "${weather.windSpeed} m/s",
+                value = weatherDisplay.windText,
                 label = "Wind",
                 modifier = Modifier.weight(1f),
             )
             StatPill(
                 icon = Icons.Default.WaterDrop,
                 iconBackgroundColor = feverColors.iconTeal,
-                value = "${weather.humidity}%",
+                value = weatherDisplay.humidityText,
                 label = "Humidity",
                 modifier = Modifier.weight(1f),
             )
@@ -238,12 +241,7 @@ private fun StatPill(
 }
 
 @Composable
-private fun LocationHeader(weather: Weather) {
-    val locationName = if (weather.cityName.isNotBlank()) {
-        if (weather.country.isNotBlank()) "${weather.cityName}, ${weather.country}" else weather.cityName
-    } else {
-        "Unknown Location"
-    }
+private fun LocationHeader(locationName: String) {
     Text(
         text = locationName,
         style = MaterialTheme.typography.headlineMedium,
@@ -252,19 +250,19 @@ private fun LocationHeader(weather: Weather) {
 }
 
 @Composable
-private fun WeatherDescription(weather: Weather) {
-    val description = weather.description.replaceFirstChar {
-        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-    }
+private fun WeatherDescription(
+    descriptionText: String,
+    feelsLikeText: String,
+) {
     Column {
         Text(
-            text = description,
+            text = descriptionText,
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = "Feels like ${weather.feelsLike.toInt()}°C",
+            text = feelsLikeText,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
@@ -272,7 +270,7 @@ private fun WeatherDescription(weather: Weather) {
 }
 
 @Composable
-private fun DetailsSection(weather: Weather) {
+private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -281,16 +279,12 @@ private fun DetailsSection(weather: Weather) {
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Pressure",
-                value = "${weather.pressure} hPa",
+                value = weatherDisplay.pressureText,
             )
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Visibility",
-                value = if (weather.visibility < 1000) {
-                    "${weather.visibility} m"
-                } else {
-                    "${weather.visibility / 1000} km"
-                },
+                value = weatherDisplay.visibilityText,
             )
         }
         Row(
@@ -300,12 +294,12 @@ private fun DetailsSection(weather: Weather) {
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Latitude",
-                value = String.format(Locale.US, "%.4f", weather.latitude),
+                value = weatherDisplay.latitudeText,
             )
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Longitude",
-                value = String.format(Locale.US, "%.4f", weather.longitude),
+                value = weatherDisplay.longitudeText,
             )
         }
     }
@@ -313,21 +307,20 @@ private fun DetailsSection(weather: Weather) {
 
 // --- Preview Data ---
 
-private val previewWeather = Weather(
-    cityName = "Surabaya",
-    country = "ID",
-    latitude = -7.2575,
-    longitude = 112.7521,
-    temperature = 32.5,
-    feelsLike = 38.0,
-    tempMin = 28.0,
-    tempMax = 35.0,
-    humidity = 78,
-    pressure = 1008,
-    description = "scattered clouds",
-    icon = "03d",
-    windSpeed = 4.2,
-    visibility = 8000,
+private val previewWeatherDisplay = WeatherDisplayData(
+    temperatureText = "32°C",
+    iconUrl = "https://openweathermap.org/img/wn/03d@4x.png",
+    iconContentDescription = "scattered clouds",
+    highLowText = "H:35° L:28°",
+    windText = "4.2 m/s",
+    humidityText = "78%",
+    locationName = "Surabaya, ID",
+    descriptionText = "Scattered clouds",
+    feelsLikeText = "Feels like 38°C",
+    pressureText = "1008 hPa",
+    visibilityText = "8 km",
+    latitudeText = "-7.2575",
+    longitudeText = "112.7521",
 )
 
 // --- Previews ---
@@ -344,7 +337,7 @@ private fun FeverScreenLoadingPreview() {
 @Composable
 private fun FeverScreenSuccessPreview() {
     FeverTheme {
-        FeverScreen(uiState = FeverUiState.Success(previewWeather), onRefresh = {})
+        FeverScreen(uiState = FeverUiState.Success(previewWeatherDisplay), onRefresh = {})
     }
 }
 
@@ -381,7 +374,7 @@ private fun StatPillPreview() {
 private fun LocationHeaderPreview() {
     FeverTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            LocationHeader(weather = previewWeather)
+            LocationHeader(locationName = previewWeatherDisplay.locationName)
         }
     }
 }
@@ -391,7 +384,10 @@ private fun LocationHeaderPreview() {
 private fun WeatherDescriptionPreview() {
     FeverTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            WeatherDescription(weather = previewWeather)
+            WeatherDescription(
+                descriptionText = previewWeatherDisplay.descriptionText,
+                feelsLikeText = previewWeatherDisplay.feelsLikeText,
+            )
         }
     }
 }
@@ -401,7 +397,7 @@ private fun WeatherDescriptionPreview() {
 private fun DetailsSectionPreview() {
     FeverTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            DetailsSection(weather = previewWeather)
+            DetailsSection(weatherDisplay = previewWeatherDisplay)
         }
     }
 }
