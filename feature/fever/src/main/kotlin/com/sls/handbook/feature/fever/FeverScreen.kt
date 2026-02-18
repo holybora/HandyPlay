@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -34,8 +35,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.model.Weather
+import com.sls.handbook.feature.fever.theme.FeverTheme
+import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
 import java.util.Locale
@@ -307,6 +311,101 @@ private fun DetailsSection(weather: Weather) {
                 label = "Longitude",
                 value = String.format(Locale.US, "%.4f", weather.longitude),
             )
+        }
+    }
+}
+
+// --- Preview Data ---
+
+private val previewWeather = Weather(
+    cityName = "Surabaya",
+    country = "ID",
+    latitude = -7.2575,
+    longitude = 112.7521,
+    temperature = 32.5,
+    feelsLike = 38.0,
+    tempMin = 28.0,
+    tempMax = 35.0,
+    humidity = 78,
+    pressure = 1008,
+    description = "scattered clouds",
+    icon = "03d",
+    windSpeed = 4.2,
+    visibility = 8000,
+)
+
+// --- Previews ---
+
+@Preview(showBackground = true)
+@Composable
+private fun FeverScreenLoadingPreview() {
+    FeverTheme {
+        FeverScreen(uiState = FeverUiState.Loading, onRefresh = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FeverScreenSuccessPreview() {
+    FeverTheme {
+        FeverScreen(uiState = FeverUiState.Success(previewWeather), onRefresh = {})
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun FeverScreenErrorPreview() {
+    FeverTheme {
+        FeverScreen(
+            uiState = FeverUiState.Error("Unable to determine location"),
+            onRefresh = {},
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StatPillPreview() {
+    FeverTheme {
+        StatPill(
+            icon = Icons.Default.WaterDrop,
+            iconBackgroundColor = IconTeal,
+            value = "78%",
+            label = "Humidity",
+            modifier = Modifier
+                .padding(16.dp)
+                .width(120.dp)
+                .height(80.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun LocationHeaderPreview() {
+    FeverTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            LocationHeader(weather = previewWeather)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WeatherDescriptionPreview() {
+    FeverTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            WeatherDescription(weather = previewWeather)
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun DetailsSectionPreview() {
+    FeverTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            DetailsSection(weather = previewWeather)
         }
     }
 }

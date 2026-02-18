@@ -24,8 +24,8 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches weather via `WeatherRepository`
 - `FeverUiState.kt` — Sealed interface: `Loading`, `Success(weather)`, `Error(message)`
 - `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
-- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, FAB refresh
-- `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`
+- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, FAB refresh. Includes 7 @Preview functions.
+- `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`. Includes 3 @Preview functions.
 - `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello color scheme and typography; overrides app-wide theme only for Fever
 - `theme/FeverColor.kt` — Travello-inspired colors (sky blue gradient, glass white surfaces, orange/blue/teal accents) and `LocalFeverColors` CompositionLocal for extended color access
 - `theme/FeverType.kt` — Custom typography with 56sp Light display temperature, adjusted label spacing
