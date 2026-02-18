@@ -62,4 +62,9 @@ class TopicTest {
     fun `companion constant ID_TTL_CACHE has correct value`() {
         assertEquals("kf_7", Topic.ID_TTL_CACHE)
     }
+
+    @Test
+    fun `companion constant ID_GALLERY has correct value`() {
+        assertEquals("ui_1", Topic.ID_GALLERY)
+    }
 }

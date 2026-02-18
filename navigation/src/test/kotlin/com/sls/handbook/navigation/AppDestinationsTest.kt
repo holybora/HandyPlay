@@ -91,17 +91,27 @@ class AppDestinationsTest {
     }
 
     @Test
+    fun `GalleryDestination is instantiable`() {
+        assertNotNull(GalleryDestination)
+    }
+
+    @Test
     fun `all destination types are distinct`() {
         val welcome: Any = WelcomeDestination
         val home: Any = HomeDestination
         val category: Any = CategoryDestination("id", "name")
         val ttlCache: Any = TtlCacheDestination
+        val gallery: Any = GalleryDestination
 
         assertNotSame(welcome::class, home::class)
         assertNotSame(welcome::class, category::class)
         assertNotSame(welcome::class, ttlCache::class)
+        assertNotSame(welcome::class, gallery::class)
         assertNotSame(home::class, category::class)
         assertNotSame(home::class, ttlCache::class)
+        assertNotSame(home::class, gallery::class)
         assertNotSame(category::class, ttlCache::class)
+        assertNotSame(category::class, gallery::class)
+        assertNotSame(ttlCache::class, gallery::class)
     }
 }

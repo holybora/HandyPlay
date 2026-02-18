@@ -16,16 +16,16 @@ class CategoryRepositoryImplTest {
     }
 
     @Test
-    fun `getCategories returns one category`() {
+    fun `getCategories returns two categories`() {
         val categories = repository.getCategories()
-        assertEquals(1, categories.size)
+        assertEquals(2, categories.size)
     }
 
     @Test
     fun `getCategories returns expected category ids`() {
         val ids = repository.getCategories().map { it.id }
         assertEquals(
-            listOf("kotlin_fundamentals"),
+            listOf("kotlin_fundamentals", "ui"),
             ids,
         )
     }
@@ -34,9 +34,16 @@ class CategoryRepositoryImplTest {
     fun `getCategories returns expected category names`() {
         val names = repository.getCategories().map { it.name }
         assertEquals(
-            listOf("Kotlin Fundamentals"),
+            listOf("Kotlin Fundamentals", "UI"),
             names,
         )
+    }
+
+    @Test
+    fun `getTopicsByCategoryId returns topics for ui`() {
+        val topics = repository.getTopicsByCategoryId("ui")
+        assertEquals(1, topics.size)
+        assertTrue(topics.any { it.id == Topic.ID_GALLERY })
     }
 
     @Test

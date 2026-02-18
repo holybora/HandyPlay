@@ -11,11 +11,15 @@ class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {
 
     private val categories = listOf(
         Category(id = "kotlin_fundamentals", name = "Kotlin Fundamentals"),
+        Category(id = "ui", name = "UI"),
     )
 
     private val topicsByCategory: Map<String, List<Topic>> = mapOf(
         "kotlin_fundamentals" to listOf(
             Topic(Topic.ID_TTL_CACHE, "TTL Cache", "kotlin_fundamentals"),
+        ),
+        "ui" to listOf(
+            Topic(Topic.ID_GALLERY, "Gallery", "ui"),
         ),
     )
 
