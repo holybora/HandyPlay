@@ -19,3 +19,6 @@ object TtlCacheDestination
 
 @Serializable
 object GalleryDestination
+
+@Serializable
+object FeverDestination

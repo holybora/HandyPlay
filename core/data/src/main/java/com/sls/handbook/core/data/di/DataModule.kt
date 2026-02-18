@@ -3,9 +3,11 @@ package com.sls.handbook.core.data.di
 import com.sls.handbook.core.data.repository.CategoryRepositoryImpl
 import com.sls.handbook.core.data.repository.GalleryRepositoryImpl
 import com.sls.handbook.core.data.repository.JokeRepositoryImpl
+import com.sls.handbook.core.data.repository.WeatherRepositoryImpl
 import com.sls.handbook.core.domain.repository.CategoryRepository
 import com.sls.handbook.core.domain.repository.GalleryRepository
 import com.sls.handbook.core.domain.repository.JokeRepository
+import com.sls.handbook.core.domain.repository.WeatherRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -29,4 +31,9 @@ abstract class DataModule {
     abstract fun bindGalleryRepository(
         impl: GalleryRepositoryImpl,
     ): GalleryRepository
+
+    @Binds
+    abstract fun bindWeatherRepository(
+        impl: WeatherRepositoryImpl,
+    ): WeatherRepository
 }

@@ -2,6 +2,7 @@ package com.sls.handbook.core.network.di
 
 import com.sls.handbook.core.network.api.JokeApi
 import com.sls.handbook.core.network.api.PicsumApi
+import com.sls.handbook.core.network.api.WeatherApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -61,5 +62,22 @@ object NetworkModule {
     @Singleton
     fun providePicsumApi(@Named("picsum") retrofit: Retrofit): PicsumApi {
         return retrofit.create(PicsumApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    @Named("weather")
+    fun provideWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.openweathermap.org/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideWeatherApi(@Named("weather") retrofit: Retrofit): WeatherApi {
+        return retrofit.create(WeatherApi::class.java)
     }
 }

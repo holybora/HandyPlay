@@ -42,8 +42,9 @@ class CategoryRepositoryImplTest {
     @Test
     fun `getTopicsByCategoryId returns topics for ui`() {
         val topics = repository.getTopicsByCategoryId("ui")
-        assertEquals(1, topics.size)
+        assertEquals(2, topics.size)
         assertTrue(topics.any { it.id == Topic.ID_GALLERY })
+        assertTrue(topics.any { it.id == Topic.ID_FEVER })
     }
 
     @Test
