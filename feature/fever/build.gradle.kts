@@ -7,7 +7,6 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:data"))
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
 }

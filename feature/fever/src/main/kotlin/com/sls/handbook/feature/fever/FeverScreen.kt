@@ -226,7 +226,11 @@ private fun WeatherDetailsGrid(weather: Weather) {
             DetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Visibility",
-                value = "${weather.visibility / 1000} km",
+                value = if (weather.visibility < 1000) {
+                    "${weather.visibility} m"
+                } else {
+                    "${weather.visibility / 1000} km"
+                },
             )
         }
     }
