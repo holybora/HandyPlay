@@ -31,11 +31,13 @@ import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
 import com.sls.handbook.core.model.Topic
 import com.sls.handbook.core.ui.BottomSearchBar
 import com.sls.handbook.feature.category.CategoryRoute
+import com.sls.handbook.feature.fever.FeverRoute
 import com.sls.handbook.feature.gallery.GalleryRoute
 import com.sls.handbook.feature.home.HomeRoute
 import com.sls.handbook.feature.ttlcache.TtlCacheRoute
 import com.sls.handbook.feature.welcome.WelcomeRoute
 import com.sls.handbook.navigation.CategoryDestination
+import com.sls.handbook.navigation.FeverDestination
 import com.sls.handbook.navigation.GalleryDestination
 import com.sls.handbook.navigation.HomeDestination
 import com.sls.handbook.navigation.TtlCacheDestination
@@ -118,6 +120,7 @@ fun HandyPlayApp(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun HandyPlayNavHost(
     navController: NavHostController,
@@ -171,6 +174,7 @@ private fun HandyPlayNavHost(
                     when (topicId) {
                         Topic.ID_TTL_CACHE -> navController.navigate(TtlCacheDestination)
                         Topic.ID_GALLERY -> navController.navigate(GalleryDestination)
+                        Topic.ID_FEVER -> navController.navigate(FeverDestination)
                     }
                 },
             )
@@ -182,6 +186,10 @@ private fun HandyPlayNavHost(
 
         composable<GalleryDestination> {
             GalleryRoute()
+        }
+
+        composable<FeverDestination> {
+            FeverRoute()
         }
     }
 }

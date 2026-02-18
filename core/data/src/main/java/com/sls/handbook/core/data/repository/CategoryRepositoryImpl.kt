@@ -20,6 +20,7 @@ class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {
         ),
         "ui" to listOf(
             Topic(Topic.ID_GALLERY, "Gallery", "ui"),
+            Topic(Topic.ID_FEVER, "Fever", "ui"),
         ),
     )
 
