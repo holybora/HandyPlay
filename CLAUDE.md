@@ -7,6 +7,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 HandyPlay is an Android application built with Jetpack Compose and Material 3.
 Package: `com.sls.handbook`. Multi-module clean architecture project.
 
+## Figma MCP server rules
+
+- The Figma MCP server provides an assets endpoint which can serve image and SVG assets
+- IMPORTANT: If the Figma MCP server returns a localhost source for an image or an SVG, use that image or SVG source
+  directly
+- IMPORTANT: DO NOT import/add new icon packages, all the assets should be in the Figma payload
+- IMPORTANT: do NOT use or create placeholders if a localhost source is provided
+
 ## Build & Test Commands
 
 ```bash
