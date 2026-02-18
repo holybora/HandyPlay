@@ -36,6 +36,10 @@ style:
     excludeImports:
       - "kotlinx.coroutines.*"
 
+Compose:
+  CompositionLocalAllowlist:
+    allowedCompositionLocals: LocalFeverColors
+
 formatting:
   active: true
   android: true

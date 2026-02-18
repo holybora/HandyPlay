@@ -1,22 +1,27 @@
 package com.sls.handbook.feature.fever
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,11 +29,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.sls.handbook.core.model.Weather
+import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
 import java.util.Locale
 
@@ -40,7 +48,16 @@ fun FeverScreen(
 ) {
     Rebugger(composableName = "FeverScreen", trackMap = mapOf("uiState" to uiState))
 
-    Box(modifier = modifier.fillMaxSize()) {
+    val feverColors = LocalFeverColors.current
+    val gradientBrush = Brush.verticalGradient(
+        colors = listOf(feverColors.gradientTop, feverColors.gradientBottom),
+    )
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(gradientBrush),
+    ) {
         when (uiState) {
             is FeverUiState.Loading -> LoadingContent()
             is FeverUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRefresh)
@@ -50,6 +67,8 @@ fun FeverScreen(
         if (uiState !is FeverUiState.Loading) {
             FloatingActionButton(
                 onClick = onRefresh,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(24.dp),
@@ -66,7 +85,7 @@ private fun LoadingContent() {
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center,
     ) {
-        CircularProgressIndicator()
+        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
     }
 }
 
@@ -85,6 +104,7 @@ private fun ErrorContent(
         Text(
             text = "Could not load weather",
             style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
@@ -106,25 +126,114 @@ private fun WeatherContent(weather: Weather) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+            .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
+        HeroSection(weather = weather)
+        Spacer(modifier = Modifier.height(24.dp))
         LocationHeader(weather = weather)
+        Spacer(modifier = Modifier.height(12.dp))
+        WeatherDescription(weather = weather)
+        Spacer(modifier = Modifier.height(24.dp))
+        Text(
+            text = "Details",
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        DetailsSection(weather = weather)
+        Spacer(modifier = Modifier.height(96.dp))
+    }
+}
 
-        Spacer(modifier = Modifier.height(16.dp))
+@Composable
+private fun HeroSection(weather: Weather) {
+    val feverColors = LocalFeverColors.current
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    ) {
+        WeatherIconCard(
+            weather = weather,
+            modifier = Modifier.weight(1.2f).fillMaxHeight(),
+        )
+        Column(
+            modifier = Modifier.weight(1f).fillMaxHeight(),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            StatPill(
+                icon = Icons.Default.Thermostat,
+                iconBackgroundColor = feverColors.iconOrange,
+                value = "H:${weather.tempMax.toInt()}° L:${weather.tempMin.toInt()}°",
+                label = "High / Low",
+                modifier = Modifier.weight(1f),
+            )
+            StatPill(
+                icon = Icons.Default.Air,
+                iconBackgroundColor = feverColors.iconBlue,
+                value = "${weather.windSpeed} m/s",
+                label = "Wind",
+                modifier = Modifier.weight(1f),
+            )
+            StatPill(
+                icon = Icons.Default.WaterDrop,
+                iconBackgroundColor = feverColors.iconTeal,
+                value = "${weather.humidity}%",
+                label = "Humidity",
+                modifier = Modifier.weight(1f),
+            )
+        }
+    }
+}
 
-        TemperatureSection(weather = weather)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        WeatherDetailsGrid(weather = weather)
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        CoordinatesCard(weather = weather)
-
-        // Bottom padding so FAB doesn't overlap content
-        Spacer(modifier = Modifier.height(88.dp))
+@Composable
+private fun StatPill(
+    icon: ImageVector,
+    iconBackgroundColor: Color,
+    value: String,
+    label: String,
+    modifier: Modifier = Modifier,
+) {
+    GlassCard(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(32.dp)
+                    .background(
+                        color = iconBackgroundColor.copy(alpha = 0.15f),
+                        shape = CircleShape,
+                    ),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = label,
+                    tint = iconBackgroundColor,
+                    modifier = Modifier.size(18.dp),
+                )
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = value,
+                style = MaterialTheme.typography.labelMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -135,95 +244,46 @@ private fun LocationHeader(weather: Weather) {
     } else {
         "Unknown Location"
     }
-
     Text(
         text = locationName,
         style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold,
-        textAlign = TextAlign.Center,
+        color = MaterialTheme.colorScheme.onBackground,
     )
 }
 
 @Composable
-private fun TemperatureSection(weather: Weather) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            if (weather.icon.isNotBlank()) {
-                AsyncImage(
-                    model = "https://openweathermap.org/img/wn/${weather.icon}@2x.png",
-                    contentDescription = weather.description,
-                    modifier = Modifier.size(80.dp),
-                )
-            }
-
-            Text(
-                text = "${weather.temperature.toInt()}°C",
-                style = MaterialTheme.typography.displayLarge,
-                fontWeight = FontWeight.Light,
-            )
-
-            Text(
-                text = weather.description.replaceFirstChar {
-                    if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
-                },
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                Text(
-                    text = "H: ${weather.tempMax.toInt()}°",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Text(
-                    text = "L: ${weather.tempMin.toInt()}°",
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-                Text(
-                    text = "Feels ${weather.feelsLike.toInt()}°",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
+private fun WeatherDescription(weather: Weather) {
+    val description = weather.description.replaceFirstChar {
+        if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
+    }
+    Column {
+        Text(
+            text = description,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "Feels like ${weather.feelsLike.toInt()}°C",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
 @Composable
-private fun WeatherDetailsGrid(weather: Weather) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+private fun DetailsSection(weather: Weather) {
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            DetailCard(
-                modifier = Modifier.weight(1f),
-                label = "Humidity",
-                value = "${weather.humidity}%",
-            )
-            DetailCard(
-                modifier = Modifier.weight(1f),
-                label = "Wind",
-                value = "${weather.windSpeed} m/s",
-            )
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            DetailCard(
+            GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Pressure",
                 value = "${weather.pressure} hPa",
             )
-            DetailCard(
+            GlassDetailCard(
                 modifier = Modifier.weight(1f),
                 label = "Visibility",
                 value = if (weather.visibility < 1000) {
@@ -233,56 +293,19 @@ private fun WeatherDetailsGrid(weather: Weather) {
                 },
             )
         }
-    }
-}
-
-@Composable
-private fun DetailCard(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-) {
-    ElevatedCard(modifier = modifier) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            GlassDetailCard(
+                modifier = Modifier.weight(1f),
+                label = "Latitude",
+                value = String.format(Locale.US, "%.4f", weather.latitude),
             )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
-    }
-}
-
-@Composable
-private fun CoordinatesCard(weather: Weather) {
-    ElevatedCard(modifier = Modifier.fillMaxWidth()) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-        ) {
-            Text(
-                text = "Location",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "Lat ${String.format(Locale.US, "%.4f", weather.latitude)}  " +
-                    "Lon ${String.format(Locale.US, "%.4f", weather.longitude)}",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
+            GlassDetailCard(
+                modifier = Modifier.weight(1f),
+                label = "Longitude",
+                value = String.format(Locale.US, "%.4f", weather.longitude),
             )
         }
     }
