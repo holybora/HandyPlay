@@ -1,5 +1,6 @@
 package com.sls.handbook.feature.gallery
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,12 +24,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -106,6 +114,50 @@ private fun GalleryContent(
     onLoadMore: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var selectedImage by remember { mutableStateOf<GalleryImage?>(null) }
+    var selectedImageBounds by remember { mutableStateOf(Rect.Zero) }
+    val imageCoordinates = remember { mutableMapOf<String, LayoutCoordinates>() }
+    var parentCoordinates by remember { mutableStateOf<LayoutCoordinates?>(null) }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .onGloballyPositioned { parentCoordinates = it },
+    ) {
+        GalleryGrid(
+            uiState = uiState,
+            onLoadMore = onLoadMore,
+            onImageClick = { image ->
+                val coords = imageCoordinates[image.id]
+                val parent = parentCoordinates
+                if (coords != null && parent != null && coords.isAttached) {
+                    val pos = parent.localPositionOf(coords, Offset.Zero)
+                    val size = Size(coords.size.width.toFloat(), coords.size.height.toFloat())
+                    selectedImageBounds = Rect(pos, size)
+                }
+                selectedImage = image
+            },
+            onImageLayout = { id, coords -> imageCoordinates[id] = coords },
+        )
+
+        selectedImage?.let { image ->
+            FullScreenImageViewer(
+                image = image,
+                thumbnailBounds = selectedImageBounds,
+                onDismiss = { selectedImage = null },
+            )
+        }
+    }
+}
+
+@Composable
+private fun GalleryGrid(
+    uiState: GalleryUiState.Content,
+    onLoadMore: () -> Unit,
+    onImageClick: (GalleryImage) -> Unit,
+    onImageLayout: (String, LayoutCoordinates) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val gridState = rememberLazyGridState()
     val currentOnLoadMore by rememberUpdatedState(onLoadMore)
 
@@ -136,7 +188,11 @@ private fun GalleryContent(
             items = uiState.images,
             key = { it.id },
         ) { image ->
-            GalleryImageItem(image = image)
+            GalleryImageItem(
+                image = image,
+                onClick = { onImageClick(image) },
+                onImageLayout = { onImageLayout(image.id, it) },
+            )
         }
 
         if (uiState.isLoadingMore) {
@@ -157,9 +213,11 @@ private fun GalleryContent(
 @Composable
 private fun GalleryImageItem(
     image: GalleryImage,
+    onClick: () -> Unit,
+    onImageLayout: (LayoutCoordinates) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier) {
+    Column(modifier = modifier.clickable(onClick = onClick)) {
         AsyncImage(
             model = image.downloadUrl,
             contentDescription = "Photo by ${image.author}",
@@ -167,7 +225,8 @@ private fun GalleryImageItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .aspectRatio(1f)
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(8.dp))
+                .onGloballyPositioned(onImageLayout),
         )
         Text(
             text = image.author,

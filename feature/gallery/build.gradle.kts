@@ -10,4 +10,5 @@ dependencies {
     implementation(project(":core:data"))
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.activity.compose)
 }
