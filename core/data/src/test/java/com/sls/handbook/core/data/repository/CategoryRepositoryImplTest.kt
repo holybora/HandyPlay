@@ -16,23 +16,16 @@ class CategoryRepositoryImplTest {
     }
 
     @Test
-    fun `getCategories returns all six categories`() {
+    fun `getCategories returns one category`() {
         val categories = repository.getCategories()
-        assertEquals(6, categories.size)
+        assertEquals(1, categories.size)
     }
 
     @Test
     fun `getCategories returns expected category ids`() {
         val ids = repository.getCategories().map { it.id }
         assertEquals(
-            listOf(
-                "kotlin_fundamentals",
-                "android_core",
-                "jetpack_compose",
-                "architecture",
-                "testing",
-                "performance",
-            ),
+            listOf("kotlin_fundamentals"),
             ids,
         )
     }
@@ -41,14 +34,7 @@ class CategoryRepositoryImplTest {
     fun `getCategories returns expected category names`() {
         val names = repository.getCategories().map { it.name }
         assertEquals(
-            listOf(
-                "Kotlin Fundamentals",
-                "Android Core",
-                "Jetpack Compose",
-                "Architecture",
-                "Testing",
-                "Performance",
-            ),
+            listOf("Kotlin Fundamentals"),
             names,
         )
     }
@@ -56,7 +42,7 @@ class CategoryRepositoryImplTest {
     @Test
     fun `getTopicsByCategoryId returns topics for kotlin_fundamentals`() {
         val topics = repository.getTopicsByCategoryId("kotlin_fundamentals")
-        assertEquals(7, topics.size)
+        assertEquals(1, topics.size)
         assertTrue(topics.any { it.id == Topic.ID_TTL_CACHE })
     }
 
