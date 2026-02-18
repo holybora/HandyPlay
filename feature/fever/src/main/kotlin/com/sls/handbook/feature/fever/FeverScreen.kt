@@ -63,33 +63,29 @@ fun FeverScreen(
             .background(gradientBrush),
     ) {
         when (uiState) {
-            is FeverUiState.Loading -> LoadingContent()
+            is FeverUiState.Loading -> Unit
             is FeverUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRefresh)
             is FeverUiState.Success -> WeatherContent(weather = uiState.weather)
         }
 
-        if (uiState !is FeverUiState.Loading) {
-            FloatingActionButton(
-                onClick = onRefresh,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(24.dp),
-            ) {
+        FloatingActionButton(
+            onClick = onRefresh,
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(24.dp),
+        ) {
+            if (uiState is FeverUiState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(24.dp),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    strokeWidth = 2.dp,
+                )
+            } else {
                 Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh location")
             }
         }
-    }
-}
-
-@Composable
-private fun LoadingContent() {
-    Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center,
-    ) {
-        CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
     }
 }
 
