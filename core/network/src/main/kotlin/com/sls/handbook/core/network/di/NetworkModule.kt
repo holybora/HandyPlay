@@ -1,6 +1,7 @@
 package com.sls.handbook.core.network.di
 
 import com.sls.handbook.core.network.api.JokeApi
+import com.sls.handbook.core.network.api.PicsumApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -29,7 +31,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    @Named("joke")
+    fun provideJokeRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://official-joke-api.appspot.com/")
             .client(okHttpClient)
@@ -39,7 +42,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideJokeApi(retrofit: Retrofit): JokeApi {
+    @Named("picsum")
+    fun providePicsumRetrofit(okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://picsum.photos/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJokeApi(@Named("joke") retrofit: Retrofit): JokeApi {
         return retrofit.create(JokeApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun providePicsumApi(@Named("picsum") retrofit: Retrofit): PicsumApi {
+        return retrofit.create(PicsumApi::class.java)
     }
 }

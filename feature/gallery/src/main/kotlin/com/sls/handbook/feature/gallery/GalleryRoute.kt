@@ -23,6 +23,8 @@ fun GalleryRoute(
 
     GalleryScreen(
         uiState = uiState,
+        onLoadMore = viewModel::loadMore,
+        onRetry = viewModel::retry,
         modifier = modifier,
     )
 }
