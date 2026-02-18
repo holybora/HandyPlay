@@ -10,6 +10,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
             pluginManager.apply("com.android.application")
             pluginManager.apply("handyplay.detekt")
             pluginManager.apply("handyplay.kover")
+            pluginManager.apply("handyplay.android.lint")
 
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)

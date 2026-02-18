@@ -72,5 +72,9 @@ gradlePlugin {
             id = "handyplay.kover"
             implementationClass = "KoverConventionPlugin"
         }
+        register("androidLint") {
+            id = "handyplay.android.lint"
+            implementationClass = "AndroidLintConventionPlugin"
+        }
     }
 }

@@ -51,6 +51,11 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ./gradlew detektMain                # Main sources only
 ./gradlew :feature:home:detektMain  # Single module
 ./gradlew installGitHooks           # Install pre-commit hook manually
+
+# Android Lint
+./gradlew lint                          # All modules
+./gradlew :app:lintDebug               # Single module
+./gradlew :feature:home:lintDebug      # Single feature module
 ```
 
 ## SDK & Tooling
@@ -98,6 +103,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `handyplay.jvm.library` | Pure JVM Kotlin (Java 11) |
 | `handyplay.detekt` | Detekt static analysis + Compose rules |
 | `handyplay.kover` | Kover code coverage with exclusions for generated code, Hilt, and Compose (`@Composable`) |
+| `handyplay.android.lint` | Android Lint with `warningsAsErrors`, HTML/XML reports, `config/lint/lint.xml` |
 
 ## Dependency Graph
 

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application>
         <activity
             android:name=".recording.RecordingActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.HandyPlay">
+            android:theme="@style/Theme.HandyPlay"
+            tools:ignore="LockedOrientationActivity,DiscouragedApi">
             <intent-filter>
                 <action android:name="com.sls.handbook.E2E_RECORD" />
                 <category android:name="android.intent.category.DEFAULT" />
