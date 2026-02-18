@@ -21,8 +21,10 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 ## Key Files
 
-- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches weather via `WeatherRepository`
-- `FeverUiState.kt` — Sealed interface: `Loading`, `Success(weather)`, `Error(message)`
+- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches weather via `WeatherRepository` and maps to `WeatherDisplayData`
+- `FeverUiState.kt` — Sealed interface: `Loading`, `Success(weatherDisplay)`, `Error(message)`
+- `WeatherDisplayData.kt` — Presentation model with pre-formatted string fields for UI rendering
+- `WeatherMapper.kt` — `Weather.toDisplayData()` extension mapping domain model to presentation model
 - `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
 - `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, FAB refresh. Includes 7 @Preview functions.
 - `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`. Includes 3 @Preview functions.
@@ -34,6 +36,7 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 - `src/main/kotlin/com/sls/handbook/feature/fever/` — Feature implementation
 - `src/main/kotlin/com/sls/handbook/feature/fever/theme/` — Scoped theme system
+- `src/test/kotlin/com/sls/handbook/feature/fever/` — Unit tests (WeatherMapperTest)
 
 ## Patterns
 

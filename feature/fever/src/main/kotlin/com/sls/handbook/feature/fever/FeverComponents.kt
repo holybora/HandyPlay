@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.sls.handbook.core.model.Weather
 import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 
@@ -83,7 +82,9 @@ internal fun GlassDetailCard(
 
 @Composable
 internal fun WeatherIconCard(
-    weather: Weather,
+    iconUrl: String,
+    iconContentDescription: String,
+    temperatureText: String,
     modifier: Modifier = Modifier,
 ) {
     GlassCard(modifier = modifier) {
@@ -97,15 +98,15 @@ internal fun WeatherIconCard(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                if (weather.icon.isNotBlank()) {
+                if (iconUrl.isNotBlank()) {
                     AsyncImage(
-                        model = "https://openweathermap.org/img/wn/${weather.icon}@4x.png",
-                        contentDescription = weather.description,
+                        model = iconUrl,
+                        contentDescription = iconContentDescription,
                         modifier = Modifier.size(100.dp),
                     )
                 }
                 Text(
-                    text = "${weather.temperature.toInt()}°C",
+                    text = temperatureText,
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -113,25 +114,6 @@ internal fun WeatherIconCard(
         }
     }
 }
-
-// --- Preview Data ---
-
-private val previewWeather = Weather(
-    cityName = "Surabaya",
-    country = "ID",
-    latitude = -7.2575,
-    longitude = 112.7521,
-    temperature = 32.5,
-    feelsLike = 38.0,
-    tempMin = 28.0,
-    tempMax = 35.0,
-    humidity = 78,
-    pressure = 1008,
-    description = "scattered clouds",
-    icon = "03d",
-    windSpeed = 4.2,
-    visibility = 8000,
-)
 
 // --- Previews ---
 
@@ -165,7 +147,9 @@ private fun GlassDetailCardPreview() {
 private fun WeatherIconCardPreview() {
     FeverTheme {
         WeatherIconCard(
-            weather = previewWeather,
+            iconUrl = "https://openweathermap.org/img/wn/03d@4x.png",
+            iconContentDescription = "scattered clouds",
+            temperatureText = "32°C",
             modifier = Modifier
                 .padding(16.dp)
                 .size(160.dp),
