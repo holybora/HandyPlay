@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.theapache64.rebugger.Rebugger
 
 @Composable
@@ -16,9 +17,11 @@ fun FeverRoute(
 
     Rebugger(composableName = "FeverRoute", trackMap = mapOf("uiState" to uiState))
 
-    FeverScreen(
-        uiState = uiState,
-        onRefresh = viewModel::refresh,
-        modifier = modifier,
-    )
+    FeverTheme {
+        FeverScreen(
+            uiState = uiState,
+            onRefresh = viewModel::refresh,
+            modifier = modifier,
+        )
+    }
 }
