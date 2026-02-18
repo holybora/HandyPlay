@@ -20,9 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.sls.handbook.core.model.Weather
+import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 
 @Composable
@@ -109,5 +111,64 @@ internal fun WeatherIconCard(
                 )
             }
         }
+    }
+}
+
+// --- Preview Data ---
+
+private val previewWeather = Weather(
+    cityName = "Surabaya",
+    country = "ID",
+    latitude = -7.2575,
+    longitude = 112.7521,
+    temperature = 32.5,
+    feelsLike = 38.0,
+    tempMin = 28.0,
+    tempMax = 35.0,
+    humidity = 78,
+    pressure = 1008,
+    description = "scattered clouds",
+    icon = "03d",
+    windSpeed = 4.2,
+    visibility = 8000,
+)
+
+// --- Previews ---
+
+@Preview(showBackground = true)
+@Composable
+private fun GlassCardPreview() {
+    FeverTheme {
+        GlassCard(modifier = Modifier.padding(16.dp)) {
+            Text(
+                text = "Glass Card Content",
+                modifier = Modifier.padding(16.dp),
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun GlassDetailCardPreview() {
+    FeverTheme {
+        GlassDetailCard(
+            label = "Pressure",
+            value = "1008 hPa",
+            modifier = Modifier.padding(16.dp),
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun WeatherIconCardPreview() {
+    FeverTheme {
+        WeatherIconCard(
+            weather = previewWeather,
+            modifier = Modifier
+                .padding(16.dp)
+                .size(160.dp),
+        )
     }
 }
