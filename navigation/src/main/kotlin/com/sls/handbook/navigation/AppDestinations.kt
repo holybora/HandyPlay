@@ -16,3 +16,6 @@ data class CategoryDestination(
 
 @Serializable
 object TtlCacheDestination
+
+@Serializable
+object GalleryDestination
