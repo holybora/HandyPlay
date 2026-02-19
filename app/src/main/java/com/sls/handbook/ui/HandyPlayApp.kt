@@ -95,8 +95,10 @@ fun HandyPlayApp(
             }
         }
 
+        val isEdgeToEdgeScreen = currentDestination?.hasRoute<FeverDestination>() == true
+
         Scaffold(modifier = modifier.fillMaxSize()) { innerPadding ->
-            Column(modifier = Modifier.padding(innerPadding)) {
+            Column(modifier = if (isEdgeToEdgeScreen) Modifier else Modifier.padding(innerPadding)) {
                 HandyPlayNavHost(
                     navController = navController,
                     searchQuery = bottomBarState.searchQuery,
