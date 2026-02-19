@@ -1,11 +1,16 @@
 package com.sls.handbook.feature.fever
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,12 +75,21 @@ internal fun GlassDetailCard(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = value,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            AnimatedContent(
+                targetState = value,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
+                },
+                label = "detailCardValue",
+            ) { targetValue ->
+                Text(
+                    text = targetValue,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+            }
         }
     }
 }
@@ -87,26 +101,38 @@ internal fun WeatherIconCard(
     temperatureText: String,
     modifier: Modifier = Modifier,
 ) {
-    GlassCard(modifier = modifier) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(12.dp),
-            contentAlignment = Alignment.Center,
+    Box(
+        modifier = modifier
+            .padding(12.dp),
+        contentAlignment = Alignment.Center,
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                if (iconUrl.isNotBlank()) {
+            Crossfade(
+                targetState = iconUrl,
+                animationSpec = tween(durationMillis = FadeDurationMs),
+                label = "weatherIconCrossfade",
+            ) { targetIconUrl ->
+                if (targetIconUrl.isNotBlank()) {
                     AsyncImage(
-                        model = iconUrl,
+                        model = targetIconUrl,
                         contentDescription = iconContentDescription,
                         modifier = Modifier.size(100.dp),
                     )
                 }
+            }
+            AnimatedContent(
+                targetState = temperatureText,
+                transitionSpec = {
+                    fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
+                },
+                label = "temperatureText",
+            ) { targetTemp ->
                 Text(
-                    text = temperatureText,
+                    text = targetTemp,
                     style = MaterialTheme.typography.displayLarge,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -117,7 +143,7 @@ internal fun WeatherIconCard(
 
 // --- Previews ---
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun GlassCardPreview() {
     FeverTheme {
@@ -130,7 +156,7 @@ private fun GlassCardPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun GlassDetailCardPreview() {
     FeverTheme {
@@ -142,7 +168,7 @@ private fun GlassDetailCardPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun WeatherIconCardPreview() {
     FeverTheme {

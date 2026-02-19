@@ -21,14 +21,14 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 ## Key Files
 
-- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, injects `StringResolver` and `WeatherRepository`, maps weather to `WeatherDisplayData`
-- `FeverUiState.kt` — Sealed interface: `Loading`, `Success(weatherDisplay)`, `Error(message)`
-- `WeatherDisplayData.kt` — Presentation model with pre-formatted string fields for UI rendering
-- `WeatherMapper.kt` — `Weather.toDisplayData(StringResolver)` extension mapping domain model to presentation model using string resources
-- `StringResolver.kt` — Interface + Hilt `@Module` for resolving Android string resources in non-Context classes (ViewModel, Mapper)
+- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches weather via `WeatherRepository`, maps to `WeatherDisplayData` using `StringResolver`.
+- `FeverUiState.kt` — Sealed class with `weatherDisplay` property: `Loading` and `Error` use `WeatherDisplayData.empty()`, `Success` holds real data. All states expose display data so `WeatherContent` is always rendered.
+- `WeatherDisplayData.kt` — Presentation model with pre-formatted string fields for UI rendering. `companion object` provides `empty()` factory returning blank strings for loading/error states.
+- `WeatherMapper.kt` — `Weather.toDisplayData(StringResolver)` extension mapping domain model to presentation model using i18n string resources
+- `StringResolver.kt` — Interface for i18n-safe string resolution + Hilt `@Module` providing `Context`-backed implementation
 - `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
-- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (ArrowBack at BottomStart, ArrowForward at BottomEnd) triggering refresh. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; `ErrorContent` uses `systemBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
-- `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`. Includes 3 @Preview functions.
+- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (ArrowBack at BottomStart, ArrowForward at BottomEnd) triggering refresh. `WeatherContent` is always rendered; sections gated by `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))`. Text values use `AnimatedValueText` helper (`AnimatedContent` with fade). Error state shown via `Snackbar` with retry action. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
+- `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard` (with `Crossfade` for icon, `AnimatedContent` for temperature), `GlassDetailCard` (with `AnimatedContent` for value). Includes 3 @Preview functions.
 - `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello color scheme and typography; overrides app-wide theme only for Fever
 - `theme/FeverColor.kt` — Travello-inspired colors (sky blue gradient, glass white surfaces, orange/blue/teal accents) and `LocalFeverColors` CompositionLocal for extended color access
 - `theme/FeverType.kt` — Custom typography with 56sp Light display temperature, adjusted label spacing
@@ -44,22 +44,26 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 - `src/main/kotlin/com/sls/handbook/feature/fever/` — Feature implementation
 - `src/main/kotlin/com/sls/handbook/feature/fever/theme/` — Scoped theme system
+- `src/main/res/values/strings.xml` — English string resources
+- `src/main/res/values-de/`, `values-es/`, `values-fr/` — German, Spanish, French translations
 - `src/test/kotlin/com/sls/handbook/feature/fever/` — Unit tests (WeatherMapperTest)
 
 ## Patterns
 
 - **ViewModel + StateFlow:** ViewModel exposes `uiState: StateFlow<FeverUiState>` collected via `collectAsStateWithLifecycle()` in Route
+- **Always-rendered WeatherContent:** `WeatherContent` is rendered for all UI states; `FeverUiState` sealed class exposes `weatherDisplay` with `empty()` defaults for `Loading`/`Error`, so transitions are value changes (empty → real data) rather than container visibility toggles
+- **Fade animations for data transitions:** `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))` gates sections on data availability; `AnimatedContent` with matching fade spec animates individual text value changes; `Crossfade` animates weather icon swaps. All durations use shared `FadeDurationMs` constant.
 - **Route wrapper pattern:** `FeverRoute` wraps `FeverScreen` in `FeverTheme`, ensuring custom theme only applies to this feature
 - **CompositionLocal for theme access:** `LocalFeverColors.current` allows nested composables to access extended colors without prop drilling
 - **StringResolver for i18n in non-Context classes:** `StringResolver` interface injected via Hilt into ViewModel/Mapper to resolve `R.string.*` resources without direct `Context` dependency
 - **Glassmorphism UI:** Semi-transparent white surfaces with borders and soft shadows simulate glass effect
 - **Colored stat pills:** Row of cards with colored circular icon backgrounds showing weather metrics (temperature, wind, humidity)
+- **Error handling via Snackbar:** Error state triggers a `Snackbar` with retry action using `LaunchedEffect` + `rememberUpdatedState`; keeps the always-rendered WeatherContent pattern intact
 - **Dual SwipeHintFab pattern:** Two FABs with directional arrow icons (ArrowBack on left, ArrowForward on right) hinting at swipe gestures, both triggering refresh
 - **Edge-to-edge inset handling:**
   - `WeatherContent` column uses `statusBarsPadding()` to avoid overlapping status bar on initial load
-  - `ErrorContent` uses `systemBarsPadding()` for full system bar inset (status + navigation)
   - FABs positioned at bottom with `navigationBarsPadding()` + 24.dp explicit padding to sit above system navigation
-  - Imports: `androidx.compose.foundation.layout.{statusBarsPadding, navigationBarsPadding, systemBarsPadding}`
+  - Imports: `androidx.compose.foundation.layout.{statusBarsPadding, navigationBarsPadding}`
 
 ## Notes
 

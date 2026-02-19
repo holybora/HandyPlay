@@ -1,5 +1,11 @@
 package com.sls.handbook.feature.fever
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +20,6 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -25,19 +30,27 @@ import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.WaterDrop
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +59,8 @@ import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
+
+internal const val FadeDurationMs = 450
 
 @Composable
 fun FeverScreen(
@@ -59,17 +74,29 @@ fun FeverScreen(
     val gradientBrush = Brush.verticalGradient(
         colors = listOf(feverColors.gradientTop, feverColors.gradientBottom),
     )
+    val snackbarHostState = remember { SnackbarHostState() }
+    val retryLabel = stringResource(R.string.fever_error_retry)
+    val currentOnRefresh by rememberUpdatedState(onRefresh)
+
+    if (uiState is FeverUiState.Error) {
+        LaunchedEffect(uiState.message) {
+            val result = snackbarHostState.showSnackbar(
+                message = uiState.message,
+                actionLabel = retryLabel,
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                currentOnRefresh()
+            }
+        }
+    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .background(gradientBrush),
     ) {
-        when (uiState) {
-            is FeverUiState.Loading -> Unit
-            is FeverUiState.Error -> ErrorContent(message = uiState.message, onRetry = onRefresh)
-            is FeverUiState.Success -> WeatherContent(weatherDisplay = uiState.weatherDisplay)
-        }
+        WeatherContent(weatherDisplay = uiState.weatherDisplay)
+        ErrorSnackbar(snackbarHostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
 
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
@@ -91,6 +118,23 @@ fun FeverScreen(
                 .align(Alignment.BottomEnd)
                 .navigationBarsPadding()
                 .padding(24.dp),
+        )
+    }
+}
+
+@Composable
+private fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier) {
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = modifier
+            .navigationBarsPadding()
+            .padding(bottom = 96.dp),
+    ) { data ->
+        Snackbar(
+            snackbarData = data,
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            actionColor = MaterialTheme.colorScheme.error,
         )
     }
 }
@@ -122,38 +166,6 @@ private fun SwipeHintFab(
 }
 
 @Composable
-private fun ErrorContent(
-    message: String,
-    onRetry: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .systemBarsPadding()
-            .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-    ) {
-        Text(
-            text = stringResource(R.string.fever_error_title),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(onClick = onRetry) {
-            Text(stringResource(R.string.fever_error_retry))
-        }
-    }
-}
-
-@Composable
 private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
     Column(
         modifier = Modifier
@@ -162,19 +174,45 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 20.dp, vertical = 28.dp),
     ) {
-        HeroSection(weatherDisplay = weatherDisplay)
+        AnimatedVisibility(
+            visible = weatherDisplay.iconUrl.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            HeroSection(weatherDisplay = weatherDisplay)
+        }
         Spacer(modifier = Modifier.height(24.dp))
-        LocationHeader(locationName = weatherDisplay.locationName)
+        AnimatedVisibility(
+            visible = weatherDisplay.locationName.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            LocationHeader(locationName = weatherDisplay.locationName)
+        }
         Spacer(modifier = Modifier.height(12.dp))
-        WeatherDescription(descriptionText = weatherDisplay.descriptionText)
+        AnimatedVisibility(
+            visible = weatherDisplay.descriptionText.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            WeatherDescription(descriptionText = weatherDisplay.descriptionText)
+        }
         Spacer(modifier = Modifier.height(24.dp))
-        Text(
-            text = stringResource(R.string.fever_details_header),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(12.dp))
-        DetailsSection(weatherDisplay = weatherDisplay)
+        AnimatedVisibility(
+            visible = weatherDisplay.feelsLikeText.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            Column {
+                Text(
+                    text = stringResource(R.string.fever_details_header),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                DetailsSection(weatherDisplay = weatherDisplay)
+            }
+        }
         Spacer(modifier = Modifier.height(96.dp))
     }
 }
@@ -256,8 +294,8 @@ private fun StatPill(
                 )
             }
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = value,
+            AnimatedValueText(
+                value = value,
                 style = MaterialTheme.typography.labelMedium,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
@@ -275,8 +313,8 @@ private fun StatPill(
 
 @Composable
 private fun LocationHeader(locationName: String) {
-    Text(
-        text = locationName,
+    AnimatedValueText(
+        value = locationName,
         style = MaterialTheme.typography.headlineMedium,
         color = MaterialTheme.colorScheme.onBackground,
     )
@@ -284,8 +322,8 @@ private fun LocationHeader(locationName: String) {
 
 @Composable
 private fun WeatherDescription(descriptionText: String) {
-    Text(
-        text = descriptionText,
+    AnimatedValueText(
+        value = descriptionText,
         style = MaterialTheme.typography.bodyLarge,
         color = MaterialTheme.colorScheme.onBackground,
     )
@@ -332,6 +370,34 @@ private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     }
 }
 
+@Composable
+private fun AnimatedValueText(
+    value: String,
+    style: TextStyle,
+    color: Color,
+    modifier: Modifier = Modifier,
+    fontWeight: FontWeight? = null,
+    textAlign: TextAlign? = null,
+) {
+    AnimatedContent(
+        targetState = value,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
+        },
+        label = "animatedValueText",
+    ) { targetValue ->
+        Text(
+            text = targetValue,
+            style = style,
+            color = color,
+            modifier = modifier,
+            fontWeight = fontWeight,
+            textAlign = textAlign,
+        )
+    }
+}
+
 // --- Preview Data ---
 
 private val previewWeatherDisplay = WeatherDisplayData(
@@ -352,7 +418,7 @@ private val previewWeatherDisplay = WeatherDisplayData(
 
 // --- Previews ---
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun FeverScreenLoadingPreview() {
     FeverTheme {
@@ -360,7 +426,7 @@ private fun FeverScreenLoadingPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun FeverScreenSuccessPreview() {
     FeverTheme {
@@ -368,7 +434,7 @@ private fun FeverScreenSuccessPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun FeverScreenErrorPreview() {
     FeverTheme {
@@ -379,7 +445,7 @@ private fun FeverScreenErrorPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun StatPillPreview() {
     FeverTheme {
@@ -396,7 +462,7 @@ private fun StatPillPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun LocationHeaderPreview() {
     FeverTheme {
@@ -406,7 +472,7 @@ private fun LocationHeaderPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun WeatherDescriptionPreview() {
     FeverTheme {
@@ -416,7 +482,7 @@ private fun WeatherDescriptionPreview() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
 private fun DetailsSectionPreview() {
     FeverTheme {

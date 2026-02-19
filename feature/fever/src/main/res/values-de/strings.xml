@@ -3,8 +3,7 @@
     <!-- FeverScreen UI labels -->
     <string name="fever_swipe_right_hint">Nach rechts wischen zum Aktualisieren</string>
     <string name="fever_swipe_left_hint">Nach links wischen zum Aktualisieren</string>
-    <string name="fever_error_title">Wetter konnte nicht geladen werden</string>
-    <string name="fever_error_retry">Anderen Standort versuchen</string>
+    <string name="fever_error_retry">Wiederholen</string>
     <string name="fever_details_header">Details</string>
     <string name="fever_label_high_low">Hoch / Tief</string>
     <string name="fever_label_wind">Wind</string>

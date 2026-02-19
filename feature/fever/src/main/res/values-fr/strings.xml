@@ -3,8 +3,7 @@
     <!-- FeverScreen UI labels -->
     <string name="fever_swipe_right_hint">Glisser vers la droite pour actualiser</string>
     <string name="fever_swipe_left_hint">Glisser vers la gauche pour actualiser</string>
-    <string name="fever_error_title">Impossible de charger la m\u00E9t\u00E9o</string>
-    <string name="fever_error_retry">Essayer un autre lieu</string>
+    <string name="fever_error_retry">R\u00E9essayer</string>
     <string name="fever_details_header">D\u00E9tails</string>
     <string name="fever_label_high_low">Max / Min</string>
     <string name="fever_label_wind">Vent</string>
