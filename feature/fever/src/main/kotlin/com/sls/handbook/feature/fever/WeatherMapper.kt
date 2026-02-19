@@ -22,7 +22,7 @@ internal fun Weather.toDisplayData(): WeatherDisplayData = WeatherDisplayData(
     descriptionText = description.replaceFirstChar {
         if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString()
     },
-    feelsLikeText = "Feels like ${feelsLike.toInt()}°C",
+    feelsLikeText = "${feelsLike.toInt()}°C",
     pressureText = "$pressure hPa",
     visibilityText = if (visibility < VisibilityThresholdMeters) {
         "$visibility m"

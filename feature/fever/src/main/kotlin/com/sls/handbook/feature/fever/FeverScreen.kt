@@ -130,10 +130,7 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
         Spacer(modifier = Modifier.height(24.dp))
         LocationHeader(locationName = weatherDisplay.locationName)
         Spacer(modifier = Modifier.height(12.dp))
-        WeatherDescription(
-            descriptionText = weatherDisplay.descriptionText,
-            feelsLikeText = weatherDisplay.feelsLikeText,
-        )
+        WeatherDescription(descriptionText = weatherDisplay.descriptionText)
         Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = "Details",
@@ -250,28 +247,22 @@ private fun LocationHeader(locationName: String) {
 }
 
 @Composable
-private fun WeatherDescription(
-    descriptionText: String,
-    feelsLikeText: String,
-) {
-    Column {
-        Text(
-            text = descriptionText,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground,
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = feelsLikeText,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-    }
+private fun WeatherDescription(descriptionText: String) {
+    Text(
+        text = descriptionText,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onBackground,
+    )
 }
 
 @Composable
 private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        GlassDetailCard(
+            modifier = Modifier.fillMaxWidth(),
+            label = "Feels like",
+            value = weatherDisplay.feelsLikeText,
+        )
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -316,7 +307,7 @@ private val previewWeatherDisplay = WeatherDisplayData(
     humidityText = "78%",
     locationName = "Surabaya, ID",
     descriptionText = "Scattered clouds",
-    feelsLikeText = "Feels like 38°C",
+    feelsLikeText = "38°C",
     pressureText = "1008 hPa",
     visibilityText = "8 km",
     latitudeText = "-7.2575",
@@ -384,10 +375,7 @@ private fun LocationHeaderPreview() {
 private fun WeatherDescriptionPreview() {
     FeverTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            WeatherDescription(
-                descriptionText = previewWeatherDisplay.descriptionText,
-                feelsLikeText = previewWeatherDisplay.feelsLikeText,
-            )
+            WeatherDescription(descriptionText = previewWeatherDisplay.descriptionText)
         }
     }
 }
