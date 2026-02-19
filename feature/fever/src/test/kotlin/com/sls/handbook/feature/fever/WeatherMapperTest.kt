@@ -92,7 +92,7 @@ class WeatherMapperTest {
     @Test
     fun `feels like text is formatted with integer temperature`() {
         val result = sampleWeather.toDisplayData()
-        assertEquals("Feels like 38°C", result.feelsLikeText)
+        assertEquals("38°C", result.feelsLikeText)
     }
 
     @Test
