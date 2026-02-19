@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class FeverViewModel @Inject constructor(
     private val stringResolver: StringResolver,
     private val weatherRepository: WeatherRepository,
+    private val coordinatesGenerator: RandomCoordinatesGenerator,
     @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -35,9 +36,10 @@ class FeverViewModel @Inject constructor(
         _uiState.value = FeverUiState.Loading
         viewModelScope.launch(ioDispatcher) {
             try {
-                val (weather, dailyForecast) = weatherRepository.getWeatherWithForecast()
+                val (lat, lon) = coordinatesGenerator.generate()
+                val (weather, dailyForecast) = weatherRepository.getWeatherWithForecast(lat, lon)
                 val hourlyForecasts = try {
-                    weatherRepository.getHourlyForecast(weather.latitude, weather.longitude)
+                    weatherRepository.getHourlyForecast(lat, lon)
                 } catch (@Suppress("TooGenericExceptionCaught", "SwallowedException") e: Exception) {
                     emptyList()
                 }

@@ -12,13 +12,8 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.random.Random
 
 private const val AppId = "ae103060692fe13422deb98285505dc6"
-private const val LatMin = -90.0
-private const val LatMax = 90.0
-private const val LonMin = -180.0
-private const val LonMax = 180.0
 private const val MiddayHour = 12
 
 @Singleton
@@ -27,15 +22,7 @@ class WeatherRepositoryImpl @Inject constructor(
     private val hourlyForecastApi: HourlyForecastApi,
 ) : WeatherRepository {
 
-    override suspend fun getWeatherForRandomLocation(): Weather {
-        val lat = Random.nextDouble(LatMin, LatMax)
-        val lon = Random.nextDouble(LonMin, LonMax)
-        return fetchWeather(lat, lon)
-    }
-
-    override suspend fun getWeatherWithForecast(): Pair<Weather, List<DailyForecast>> {
-        val lat = Random.nextDouble(LatMin, LatMax)
-        val lon = Random.nextDouble(LonMin, LonMax)
+    override suspend fun getWeatherWithForecast(lat: Double, lon: Double): Pair<Weather, List<DailyForecast>> {
         val weather = fetchWeather(lat, lon)
         val forecastResponse = weatherApi.getForecast(lat = lat, lon = lon, appId = AppId)
         val today = LocalDate.now(ZoneOffset.UTC)
