@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FeverScreen UI labels -->
+    <string name="fever_swipe_right_hint">Nach rechts wischen zum Aktualisieren</string>
+    <string name="fever_swipe_left_hint">Nach links wischen zum Aktualisieren</string>
+    <string name="fever_error_title">Wetter konnte nicht geladen werden</string>
+    <string name="fever_error_retry">Anderen Standort versuchen</string>
+    <string name="fever_details_header">Details</string>
+    <string name="fever_label_high_low">Hoch / Tief</string>
+    <string name="fever_label_wind">Wind</string>
+    <string name="fever_label_humidity">Luftfeuchtigkeit</string>
+    <string name="fever_label_feels_like">Gef\u00FChlt</string>
+    <string name="fever_label_pressure">Luftdruck</string>
+    <string name="fever_label_visibility">Sichtweite</string>
+    <string name="fever_label_latitude">Breitengrad</string>
+    <string name="fever_label_longitude">L\u00E4ngengrad</string>
+
+    <!-- WeatherMapper format strings -->
+    <string name="fever_temperature_format">%1$d\u00B0C</string>
+    <string name="fever_high_low_format">H:%1$d\u00B0 T:%2$d\u00B0</string>
+    <string name="fever_wind_format">%1$s m/s</string>
+    <string name="fever_humidity_format">%1$d%%</string>
+    <string name="fever_pressure_format">%1$d hPa</string>
+    <string name="fever_visibility_meters_format">%1$d m</string>
+    <string name="fever_visibility_km_format">%1$d km</string>
+    <string name="fever_unknown_location">Unbekannter Standort</string>
+    <string name="fever_unknown_error">Unbekannter Fehler</string>
+</resources>

@@ -12,6 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FeverViewModel @Inject constructor(
+    private val stringResolver: StringResolver,
     private val weatherRepository: WeatherRepository,
 ) : ViewModel() {
 
@@ -31,9 +32,11 @@ class FeverViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val weather = weatherRepository.getWeatherForRandomLocation()
-                _uiState.value = FeverUiState.Success(weather.toDisplayData())
+                _uiState.value = FeverUiState.Success(weather.toDisplayData(stringResolver))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
-                _uiState.value = FeverUiState.Error(e.message ?: "Unknown error")
+                _uiState.value = FeverUiState.Error(
+                    e.message ?: stringResolver.getString(R.string.fever_unknown_error),
+                )
             }
         }
     }

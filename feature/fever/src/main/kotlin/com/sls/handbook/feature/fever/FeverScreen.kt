@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -73,7 +74,7 @@ fun FeverScreen(
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
             icon = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = "Swipe right to refresh",
+            contentDescription = stringResource(R.string.fever_swipe_right_hint),
             onClick = onRefresh,
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -84,7 +85,7 @@ fun FeverScreen(
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
             icon = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Swipe left to refresh",
+            contentDescription = stringResource(R.string.fever_swipe_left_hint),
             onClick = onRefresh,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -134,7 +135,7 @@ private fun ErrorContent(
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
-            text = "Could not load weather",
+            text = stringResource(R.string.fever_error_title),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -147,7 +148,7 @@ private fun ErrorContent(
         )
         Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = onRetry) {
-            Text("Try another location")
+            Text(stringResource(R.string.fever_error_retry))
         }
     }
 }
@@ -168,7 +169,7 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
         WeatherDescription(descriptionText = weatherDisplay.descriptionText)
         Spacer(modifier = Modifier.height(24.dp))
         Text(
-            text = "Details",
+            text = stringResource(R.string.fever_details_header),
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -201,21 +202,21 @@ private fun HeroSection(weatherDisplay: WeatherDisplayData) {
                 icon = Icons.Default.Thermostat,
                 iconBackgroundColor = feverColors.iconOrange,
                 value = weatherDisplay.highLowText,
-                label = "High / Low",
+                label = stringResource(R.string.fever_label_high_low),
                 modifier = Modifier.weight(1f),
             )
             StatPill(
                 icon = Icons.Default.Air,
                 iconBackgroundColor = feverColors.iconBlue,
                 value = weatherDisplay.windText,
-                label = "Wind",
+                label = stringResource(R.string.fever_label_wind),
                 modifier = Modifier.weight(1f),
             )
             StatPill(
                 icon = Icons.Default.WaterDrop,
                 iconBackgroundColor = feverColors.iconTeal,
                 value = weatherDisplay.humidityText,
-                label = "Humidity",
+                label = stringResource(R.string.fever_label_humidity),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -295,7 +296,7 @@ private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
         GlassDetailCard(
             modifier = Modifier.fillMaxWidth(),
-            label = "Feels like",
+            label = stringResource(R.string.fever_label_feels_like),
             value = weatherDisplay.feelsLikeText,
         )
         Row(
@@ -304,12 +305,12 @@ private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
         ) {
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
-                label = "Pressure",
+                label = stringResource(R.string.fever_label_pressure),
                 value = weatherDisplay.pressureText,
             )
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
-                label = "Visibility",
+                label = stringResource(R.string.fever_label_visibility),
                 value = weatherDisplay.visibilityText,
             )
         }
@@ -319,12 +320,12 @@ private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
         ) {
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
-                label = "Latitude",
+                label = stringResource(R.string.fever_label_latitude),
                 value = weatherDisplay.latitudeText,
             )
             GlassDetailCard(
                 modifier = Modifier.weight(1f),
-                label = "Longitude",
+                label = stringResource(R.string.fever_label_longitude),
                 value = weatherDisplay.longitudeText,
             )
         }
