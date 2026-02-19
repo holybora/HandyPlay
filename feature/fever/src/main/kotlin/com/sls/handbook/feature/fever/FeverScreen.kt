@@ -65,7 +65,7 @@ internal const val FadeDurationMs = 450
 @Composable
 fun FeverScreen(
     uiState: FeverUiState,
-    onRefresh: () -> Unit,
+    onEvent: (FeverEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Rebugger(composableName = "FeverScreen", trackMap = mapOf("uiState" to uiState))
@@ -76,7 +76,7 @@ fun FeverScreen(
     )
     val snackbarHostState = remember { SnackbarHostState() }
     val retryLabel = stringResource(R.string.fever_error_retry)
-    val currentOnRefresh by rememberUpdatedState(onRefresh)
+    val currentOnEvent by rememberUpdatedState(onEvent)
 
     if (uiState is FeverUiState.Error) {
         LaunchedEffect(uiState.message) {
@@ -85,7 +85,7 @@ fun FeverScreen(
                 actionLabel = retryLabel,
             )
             if (result == SnackbarResult.ActionPerformed) {
-                currentOnRefresh()
+                currentOnEvent(FeverEvent.Refresh)
             }
         }
     }
@@ -101,7 +101,7 @@ fun FeverScreen(
             isLoading = uiState is FeverUiState.Loading,
             icon = Icons.AutoMirrored.Filled.ArrowForward,
             contentDescription = stringResource(R.string.fever_swipe_right_hint),
-            onClick = onRefresh,
+            onClick = { onEvent(FeverEvent.Refresh) },
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .navigationBarsPadding()
@@ -541,7 +541,7 @@ private val previewWeatherDisplay = WeatherDisplayData(
 @Composable
 private fun FeverScreenLoadingPreview() {
     FeverTheme {
-        FeverScreen(uiState = FeverUiState.Loading, onRefresh = {})
+        FeverScreen(uiState = FeverUiState.Loading, onEvent = {})
     }
 }
 
@@ -549,7 +549,7 @@ private fun FeverScreenLoadingPreview() {
 @Composable
 private fun FeverScreenSuccessPreview() {
     FeverTheme {
-        FeverScreen(uiState = FeverUiState.Success(previewWeatherDisplay), onRefresh = {})
+        FeverScreen(uiState = FeverUiState.Success(previewWeatherDisplay), onEvent = {})
     }
 }
 
@@ -559,7 +559,7 @@ private fun FeverScreenErrorPreview() {
     FeverTheme {
         FeverScreen(
             uiState = FeverUiState.Error("Unable to determine location"),
-            onRefresh = {},
+            onEvent = {},
         )
     }
 }

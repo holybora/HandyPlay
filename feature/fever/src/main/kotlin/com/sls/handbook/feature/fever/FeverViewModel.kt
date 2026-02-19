@@ -28,8 +28,14 @@ class FeverViewModel @Inject constructor(
         loadWeather()
     }
 
-    fun refresh() {
-        loadWeather()
+    fun onEvent(event: FeverEvent) {
+        when (event) {
+            FeverEvent.Refresh -> {
+                if (_uiState.value !is FeverUiState.Loading) {
+                    loadWeather()
+                }
+            }
+        }
     }
 
     private fun loadWeather() {
