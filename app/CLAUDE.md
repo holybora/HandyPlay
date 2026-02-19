@@ -1,6 +1,6 @@
 # :app
 
-Application entry point for HandyPlay. Single-activity Compose app with type-safe navigation and Hilt DI. Includes debug-only E2E test recording infrastructure. Scaffold padding is conditionally applied based on destination (edge-to-edge for Fever).
+Application entry point for HandyPlay. Single-activity Compose app with type-safe navigation and Hilt DI. Enables edge-to-edge display with transparent system navigation bar on 3-button devices. Includes debug-only E2E test recording infrastructure. Scaffold padding is conditionally applied based on destination (edge-to-edge for Fever).
 
 ## Module Info
 
@@ -22,7 +22,7 @@ Application entry point for HandyPlay. Single-activity Compose app with type-saf
 
 ### Main
 
-- `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge, sets content to `HandyPlayApp`
+- `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge with transparent system navigation bar (via `SystemBarStyle.auto(TRANSPARENT, TRANSPARENT)` and `isNavigationBarContrastEnforced = false`), sets content to `HandyPlayApp`
 - `HandyPlayApplication.kt` — `@HiltAndroidApp` Application class
 - `ui/HandyPlayApp.kt` — Root composable with `BottomSearchBarViewModel`, manages search state and destination-based visibility. Conditionally applies Scaffold padding: edge-to-edge for `FeverDestination` (line 98-101), standard padding for other destinations
 - `ui/HandyPlayNavHost.kt` — NavHost routes: `WelcomeDestination` → `HomeDestination` (pops Welcome), `HomeDestination` → `CategoryDestination`, `CategoryDestination` → `TtlCacheDestination`, `GalleryDestination`, or `FeverDestination` via `Topic.ID_*`
