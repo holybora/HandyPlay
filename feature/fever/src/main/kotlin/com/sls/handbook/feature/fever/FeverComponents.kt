@@ -78,8 +78,8 @@ internal fun GlassDetailCard(
             AnimatedContent(
                 targetState = value,
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(durationMillis = 300)) togetherWith
-                        fadeOut(animationSpec = tween(durationMillis = 300))
+                    fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
                 },
                 label = "detailCardValue",
             ) { targetValue ->
@@ -112,7 +112,7 @@ internal fun WeatherIconCard(
         ) {
             Crossfade(
                 targetState = iconUrl,
-                animationSpec = tween(durationMillis = 300),
+                animationSpec = tween(durationMillis = FadeDurationMs),
                 label = "weatherIconCrossfade",
             ) { targetIconUrl ->
                 if (targetIconUrl.isNotBlank()) {
@@ -126,8 +126,8 @@ internal fun WeatherIconCard(
             AnimatedContent(
                 targetState = temperatureText,
                 transitionSpec = {
-                    fadeIn(animationSpec = tween(durationMillis = 300)) togetherWith
-                        fadeOut(animationSpec = tween(durationMillis = 300))
+                    fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                        fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
                 },
                 label = "temperatureText",
             ) { targetTemp ->

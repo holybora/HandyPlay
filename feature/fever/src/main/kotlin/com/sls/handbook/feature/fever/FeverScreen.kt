@@ -33,8 +33,16 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -51,6 +59,8 @@ import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
 
+internal const val FadeDurationMs = 450
+
 @Composable
 fun FeverScreen(
     uiState: FeverUiState,
@@ -63,6 +73,21 @@ fun FeverScreen(
     val gradientBrush = Brush.verticalGradient(
         colors = listOf(feverColors.gradientTop, feverColors.gradientBottom),
     )
+    val snackbarHostState = remember { SnackbarHostState() }
+    val retryLabel = stringResource(R.string.fever_error_retry)
+    val currentOnRefresh by rememberUpdatedState(onRefresh)
+
+    if (uiState is FeverUiState.Error) {
+        LaunchedEffect(uiState.message) {
+            val result = snackbarHostState.showSnackbar(
+                message = uiState.message,
+                actionLabel = retryLabel,
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                currentOnRefresh()
+            }
+        }
+    }
 
     Box(
         modifier = modifier
@@ -70,28 +95,49 @@ fun FeverScreen(
             .background(gradientBrush),
     ) {
         WeatherContent(weatherDisplay = uiState.weatherDisplay)
+        ErrorSnackbar(snackbarHostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
+        RefreshFab(uiState = uiState, onRefresh = onRefresh, modifier = Modifier.align(Alignment.BottomEnd))
+    }
+}
 
-        FloatingActionButton(
-            onClick = onRefresh,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .navigationBarsPadding()
-                .padding(24.dp),
-        ) {
-            if (uiState is FeverUiState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp,
-                )
-            } else {
-                Icon(
-                    imageVector = Icons.Default.Refresh,
-                    contentDescription = stringResource(R.string.fever_refresh_location),
-                )
-            }
+@Composable
+private fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifier = Modifier) {
+    SnackbarHost(
+        hostState = snackbarHostState,
+        modifier = modifier
+            .navigationBarsPadding()
+            .padding(bottom = 96.dp),
+    ) { data ->
+        Snackbar(
+            snackbarData = data,
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            actionColor = MaterialTheme.colorScheme.error,
+        )
+    }
+}
+
+@Composable
+private fun RefreshFab(uiState: FeverUiState, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
+    FloatingActionButton(
+        onClick = onRefresh,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier
+            .navigationBarsPadding()
+            .padding(24.dp),
+    ) {
+        if (uiState is FeverUiState.Loading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Default.Refresh,
+                contentDescription = stringResource(R.string.fever_refresh_location),
+            )
         }
     }
 }
@@ -107,32 +153,32 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
     ) {
         AnimatedVisibility(
             visible = weatherDisplay.iconUrl.isNotBlank(),
-            enter = fadeIn(animationSpec = tween(durationMillis = 450)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 450)),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             HeroSection(weatherDisplay = weatherDisplay)
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
             visible = weatherDisplay.locationName.isNotBlank(),
-            enter = fadeIn(animationSpec = tween(durationMillis = 450)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 450)),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             LocationHeader(locationName = weatherDisplay.locationName)
         }
         Spacer(modifier = Modifier.height(12.dp))
         AnimatedVisibility(
             visible = weatherDisplay.descriptionText.isNotBlank(),
-            enter = fadeIn(animationSpec = tween(durationMillis = 450)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 450)),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             WeatherDescription(descriptionText = weatherDisplay.descriptionText)
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
             visible = weatherDisplay.feelsLikeText.isNotBlank(),
-            enter = fadeIn(animationSpec = tween(durationMillis = 450)),
-            exit = fadeOut(animationSpec = tween(durationMillis = 450)),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             Column {
                 Text(
@@ -153,22 +199,18 @@ private fun HeroSection(weatherDisplay: WeatherDisplayData) {
     val feverColors = LocalFeverColors.current
     Row(
         modifier = Modifier
-            .height(320.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .fillMaxWidth()
+            .height(220.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         WeatherIconCard(
             iconUrl = weatherDisplay.iconUrl,
             iconContentDescription = weatherDisplay.iconContentDescription,
             temperatureText = weatherDisplay.temperatureText,
-            modifier = Modifier
-                .width(160.dp)
-                .fillMaxHeight(),
+            modifier = Modifier.weight(1.2f).fillMaxHeight(),
         )
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(),
+            modifier = Modifier.weight(1f).fillMaxHeight(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             StatPill(
@@ -317,8 +359,8 @@ private fun AnimatedValueText(
     AnimatedContent(
         targetState = value,
         transitionSpec = {
-            fadeIn(animationSpec = tween(durationMillis = 450)) togetherWith
-                fadeOut(animationSpec = tween(durationMillis = 450))
+            fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
         },
         label = "animatedValueText",
     ) { targetValue ->
