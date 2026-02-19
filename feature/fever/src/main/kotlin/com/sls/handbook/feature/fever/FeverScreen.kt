@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -21,7 +22,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -226,11 +226,11 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
-            visible = weatherDisplay.forecast.isNotEmpty(),
+            visible = weatherDisplay.fiveDaysForecast.isNotEmpty(),
             enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
             exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
-            ForecastSection(forecast = weatherDisplay.forecast)
+            ForecastSection(forecast = weatherDisplay.fiveDaysForecast)
         }
         Spacer(modifier = Modifier.height(96.dp))
     }
@@ -404,7 +404,11 @@ private fun ForecastSection(forecast: List<DailyForecastDisplayData>) {
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        GlassCard(modifier = Modifier.fillMaxWidth()) {
+        GlassCard(
+            modifier = Modifier
+                .height(120.dp)
+                .fillMaxWidth(),
+        ) {
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -496,7 +500,39 @@ private val previewWeatherDisplay = WeatherDisplayData(
     visibilityText = "8 km",
     latitudeText = "-7.2575",
     longitudeText = "112.7521",
-    forecast = previewForecast,
+    fiveDaysForecast = previewForecast,
+    hourlyForecasts = listOf(
+        HourlyDisplayData(
+            timeText = "Now",
+            iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+            temperatureText = "32°",
+            popText = "10%",
+        ),
+        HourlyDisplayData(
+            timeText = "14:00",
+            iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
+            temperatureText = "33°",
+            popText = "5%",
+        ),
+        HourlyDisplayData(
+            timeText = "15:00",
+            iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+            temperatureText = "34°",
+            popText = "0%",
+        ),
+        HourlyDisplayData(
+            timeText = "16:00",
+            iconUrl = "https://openweathermap.org/img/wn/10d@2x.png",
+            temperatureText = "31°",
+            popText = "40%",
+        ),
+        HourlyDisplayData(
+            timeText = "17:00",
+            iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+            temperatureText = "30°",
+            popText = "20%",
+        ),
+    ),
 )
 
 // --- Previews ---

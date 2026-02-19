@@ -6,8 +6,8 @@ import com.sls.handbook.core.model.Weather
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle as TimeTextStyle
 import java.util.Locale
+import java.time.format.TextStyle as TimeTextStyle
 
 private const val WeatherIconBaseUrl = "https://openweathermap.org/img/wn/"
 private const val WeatherIconSuffix = "@4x.png"
@@ -18,7 +18,8 @@ private const val PopPercentageMultiplier = 100
 
 internal fun Weather.toDisplayData(
     stringResolver: StringResolver,
-    forecast: List<DailyForecast> = emptyList(),
+    dailyForecast: List<DailyForecast> = emptyList(),
+    hourlyForecasts: List<HourlyForecast> = emptyList(),
 ): WeatherDisplayData =
     WeatherDisplayData(
         temperatureText = stringResolver.getString(
@@ -57,7 +58,8 @@ internal fun Weather.toDisplayData(
         },
         latitudeText = String.format(Locale.US, "%.4f", latitude),
         longitudeText = String.format(Locale.US, "%.4f", longitude),
-        forecast = forecast.map { it.toDisplayData(stringResolver) },
+        fiveDaysForecast = dailyForecast.map { it.toDisplayData(stringResolver) },
+        hourlyForecasts = hourlyForecasts.map { it.toHourlyDisplayData(stringResolver) },
     )
 
 internal fun DailyForecast.toDisplayData(stringResolver: StringResolver): DailyForecastDisplayData {
