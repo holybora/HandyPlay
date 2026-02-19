@@ -19,7 +19,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -100,32 +101,40 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
+fun launchApp() {
+    val packageName = android.defaultConfig.applicationId ?: "com.sls.handbook"
+
+    println("Launching $packageName...")
+
+    project.providers.exec {
+        commandLine(
+            "adb",
+            "shell",
+            "am",
+            "start",
+            "-n",
+            "$packageName/.MainActivity",
+            "-a",
+            "android.intent.action.MAIN",
+            "-c",
+            "android.intent.category.LAUNCHER"
+        )
+    }.result.get().assertNormalExitValue()
+
+    println("App launched successfully!")
+}
+
 tasks.register("installAndRun") {
     group = "install"
-    description = "Installs the Debug build and launches the app on a connected device"
-
+    description = "Installs the Debug build and launches the app"
     dependsOn("installDebug")
-
-    doLast {
-        val packageName = android.defaultConfig.applicationId ?: "com.sls.handbook"
-
-        println("Launching $packageName...")
-
-        project.providers.exec {
-            commandLine(
-                "adb",
-                "shell",
-                "am",
-                "start",
-                "-n",
-                "$packageName/.MainActivity",
-                "-a",
-                "android.intent.action.MAIN",
-                "-c",
-                "android.intent.category.LAUNCHER"
-            )
-        }.result.get().assertNormalExitValue()
-
-        println("App launched successfully!")
-    }
+    doLast { launchApp() }
 }
+
+tasks.register("installAndRunRelease") {
+    group = "install"
+    description = "Installs the Release build and launches the app"
+    dependsOn("installRelease")
+    doLast { launchApp() }
+}
+
