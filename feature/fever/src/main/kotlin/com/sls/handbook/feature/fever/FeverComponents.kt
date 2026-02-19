@@ -11,11 +11,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -205,6 +209,66 @@ internal fun WeatherIconCard(
     }
 }
 
+@Composable
+internal fun HourlyForecastSection(hourlyForecasts: List<HourlyDisplayData>) {
+    val feverColors = LocalFeverColors.current
+    Column {
+        Text(
+            text = stringResource(R.string.fever_hourly_header),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        GlassCard(modifier = Modifier.fillMaxWidth()) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
+            ) {
+                items(hourlyForecasts) { item ->
+                    HourlyForecastItem(item = item, popColor = feverColors.iconBlue)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+internal fun HourlyForecastItem(item: HourlyDisplayData, popColor: Color) {
+    Column(
+        modifier = Modifier
+            .width(72.dp)
+            .padding(horizontal = 4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Text(
+            text = item.timeText,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        AsyncImage(
+            model = item.iconUrl,
+            contentDescription = null,
+            modifier = Modifier.size(40.dp),
+        )
+        Spacer(modifier = Modifier.height(2.dp))
+        Text(
+            text = item.temperatureText,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+            textAlign = TextAlign.Center,
+        )
+        Text(
+            text = item.popText,
+            style = MaterialTheme.typography.labelSmall,
+            color = popColor,
+            textAlign = TextAlign.Center,
+        )
+    }
+}
+
 // --- Previews ---
 
 @Preview
@@ -244,5 +308,36 @@ private fun WeatherIconCardPreview() {
             feelsLikeText = "35°C",
             modifier = Modifier.height(320.dp),
         )
+    }
+}
+
+@Preview
+@Composable
+private fun HourlyForecastSectionPreview() {
+    FeverTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            HourlyForecastSection(
+                hourlyForecasts = listOf(
+                    HourlyDisplayData(
+                        timeText = "Now",
+                        iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+                        temperatureText = "32°C",
+                        popText = "10%",
+                    ),
+                    HourlyDisplayData(
+                        timeText = "1 PM",
+                        iconUrl = "https://openweathermap.org/img/wn/10d@2x.png",
+                        temperatureText = "33°C",
+                        popText = "35%",
+                    ),
+                    HourlyDisplayData(
+                        timeText = "2 PM",
+                        iconUrl = "https://openweathermap.org/img/wn/04d@2x.png",
+                        temperatureText = "31°C",
+                        popText = "20%",
+                    ),
+                ),
+            )
+        }
     }
 }

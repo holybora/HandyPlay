@@ -202,6 +202,14 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
+            visible = weatherDisplay.hourlyForecasts.isNotEmpty(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            HourlyForecastSection(hourlyForecasts = weatherDisplay.hourlyForecasts)
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+        AnimatedVisibility(
             visible = weatherDisplay.feelsLikeText.isNotBlank(),
             enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
             exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),

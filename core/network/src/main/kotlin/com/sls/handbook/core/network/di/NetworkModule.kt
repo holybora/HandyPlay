@@ -1,5 +1,6 @@
 package com.sls.handbook.core.network.di
 
+import com.sls.handbook.core.network.api.HourlyForecastApi
 import com.sls.handbook.core.network.api.JokeApi
 import com.sls.handbook.core.network.api.PicsumApi
 import com.sls.handbook.core.network.api.WeatherApi
@@ -79,5 +80,11 @@ object NetworkModule {
     @Singleton
     fun provideWeatherApi(@Named("weather") retrofit: Retrofit): WeatherApi {
         return retrofit.create(WeatherApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHourlyForecastApi(@Named("weather") retrofit: Retrofit): HourlyForecastApi {
+        return retrofit.create(HourlyForecastApi::class.java)
     }
 }
