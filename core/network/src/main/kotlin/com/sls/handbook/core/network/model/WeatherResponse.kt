@@ -39,3 +39,13 @@ data class WindResponse(
 data class SysResponse(
     @SerializedName("country") val country: String?,
 )
+
+data class ForecastResponse(
+    @SerializedName("list") val list: List<ForecastItemResponse>,
+)
+
+data class ForecastItemResponse(
+    @SerializedName("dt") val dt: Long,
+    @SerializedName("main") val main: MainResponse,
+    @SerializedName("weather") val weather: List<WeatherConditionResponse>,
+)

@@ -23,4 +23,9 @@
     <string name="fever_visibility_km_format">%1$d km</string>
     <string name="fever_unknown_location">Lieu inconnu</string>
     <string name="fever_unknown_error">Erreur inconnue</string>
+
+    <!-- Forecast section -->
+    <string name="fever_forecast_header">Pr\u00E9visions</string>
+    <string name="fever_forecast_high_format">%1$d\u00B0</string>
+    <string name="fever_forecast_low_format">%1$d\u00B0</string>
 </resources>

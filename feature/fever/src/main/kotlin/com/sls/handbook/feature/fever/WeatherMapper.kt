@@ -1,13 +1,21 @@
 package com.sls.handbook.feature.fever
 
+import com.sls.handbook.core.model.DailyForecast
 import com.sls.handbook.core.model.Weather
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.TextStyle as TimeTextStyle
 import java.util.Locale
 
 private const val WeatherIconBaseUrl = "https://openweathermap.org/img/wn/"
 private const val WeatherIconSuffix = "@4x.png"
+private const val ForecastIconSuffix = "@2x.png"
 private const val VisibilityThresholdMeters = 1000
 
-internal fun Weather.toDisplayData(stringResolver: StringResolver): WeatherDisplayData =
+internal fun Weather.toDisplayData(
+    stringResolver: StringResolver,
+    forecast: List<DailyForecast> = emptyList(),
+): WeatherDisplayData =
     WeatherDisplayData(
         temperatureText = stringResolver.getString(
             R.string.fever_temperature_format,
@@ -45,7 +53,26 @@ internal fun Weather.toDisplayData(stringResolver: StringResolver): WeatherDispl
         },
         latitudeText = String.format(Locale.US, "%.4f", latitude),
         longitudeText = String.format(Locale.US, "%.4f", longitude),
+        forecast = forecast.map { it.toDisplayData(stringResolver) },
     )
+
+internal fun DailyForecast.toDisplayData(stringResolver: StringResolver): DailyForecastDisplayData {
+    val dayName = Instant.ofEpochSecond(dateEpochSeconds)
+        .atZone(ZoneId.systemDefault())
+        .dayOfWeek
+        .getDisplayName(TimeTextStyle.SHORT, Locale.getDefault())
+
+    return DailyForecastDisplayData(
+        dayName = dayName,
+        iconUrl = if (icon.isNotBlank()) {
+            "$WeatherIconBaseUrl$icon$ForecastIconSuffix"
+        } else {
+            ""
+        },
+        highText = stringResolver.getString(R.string.fever_forecast_high_format, tempMax.toInt()),
+        lowText = stringResolver.getString(R.string.fever_forecast_low_format, tempMin.toInt()),
+    )
+}
 
 private fun buildLocationName(
     stringResolver: StringResolver,

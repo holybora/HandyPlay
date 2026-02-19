@@ -1,5 +1,6 @@
 package com.sls.handbook.core.network.api
 
+import com.sls.handbook.core.network.model.ForecastResponse
 import com.sls.handbook.core.network.model.WeatherResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -13,4 +14,12 @@ interface WeatherApi {
         @Query("appid") appId: String,
         @Query("units") units: String = "metric",
     ): WeatherResponse
+
+    @GET("data/2.5/forecast")
+    suspend fun getForecast(
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+        @Query("appid") appId: String,
+        @Query("units") units: String = "metric",
+    ): ForecastResponse
 }

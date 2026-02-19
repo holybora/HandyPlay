@@ -35,10 +35,12 @@ class FeverViewModel @Inject constructor(
         _uiState.value = FeverUiState.Loading
         viewModelScope.launch(ioDispatcher) {
             try {
-                val weather = weatherRepository.getWeatherForRandomLocation()
+                val (weather, forecast) = weatherRepository.getWeatherWithForecast()
                 // fake delay to make animation transition smooth
                 delay(FadeDurationMs.toLong())
-                _uiState.value = FeverUiState.Success(weather.toDisplayData(stringResolver))
+                _uiState.value = FeverUiState.Success(
+                    weather.toDisplayData(stringResolver, forecast),
+                )
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 _uiState.value = FeverUiState.Error(
                     e.message ?: stringResolver.getString(R.string.fever_unknown_error),
