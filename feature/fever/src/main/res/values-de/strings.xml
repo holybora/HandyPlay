@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- FeverScreen UI labels -->
-    <string name="fever_refresh_location">Standort aktualisieren</string>
+    <string name="fever_swipe_right_hint">Nach rechts wischen zum Aktualisieren</string>
+    <string name="fever_swipe_left_hint">Nach links wischen zum Aktualisieren</string>
     <string name="fever_error_retry">Wiederholen</string>
     <string name="fever_details_header">Details</string>
     <string name="fever_label_high_low">Hoch / Tief</string>

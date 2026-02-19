@@ -1,6 +1,6 @@
 # :feature:fever
 
-Weather screen displaying random location conditions with Travello-inspired design (gradient background, glassmorphism cards, colored stat pills). Features separate FeverTheme to avoid affecting other screens. Implements edge-to-edge display with system inset handling via `statusBarsPadding`, `navigationBarsPadding`, and `systemBarsPadding` modifiers.
+Weather screen displaying random location conditions with Travello-inspired design (gradient background, glassmorphism cards, colored stat pills). Features separate FeverTheme to avoid affecting other screens. Implements edge-to-edge display with system inset handling via `statusBarsPadding`, `navigationBarsPadding`, and `systemBarsPadding` modifiers. Fully localized (EN, DE, ES, FR) via `stringResource()` and `StringResolver`.
 
 ## Module Info
 
@@ -17,7 +17,7 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 - `coil.compose` — Image loading for weather icons
 - `coil.network.okhttp` — OkHttp integration for Coil
-- `material-icons-extended` — Extended Material icons for stat pill icons (Thermostat, Air, WaterDrop)
+- `material-icons-extended` — Extended Material icons for stat pill icons (Thermostat, Air, WaterDrop) and directional arrows (ArrowBack, ArrowForward)
 
 ## Key Files
 
@@ -27,11 +27,18 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - `WeatherMapper.kt` — `Weather.toDisplayData(StringResolver)` extension mapping domain model to presentation model using i18n string resources
 - `StringResolver.kt` — Interface for i18n-safe string resolution + Hilt `@Module` providing `Context`-backed implementation
 - `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
-- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, FAB refresh. `WeatherContent` is always rendered; sections gated by `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))`. Text values use `AnimatedValueText` helper (`AnimatedContent` with fade). Error state shown via `Snackbar` with retry action. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; FAB uses `navigationBarsPadding()`. Includes 7 @Preview functions.
+- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (ArrowBack at BottomStart, ArrowForward at BottomEnd) triggering refresh. `WeatherContent` is always rendered; sections gated by `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))`. Text values use `AnimatedValueText` helper (`AnimatedContent` with fade). Error state shown via `Snackbar` with retry action. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
 - `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard` (with `Crossfade` for icon, `AnimatedContent` for temperature), `GlassDetailCard` (with `AnimatedContent` for value). Includes 3 @Preview functions.
 - `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello color scheme and typography; overrides app-wide theme only for Fever
 - `theme/FeverColor.kt` — Travello-inspired colors (sky blue gradient, glass white surfaces, orange/blue/teal accents) and `LocalFeverColors` CompositionLocal for extended color access
 - `theme/FeverType.kt` — Custom typography with 56sp Light display temperature, adjusted label spacing
+
+## Resources
+
+- `src/main/res/values/strings.xml` — Default (English) string resources
+- `src/main/res/values-de/strings.xml` — German translations
+- `src/main/res/values-es/strings.xml` — Spanish translations
+- `src/main/res/values-fr/strings.xml` — French translations
 
 ## Source
 
@@ -48,13 +55,14 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - **Fade animations for data transitions:** `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))` gates sections on data availability; `AnimatedContent` with matching fade spec animates individual text value changes; `Crossfade` animates weather icon swaps. All durations use shared `FadeDurationMs` constant.
 - **Route wrapper pattern:** `FeverRoute` wraps `FeverScreen` in `FeverTheme`, ensuring custom theme only applies to this feature
 - **CompositionLocal for theme access:** `LocalFeverColors.current` allows nested composables to access extended colors without prop drilling
+- **StringResolver for i18n in non-Context classes:** `StringResolver` interface injected via Hilt into ViewModel/Mapper to resolve `R.string.*` resources without direct `Context` dependency
 - **Glassmorphism UI:** Semi-transparent white surfaces with borders and soft shadows simulate glass effect
 - **Colored stat pills:** Row of cards with colored circular icon backgrounds showing weather metrics (temperature, wind, humidity)
-- **i18n via StringResolver:** `StringResolver` interface abstracts `Context.getString()` for testability; injected into ViewModel via Hilt, passed to `WeatherMapper` for localized formatting
 - **Error handling via Snackbar:** Error state triggers a `Snackbar` with retry action using `LaunchedEffect` + `rememberUpdatedState`; keeps the always-rendered WeatherContent pattern intact
+- **Dual SwipeHintFab pattern:** Two FABs with directional arrow icons (ArrowBack on left, ArrowForward on right) hinting at swipe gestures, both triggering refresh
 - **Edge-to-edge inset handling:**
   - `WeatherContent` column uses `statusBarsPadding()` to avoid overlapping status bar on initial load
-  - FAB positioned at bottom with `navigationBarsPadding()` + 24.dp explicit padding to sit above system navigation
+  - FABs positioned at bottom with `navigationBarsPadding()` + 24.dp explicit padding to sit above system navigation
   - Imports: `androidx.compose.foundation.layout.{statusBarsPadding, navigationBarsPadding}`
 
 ## Notes
@@ -64,3 +72,4 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - Stat pill icons use `material-icons-extended` (Thermostat, Air, WaterDrop) to avoid bloating core icon sets.
 - Do NOT add business logic or state management to composables. Keep all logic in `FeverViewModel`.
 - Edge-to-edge display is enabled app-wide via `WindowCompat.setDecorFitsSystemWindows(window, false)` in HandyPlayApp; inset padding is applied per-composable as needed.
+- All user-visible strings must use `stringResource()` in composables or `StringResolver` in ViewModel/Mapper for i18n support. Do NOT hardcode strings.

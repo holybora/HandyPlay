@@ -25,8 +25,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Air
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.CircularProgressIndicator
@@ -96,7 +97,28 @@ fun FeverScreen(
     ) {
         WeatherContent(weatherDisplay = uiState.weatherDisplay)
         ErrorSnackbar(snackbarHostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
-        RefreshFab(uiState = uiState, onRefresh = onRefresh, modifier = Modifier.align(Alignment.BottomEnd))
+
+        SwipeHintFab(
+            isLoading = uiState is FeverUiState.Loading,
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.fever_swipe_left_hint),
+            onClick = onRefresh,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .navigationBarsPadding()
+                .padding(24.dp),
+        )
+
+        SwipeHintFab(
+            isLoading = uiState is FeverUiState.Loading,
+            icon = Icons.AutoMirrored.Filled.ArrowForward,
+            contentDescription = stringResource(R.string.fever_swipe_right_hint),
+            onClick = onRefresh,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .navigationBarsPadding()
+                .padding(24.dp),
+        )
     }
 }
 
@@ -118,26 +140,27 @@ private fun ErrorSnackbar(snackbarHostState: SnackbarHostState, modifier: Modifi
 }
 
 @Composable
-private fun RefreshFab(uiState: FeverUiState, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
+private fun SwipeHintFab(
+    isLoading: Boolean,
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     FloatingActionButton(
-        onClick = onRefresh,
+        onClick = onClick,
         containerColor = MaterialTheme.colorScheme.primary,
         contentColor = MaterialTheme.colorScheme.onPrimary,
-        modifier = modifier
-            .navigationBarsPadding()
-            .padding(24.dp),
+        modifier = modifier,
     ) {
-        if (uiState is FeverUiState.Loading) {
+        if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(24.dp),
                 color = MaterialTheme.colorScheme.onPrimary,
                 strokeWidth = 2.dp,
             )
         } else {
-            Icon(
-                imageVector = Icons.Default.Refresh,
-                contentDescription = stringResource(R.string.fever_refresh_location),
-            )
+            Icon(imageVector = icon, contentDescription = contentDescription)
         }
     }
 }
