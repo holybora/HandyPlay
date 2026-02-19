@@ -22,6 +22,7 @@ data class WeatherDisplayData(
     val latitudeText: String,
     val longitudeText: String,
     val forecast: List<DailyForecastDisplayData>,
+    val hourlyForecasts: List<HourlyDisplayData> = emptyList(),
 ) {
     companion object {
         fun empty() = WeatherDisplayData(
@@ -39,6 +40,7 @@ data class WeatherDisplayData(
             latitudeText = "",
             longitudeText = "",
             forecast = emptyList(),
+            hourlyForecasts = emptyList(),
         )
     }
 }

@@ -28,4 +28,8 @@
     <string name="fever_forecast_header">Pron\u00F3stico</string>
     <string name="fever_forecast_high_format">%1$d\u00B0</string>
     <string name="fever_forecast_low_format">%1$d\u00B0</string>
+
+    <!-- Hourly forecast -->
+    <string name="fever_hourly_header">Pron\u00F3stico por hora</string>
+    <string name="fever_hourly_pop_format">%1$d%%</string>
 </resources>

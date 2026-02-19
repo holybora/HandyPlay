@@ -1,16 +1,20 @@
 package com.sls.handbook.feature.fever
 
 import com.sls.handbook.core.model.DailyForecast
+import com.sls.handbook.core.model.HourlyForecast
 import com.sls.handbook.core.model.Weather
 import java.time.Instant
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle as TimeTextStyle
 import java.util.Locale
 
 private const val WeatherIconBaseUrl = "https://openweathermap.org/img/wn/"
 private const val WeatherIconSuffix = "@4x.png"
 private const val ForecastIconSuffix = "@2x.png"
+private const val WeatherIconSmallSuffix = "@2x.png"
 private const val VisibilityThresholdMeters = 1000
+private const val PopPercentageMultiplier = 100
 
 internal fun Weather.toDisplayData(
     stringResolver: StringResolver,
@@ -71,6 +75,25 @@ internal fun DailyForecast.toDisplayData(stringResolver: StringResolver): DailyF
         },
         highText = stringResolver.getString(R.string.fever_forecast_high_format, tempMax.toInt()),
         lowText = stringResolver.getString(R.string.fever_forecast_low_format, tempMin.toInt()),
+    )
+}
+
+internal fun HourlyForecast.toHourlyDisplayData(stringResolver: StringResolver): HourlyDisplayData {
+    val timeFormatter = DateTimeFormatter.ofPattern("h a", Locale.getDefault())
+    val timeText = Instant.ofEpochSecond(dt)
+        .atZone(ZoneId.systemDefault())
+        .format(timeFormatter)
+    return HourlyDisplayData(
+        timeText = timeText,
+        iconUrl = if (icon.isNotBlank()) "$WeatherIconBaseUrl$icon$WeatherIconSmallSuffix" else "",
+        temperatureText = stringResolver.getString(
+            R.string.fever_temperature_format,
+            temperature.toInt(),
+        ),
+        popText = stringResolver.getString(
+            R.string.fever_hourly_pop_format,
+            (pop * PopPercentageMultiplier).toInt(),
+        ),
     )
 }
 

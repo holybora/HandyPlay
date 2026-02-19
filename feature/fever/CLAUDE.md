@@ -1,6 +1,6 @@
 # :feature:fever
 
-Weather screen displaying random location conditions with Travello-inspired design (gradient background, glassmorphism cards, colored stat pills). Features separate FeverTheme to avoid affecting other screens. Implements edge-to-edge display with system inset handling via `statusBarsPadding`, `navigationBarsPadding`, and `systemBarsPadding` modifiers. Fully localized (EN, DE, ES, FR) via `stringResource()` and `StringResolver`.
+Weather screen displaying random location conditions with current weather, 5-day daily forecast, and hourly forecast cards. Travello-inspired design with gradient background, glassmorphism cards, colored stat pills. Features separate FeverTheme, edge-to-edge display, and full i18n localization (EN, DE, ES, FR).
 
 ## Module Info
 
@@ -21,17 +21,18 @@ Weather screen displaying random location conditions with Travello-inspired desi
 
 ## Key Files
 
-- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches weather via `WeatherRepository`, maps to `WeatherDisplayData` using `StringResolver`.
-- `FeverUiState.kt` — Sealed class with `weatherDisplay` property: `Loading` and `Error` use `WeatherDisplayData.empty()`, `Success` holds real data. All states expose display data so `WeatherContent` is always rendered.
-- `WeatherDisplayData.kt` — Presentation model with pre-formatted string fields for UI rendering. `companion object` provides `empty()` factory returning blank strings for loading/error states.
-- `WeatherMapper.kt` — `Weather.toDisplayData(StringResolver)` extension mapping domain model to presentation model using i18n string resources
-- `StringResolver.kt` — Interface for i18n-safe string resolution + Hilt `@Module` providing `Context`-backed implementation
-- `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
-- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (ArrowBack at BottomStart, ArrowForward at BottomEnd) triggering refresh. `WeatherContent` is always rendered; sections gated by `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))`. Text values use `AnimatedValueText` helper (`AnimatedContent` with fade). Error state shown via `Snackbar` with retry action. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
-- `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard` (with `Crossfade` for icon, `AnimatedContent` for temperature), `GlassDetailCard` (with `AnimatedContent` for value). Includes 3 @Preview functions.
-- `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello color scheme and typography; overrides app-wide theme only for Fever
-- `theme/FeverColor.kt` — Travello-inspired colors (sky blue gradient, glass white surfaces, orange/blue/teal accents) and `LocalFeverColors` CompositionLocal for extended color access
-- `theme/FeverType.kt` — Custom typography with 56sp Light display temperature, adjusted label spacing
+- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches current weather, 5-day daily forecast, and hourly forecast via `WeatherRepository`, maps all to `WeatherDisplayData` using `StringResolver`.
+- `FeverUiState.kt` — Sealed class: `Loading`, `Error`, `Success`. All expose `weatherDisplay: WeatherDisplayData` so `WeatherContent` is always rendered (using empty defaults for Loading/Error).
+- `WeatherDisplayData.kt` — Presentation model with pre-formatted fields for current weather, `forecast: List<DailyForecastDisplayData>`, and `hourlyForecasts: List<HourlyDisplayData>`. Factory: `empty()`.
+- `HourlyDisplayData.kt` — Data class with formatted hourly fields: `timeText`, `iconUrl`, `temperatureText`, `popText` (precipitation %).
+- `WeatherMapper.kt` — Extension functions: `Weather.toDisplayData()`, `DailyForecast.toDisplayData()`, `HourlyForecast.toHourlyDisplayData()`. All use `StringResolver` for i18n.
+- `StringResolver.kt` — Interface for i18n string resolution + Hilt `@Module` providing `Context`-backed impl.
+- `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for scoped theming.
+- `FeverScreen.kt` — Main Travello-inspired composable: sky-blue gradient bg, hero section (icon + stat pills), current weather details, 5-day forecast card, horizontally scrollable hourly forecast card (showing time/icon/temp/pop%), dual `SwipeHintFab` buttons (ArrowBack/ArrowForward at bottom). Sections gated by `AnimatedVisibility` with fade. Edge-to-edge: `statusBarsPadding()` on content, `navigationBarsPadding()` on FABs. All labels via `stringResource()`.
+- `FeverComponents.kt` — Reusable composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`, `HourlyForecastSection` (LazyRow), `HourlyForecastItem` (time/icon/temp/pop % column).
+- `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello colors + typography (light-mode only).
+- `theme/FeverColor.kt` — Travello palette (sky blue, glass white, orange/blue/teal) + `LocalFeverColors` CompositionLocal.
+- `theme/FeverType.kt` — Custom typography (56sp Light temperature, adjusted label spacing).
 
 ## Resources
 
@@ -46,7 +47,9 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - `src/main/kotlin/com/sls/handbook/feature/fever/theme/` — Scoped theme system
 - `src/main/res/values/strings.xml` — English string resources
 - `src/main/res/values-de/`, `values-es/`, `values-fr/` — German, Spanish, French translations
-- `src/test/kotlin/com/sls/handbook/feature/fever/` — Unit tests (WeatherMapperTest)
+- `src/test/kotlin/com/sls/handbook/feature/fever/` — Unit tests
+  - `WeatherMapperTest.kt` — Tests for current weather, daily forecast, and hourly forecast mapping
+  - `HourlyDisplayDataMapperTest.kt` — Tests for hourly display data formatting (time, temperature, pop%)
 
 ## Patterns
 
@@ -60,6 +63,8 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - **Colored stat pills:** Row of cards with colored circular icon backgrounds showing weather metrics (temperature, wind, humidity)
 - **Error handling via Snackbar:** Error state triggers a `Snackbar` with retry action using `LaunchedEffect` + `rememberUpdatedState`; keeps the always-rendered WeatherContent pattern intact
 - **Dual SwipeHintFab pattern:** Two FABs with directional arrow icons (ArrowBack on left, ArrowForward on right) hinting at swipe gestures, both triggering refresh
+- **Horizontally scrollable forecast cards:** Daily forecast and hourly forecast cards use `LazyRow` / `LazyColumn` for horizontal/scrollable layouts within glassmorphic containers
+- **Hourly forecast card:** Displays current day's hourly data only (filtered by timezone-aware date matching in repo layer), shows time/icon/temp/precipitation probability, formatted for compact display
 - **Edge-to-edge inset handling:**
   - `WeatherContent` column uses `statusBarsPadding()` to avoid overlapping status bar on initial load
   - FABs positioned at bottom with `navigationBarsPadding()` + 24.dp explicit padding to sit above system navigation

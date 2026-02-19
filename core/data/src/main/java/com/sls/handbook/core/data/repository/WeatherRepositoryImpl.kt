@@ -2,7 +2,9 @@ package com.sls.handbook.core.data.repository
 
 import com.sls.handbook.core.domain.repository.WeatherRepository
 import com.sls.handbook.core.model.DailyForecast
+import com.sls.handbook.core.model.HourlyForecast
 import com.sls.handbook.core.model.Weather
+import com.sls.handbook.core.network.api.HourlyForecastApi
 import com.sls.handbook.core.network.api.WeatherApi
 import com.sls.handbook.core.network.model.ForecastItemResponse
 import java.time.Instant
@@ -22,6 +24,7 @@ private const val MiddayHour = 12
 @Singleton
 class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi,
+    private val hourlyForecastApi: HourlyForecastApi,
 ) : WeatherRepository {
 
     override suspend fun getWeatherForRandomLocation(): Weather {
@@ -44,6 +47,27 @@ class WeatherRepositoryImpl @Inject constructor(
             .toSortedMap()
             .map { (_, items) -> aggregateDay(items) }
         return weather to forecast
+    }
+
+    override suspend fun getHourlyForecast(lat: Double, lon: Double): List<HourlyForecast> {
+        val response = hourlyForecastApi.getHourlyForecast(lat = lat, lon = lon, appId = AppId)
+        val zoneOffset = ZoneOffset.ofTotalSeconds(response.city.timezone)
+        val today = LocalDate.now(zoneOffset)
+        return response.list
+            .filter { entry ->
+                val entryDate = Instant.ofEpochSecond(entry.dt).atOffset(zoneOffset).toLocalDate()
+                entryDate == today
+            }
+            .map { entry ->
+                val condition = entry.weather.firstOrNull()
+                HourlyForecast(
+                    dt = entry.dt,
+                    temperature = entry.main.temp,
+                    icon = condition?.icon.orEmpty(),
+                    description = condition?.description.orEmpty(),
+                    pop = entry.pop,
+                )
+            }
     }
 
     private suspend fun fetchWeather(lat: Double, lon: Double): Weather {
