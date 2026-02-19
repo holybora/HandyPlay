@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -51,6 +54,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
 import com.sls.handbook.feature.fever.theme.FeverTheme
 import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
@@ -211,6 +215,14 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
                 Spacer(modifier = Modifier.height(12.dp))
                 DetailsSection(weatherDisplay = weatherDisplay)
             }
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+        AnimatedVisibility(
+            visible = weatherDisplay.forecast.isNotEmpty(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
+            ForecastSection(forecast = weatherDisplay.forecast)
         }
         Spacer(modifier = Modifier.height(96.dp))
     }
@@ -375,7 +387,92 @@ private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     }
 }
 
+@Composable
+private fun ForecastSection(forecast: List<DailyForecastDisplayData>) {
+    Column {
+        Text(
+            text = stringResource(R.string.fever_forecast_header),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Spacer(modifier = Modifier.height(12.dp))
+        GlassCard(modifier = Modifier.fillMaxWidth()) {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
+                items(forecast) { day ->
+                    ForecastDayItem(day = day)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun ForecastDayItem(day: DailyForecastDisplayData) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = day.dayName,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        AsyncImage(
+            model = day.iconUrl,
+            contentDescription = null,
+            modifier = Modifier.size(40.dp),
+        )
+        Text(
+            text = day.highText,
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+        Text(
+            text = day.lowText,
+            style = MaterialTheme.typography.labelSmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
 // --- Preview Data ---
+
+private val previewForecast = listOf(
+    DailyForecastDisplayData(
+        dayName = "Thu",
+        iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+        highText = "30°",
+        lowText = "22°",
+    ),
+    DailyForecastDisplayData(
+        dayName = "Fri",
+        iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
+        highText = "28°",
+        lowText = "21°",
+    ),
+    DailyForecastDisplayData(
+        dayName = "Sat",
+        iconUrl = "https://openweathermap.org/img/wn/10d@2x.png",
+        highText = "25°",
+        lowText = "19°",
+    ),
+    DailyForecastDisplayData(
+        dayName = "Sun",
+        iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+        highText = "27°",
+        lowText = "20°",
+    ),
+    DailyForecastDisplayData(
+        dayName = "Mon",
+        iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+        highText = "31°",
+        lowText = "23°",
+    ),
+)
 
 private val previewWeatherDisplay = WeatherDisplayData(
     temperatureText = "32°C",
@@ -391,6 +488,7 @@ private val previewWeatherDisplay = WeatherDisplayData(
     visibilityText = "8 km",
     latitudeText = "-7.2575",
     longitudeText = "112.7521",
+    forecast = previewForecast,
 )
 
 // --- Previews ---
@@ -465,6 +563,16 @@ private fun DetailsSectionPreview() {
     FeverTheme {
         Box(modifier = Modifier.padding(16.dp)) {
             DetailsSection(weatherDisplay = previewWeatherDisplay)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun ForecastSectionPreview() {
+    FeverTheme {
+        Box(modifier = Modifier.padding(16.dp)) {
+            ForecastSection(forecast = previewForecast)
         }
     }
 }
