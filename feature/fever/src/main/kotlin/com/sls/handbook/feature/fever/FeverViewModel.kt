@@ -7,12 +7,19 @@ import com.sls.handbook.feature.fever.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.launch
 
+private const val RefreshDebounceMs = 500L
+
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class FeverViewModel @Inject constructor(
     private val stringResolver: StringResolver,
@@ -23,12 +30,23 @@ class FeverViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<FeverUiState>(FeverUiState.Loading)
     val uiState: StateFlow<FeverUiState> = _uiState.asStateFlow()
 
+    private val events = MutableSharedFlow<FeverEvent>()
+
     init {
         loadWeather()
+
+        viewModelScope.launch {
+            events
+                .filterIsInstance<FeverEvent.Refresh>()
+                .debounce(RefreshDebounceMs)
+                .collect { loadWeather() }
+        }
     }
 
-    fun refresh() {
-        loadWeather()
+    fun onEvent(event: FeverEvent) {
+        viewModelScope.launch {
+            events.emit(event)
+        }
     }
 
     private fun loadWeather() {

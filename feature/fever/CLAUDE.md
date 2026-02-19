@@ -21,7 +21,8 @@ Weather screen displaying random location conditions with current weather, 5-day
 
 ## Key Files
 
-- `FeverViewModel.kt` — `@HiltViewModel` with `StateFlow<FeverUiState>`, fetches current weather, 5-day daily forecast, and hourly forecast via `WeatherRepository`, maps all to `WeatherDisplayData` using `StringResolver`.
+- `FeverEvent.kt` — Sealed interface defining UI events (`Refresh`). Composables emit events via `onEvent: (FeverEvent) -> Unit`.
+- `FeverViewModel.kt` — `@HiltViewModel` using MVI pattern: processes `FeverEvent` via `onEvent()`, uses `MutableSharedFlow` + `debounce(500ms)` for `Refresh` events. Fetches current weather, 5-day daily forecast, and hourly forecast via `WeatherRepository`, maps all to `WeatherDisplayData` using `StringResolver`.
 - `FeverUiState.kt` — Sealed class: `Loading`, `Error`, `Success`. All expose `weatherDisplay: WeatherDisplayData` so `WeatherContent` is always rendered (using empty defaults for Loading/Error).
 - `WeatherDisplayData.kt` — Presentation model with pre-formatted fields for current weather, `forecast: List<DailyForecastDisplayData>`, and `hourlyForecasts: List<HourlyDisplayData>`. Factory: `empty()`.
 - `HourlyDisplayData.kt` — Data class with formatted hourly fields: `timeText`, `iconUrl`, `temperatureText`, `popText` (precipitation %).
@@ -53,7 +54,7 @@ Weather screen displaying random location conditions with current weather, 5-day
 
 ## Patterns
 
-- **ViewModel + StateFlow:** ViewModel exposes `uiState: StateFlow<FeverUiState>` collected via `collectAsStateWithLifecycle()` in Route
+- **MVI event pattern:** ViewModel exposes `onEvent(FeverEvent)` as single entry point for UI actions. Events are processed via `MutableSharedFlow` with per-event-type pipelines (e.g., `Refresh` is debounced 500ms). UI state exposed as `StateFlow<FeverUiState>` collected via `collectAsStateWithLifecycle()` in Route.
 - **Always-rendered WeatherContent:** `WeatherContent` is rendered for all UI states; `FeverUiState` sealed class exposes `weatherDisplay` with `empty()` defaults for `Loading`/`Error`, so transitions are value changes (empty → real data) rather than container visibility toggles
 - **Fade animations for data transitions:** `AnimatedVisibility` with `fadeIn`/`fadeOut(tween(FadeDurationMs))` gates sections on data availability; `AnimatedContent` with matching fade spec animates individual text value changes; `Crossfade` animates weather icon swaps. All durations use shared `FadeDurationMs` constant.
 - **Route wrapper pattern:** `FeverRoute` wraps `FeverScreen` in `FeverTheme`, ensuring custom theme only applies to this feature

@@ -20,7 +20,7 @@ fun FeverRoute(
     FeverTheme {
         FeverScreen(
             uiState = uiState,
-            onRefresh = viewModel::refresh,
+            onEvent = viewModel::onEvent,
             modifier = modifier,
         )
     }
