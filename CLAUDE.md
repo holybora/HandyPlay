@@ -20,11 +20,11 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ```bash
 # Build
 ./gradlew assembleDebug
-./gradlew assembleRelease                    # Minified release (R8 + resource shrinking)
+./gradlew assembleRelease                    # Minified release (R8 + resource shrinking enabled)
 
 # Install and Run
 ./gradlew installAndRun                      # Installs debug APK and launches app
-./gradlew installAndRunRelease               # Installs minified release and launches app
+./gradlew installAndRunRelease               # Installs minified release and launches app (requires device)
 
 # Unit tests (JVM) — all modules
 ./gradlew test
