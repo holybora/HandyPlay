@@ -155,13 +155,13 @@ class WeatherMapperTest {
     @Test
     fun `default forecast parameter produces empty list`() {
         val result = sampleWeather.toDisplayData(stringResolver)
-        assertEquals(emptyList<DailyForecastDisplayData>(), result.forecast)
+        assertEquals(emptyList<DailyForecastDisplayData>(), result.fiveDaysForecast)
     }
 
     @Test
     fun `forecast maps empty list to empty list`() {
         val result = sampleWeather.toDisplayData(stringResolver, emptyList())
-        assertEquals(emptyList<DailyForecastDisplayData>(), result.forecast)
+        assertEquals(emptyList<DailyForecastDisplayData>(), result.fiveDaysForecast)
     }
 
     @Test
@@ -173,7 +173,7 @@ class WeatherMapperTest {
             icon = "01d",
         )
         val result = sampleWeather.toDisplayData(stringResolver, listOf(monday))
-        assertTrue(result.forecast[0].dayName.isNotBlank())
+        assertTrue(result.fiveDaysForecast[0].dayName.isNotBlank())
     }
 
     @Test
@@ -185,7 +185,7 @@ class WeatherMapperTest {
             icon = "10d",
         )
         val result = sampleWeather.toDisplayData(stringResolver, listOf(forecast))
-        assertEquals("https://openweathermap.org/img/wn/10d@2x.png", result.forecast[0].iconUrl)
+        assertEquals("https://openweathermap.org/img/wn/10d@2x.png", result.fiveDaysForecast[0].iconUrl)
     }
 
     @Test
@@ -197,7 +197,7 @@ class WeatherMapperTest {
             icon = "",
         )
         val result = sampleWeather.toDisplayData(stringResolver, listOf(forecast))
-        assertEquals("", result.forecast[0].iconUrl)
+        assertEquals("", result.fiveDaysForecast[0].iconUrl)
     }
 
     @Test
@@ -209,8 +209,8 @@ class WeatherMapperTest {
             icon = "01d",
         )
         val result = sampleWeather.toDisplayData(stringResolver, listOf(forecast))
-        assertEquals("29°", result.forecast[0].highText)
-        assertEquals("18°", result.forecast[0].lowText)
+        assertEquals("29°", result.fiveDaysForecast[0].highText)
+        assertEquals("18°", result.fiveDaysForecast[0].lowText)
     }
 
     @Test
@@ -224,8 +224,8 @@ class WeatherMapperTest {
             )
         }
         val result = sampleWeather.toDisplayData(stringResolver, forecasts)
-        assertEquals(3, result.forecast.size)
-        assertEquals("20°", result.forecast[0].lowText)
-        assertEquals("22°", result.forecast[2].lowText)
+        assertEquals(3, result.fiveDaysForecast.size)
+        assertEquals("20°", result.fiveDaysForecast[0].lowText)
+        assertEquals("22°", result.fiveDaysForecast[2].lowText)
     }
 }

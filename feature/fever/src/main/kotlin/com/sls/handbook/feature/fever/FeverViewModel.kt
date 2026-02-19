@@ -35,17 +35,20 @@ class FeverViewModel @Inject constructor(
         _uiState.value = FeverUiState.Loading
         viewModelScope.launch(ioDispatcher) {
             try {
-                val (weather, forecast) = weatherRepository.getWeatherWithForecast()
+                val (weather, dailyForecast) = weatherRepository.getWeatherWithForecast()
                 val hourlyForecasts = try {
                     weatherRepository.getHourlyForecast(weather.latitude, weather.longitude)
-                        .map { it.toHourlyDisplayData(stringResolver) }
                 } catch (@Suppress("TooGenericExceptionCaught", "SwallowedException") e: Exception) {
                     emptyList()
                 }
                 // fake delay to make animation transition smooth
                 delay(FadeDurationMs.toLong())
                 _uiState.value = FeverUiState.Success(
-                    weather.toDisplayData(stringResolver, forecast).copy(hourlyForecasts = hourlyForecasts),
+                    weather.toDisplayData(
+                        stringResolver = stringResolver,
+                        dailyForecast = dailyForecast,
+                        hourlyForecasts = hourlyForecasts
+                    ),
                 )
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 _uiState.value = FeverUiState.Error(

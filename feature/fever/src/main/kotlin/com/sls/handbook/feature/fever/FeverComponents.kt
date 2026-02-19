@@ -219,7 +219,11 @@ internal fun HourlyForecastSection(hourlyForecasts: List<HourlyDisplayData>) {
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(modifier = Modifier.height(12.dp))
-        GlassCard(modifier = Modifier.fillMaxWidth()) {
+        GlassCard(
+            modifier = Modifier
+                .height(110.dp)
+                .fillMaxWidth(),
+        ) {
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp),
             ) {
