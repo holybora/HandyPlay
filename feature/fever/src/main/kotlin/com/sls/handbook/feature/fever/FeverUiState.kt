@@ -1,7 +1,7 @@
 package com.sls.handbook.feature.fever
 
-sealed interface FeverUiState {
-    data object Loading : FeverUiState
-    data class Success(val weatherDisplay: WeatherDisplayData) : FeverUiState
-    data class Error(val message: String) : FeverUiState
+sealed class FeverUiState(open val weatherDisplay: WeatherDisplayData) {
+    object Loading : FeverUiState(weatherDisplay = WeatherDisplayData.empty())
+    data class Success(override val weatherDisplay: WeatherDisplayData) : FeverUiState(weatherDisplay = weatherDisplay)
+    data class Error(val message: String) : FeverUiState(weatherDisplay = WeatherDisplayData.empty())
 }

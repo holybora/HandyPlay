@@ -2,9 +2,7 @@
 <resources>
     <!-- FeverScreen UI labels -->
     <string name="fever_refresh_location">Actualiser la position</string>
-    <string name="fever_error_title">Impossible de charger la m\u00E9t\u00E9o</string>
-    <string name="fever_error_retry">Essayer un autre lieu</string>
-    <string name="fever_details_header">D\u00E9tails</string>
+<string name="fever_details_header">D\u00E9tails</string>
     <string name="fever_label_high_low">Max / Min</string>
     <string name="fever_label_wind">Vent</string>
     <string name="fever_label_humidity">Humidit\u00E9</string>

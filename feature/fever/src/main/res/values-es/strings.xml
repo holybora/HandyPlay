@@ -2,9 +2,7 @@
 <resources>
     <!-- FeverScreen UI labels -->
     <string name="fever_refresh_location">Actualizar ubicaci\u00F3n</string>
-    <string name="fever_error_title">No se pudo cargar el clima</string>
-    <string name="fever_error_retry">Probar otra ubicaci\u00F3n</string>
-    <string name="fever_details_header">Detalles</string>
+<string name="fever_details_header">Detalles</string>
     <string name="fever_label_high_low">M\u00E1x / M\u00EDn</string>
     <string name="fever_label_wind">Viento</string>
     <string name="fever_label_humidity">Humedad</string>

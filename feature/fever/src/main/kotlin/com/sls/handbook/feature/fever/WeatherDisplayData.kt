@@ -14,4 +14,22 @@ data class WeatherDisplayData(
     val visibilityText: String,
     val latitudeText: String,
     val longitudeText: String,
-)
+) {
+    companion object {
+        fun empty() = WeatherDisplayData(
+            temperatureText = "",
+            iconUrl = "",
+            iconContentDescription = "",
+            highLowText = "",
+            windText = "",
+            humidityText = "",
+            locationName = "",
+            descriptionText = "",
+            feelsLikeText = "",
+            pressureText = "",
+            visibilityText = "",
+            latitudeText = "",
+            longitudeText = "",
+        )
+    }
+}

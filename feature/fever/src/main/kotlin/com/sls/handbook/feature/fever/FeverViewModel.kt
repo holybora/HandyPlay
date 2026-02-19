@@ -4,11 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sls.handbook.core.domain.repository.WeatherRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
+private const val AnimationDelayMs = 450L
 
 @HiltViewModel
 class FeverViewModel @Inject constructor(
@@ -29,9 +33,10 @@ class FeverViewModel @Inject constructor(
 
     private fun loadWeather() {
         _uiState.value = FeverUiState.Loading
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
                 val weather = weatherRepository.getWeatherForRandomLocation()
+                delay(AnimationDelayMs)
                 _uiState.value = FeverUiState.Success(weather.toDisplayData(stringResolver))
             } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
                 _uiState.value = FeverUiState.Error(

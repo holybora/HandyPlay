@@ -2,9 +2,7 @@
 <resources>
     <!-- FeverScreen UI labels -->
     <string name="fever_refresh_location">Refresh location</string>
-    <string name="fever_error_title">Could not load weather</string>
-    <string name="fever_error_retry">Try another location</string>
-    <string name="fever_details_header">Details</string>
+<string name="fever_details_header">Details</string>
     <string name="fever_label_high_low">High / Low</string>
     <string name="fever_label_wind">Wind</string>
     <string name="fever_label_humidity">Humidity</string>
