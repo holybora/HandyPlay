@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FeverScreen UI labels -->
+    <string name="fever_refresh_location">Actualiser la position</string>
+    <string name="fever_error_title">Impossible de charger la m\u00E9t\u00E9o</string>
+    <string name="fever_error_retry">Essayer un autre lieu</string>
+    <string name="fever_details_header">D\u00E9tails</string>
+    <string name="fever_label_high_low">Max / Min</string>
+    <string name="fever_label_wind">Vent</string>
+    <string name="fever_label_humidity">Humidit\u00E9</string>
+    <string name="fever_label_feels_like">Ressenti</string>
+    <string name="fever_label_pressure">Pression</string>
+    <string name="fever_label_visibility">Visibilit\u00E9</string>
+    <string name="fever_label_latitude">Latitude</string>
+    <string name="fever_label_longitude">Longitude</string>
+
+    <!-- WeatherMapper format strings -->
+    <string name="fever_temperature_format">%1$d\u00B0C</string>
+    <string name="fever_high_low_format">Max\u00A0:%1$d\u00B0 Min\u00A0:%2$d\u00B0</string>
+    <string name="fever_wind_format">%1$s m/s</string>
+    <string name="fever_humidity_format">%1$d%%</string>
+    <string name="fever_pressure_format">%1$d hPa</string>
+    <string name="fever_visibility_meters_format">%1$d m</string>
+    <string name="fever_visibility_km_format">%1$d km</string>
+    <string name="fever_unknown_location">Lieu inconnu</string>
+    <string name="fever_unknown_error">Erreur inconnue</string>
+</resources>
