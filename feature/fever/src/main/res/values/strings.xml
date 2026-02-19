@@ -2,7 +2,6 @@
 <resources>
     <!-- FeverScreen UI labels -->
     <string name="fever_swipe_right_hint">Swipe right to refresh</string>
-    <string name="fever_swipe_left_hint">Swipe left to refresh</string>
     <string name="fever_error_retry">Retry</string>
     <string name="fever_details_header">Details</string>
     <string name="fever_label_high_low">High / Low</string>

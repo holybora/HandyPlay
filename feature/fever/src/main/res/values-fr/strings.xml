@@ -2,7 +2,6 @@
 <resources>
     <!-- FeverScreen UI labels -->
     <string name="fever_swipe_right_hint">Glisser vers la droite pour actualiser</string>
-    <string name="fever_swipe_left_hint">Glisser vers la gauche pour actualiser</string>
     <string name="fever_error_retry">R\u00E9essayer</string>
     <string name="fever_details_header">D\u00E9tails</string>
     <string name="fever_label_high_low">Max / Min</string>

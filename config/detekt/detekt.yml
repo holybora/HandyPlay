@@ -9,6 +9,8 @@ complexity:
   TooManyFunctions:
     ignoreAnnotatedFunctions:
       - "Preview"
+  LongMethod:
+    threshold: 90
   CyclomaticComplexMethod:
     threshold: 20
 
@@ -44,3 +46,5 @@ formatting:
   active: true
   android: true
   autoCorrect: false
+  ImportOrdering:
+    active: false
