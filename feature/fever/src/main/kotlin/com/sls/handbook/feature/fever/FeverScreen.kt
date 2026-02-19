@@ -20,8 +20,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Air
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
@@ -69,24 +70,52 @@ fun FeverScreen(
             is FeverUiState.Success -> WeatherContent(weatherDisplay = uiState.weatherDisplay)
         }
 
-        FloatingActionButton(
+        SwipeHintFab(
+            isLoading = uiState is FeverUiState.Loading,
+            icon = Icons.AutoMirrored.Filled.ArrowForward,
+            contentDescription = "Swipe right to refresh",
             onClick = onRefresh,
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .navigationBarsPadding()
+                .padding(24.dp),
+        )
+
+        SwipeHintFab(
+            isLoading = uiState is FeverUiState.Loading,
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = "Swipe left to refresh",
+            onClick = onRefresh,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .navigationBarsPadding()
                 .padding(24.dp),
-        ) {
-            if (uiState is FeverUiState.Loading) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    strokeWidth = 2.dp,
-                )
-            } else {
-                Icon(imageVector = Icons.Default.Refresh, contentDescription = "Refresh location")
-            }
+        )
+    }
+}
+
+@Composable
+private fun SwipeHintFab(
+    isLoading: Boolean,
+    icon: ImageVector,
+    contentDescription: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FloatingActionButton(
+        onClick = onClick,
+        containerColor = MaterialTheme.colorScheme.primary,
+        contentColor = MaterialTheme.colorScheme.onPrimary,
+        modifier = modifier,
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = MaterialTheme.colorScheme.onPrimary,
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Icon(imageVector = icon, contentDescription = contentDescription)
         }
     }
 }
