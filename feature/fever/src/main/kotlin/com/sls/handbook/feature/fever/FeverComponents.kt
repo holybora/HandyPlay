@@ -1,6 +1,7 @@
 package com.sls.handbook.feature.fever
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -24,7 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Devices.PIXEL_9_PRO
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
@@ -95,10 +100,49 @@ internal fun GlassDetailCard(
 }
 
 @Composable
+fun AnimatedValueText(
+    value: String,
+    style: TextStyle,
+    color: Color,
+    modifier: Modifier = Modifier,
+    fontWeight: FontWeight? = null,
+    textAlign: TextAlign? = null,
+) {
+    AnimatedContent(
+        targetState = value,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
+                fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
+        },
+        label = "animatedValueText",
+    ) { targetValue ->
+        Text(
+            text = targetValue,
+            style = style,
+            color = color,
+            modifier = modifier,
+            fontWeight = fontWeight,
+            textAlign = textAlign,
+        )
+    }
+}
+
+@Composable
+fun WeatherDescription(descriptionText: String) {
+    AnimatedValueText(
+        value = descriptionText,
+        style = MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onBackground,
+    )
+}
+
+@Composable
 internal fun WeatherIconCard(
     iconUrl: String,
     iconContentDescription: String,
     temperatureText: String,
+    weatherDescriptionText: String,
+    feelsLikeText: String,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -123,6 +167,15 @@ internal fun WeatherIconCard(
                     )
                 }
             }
+            AnimatedVisibility(
+                visible = weatherDescriptionText.isNotBlank(),
+                enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+                exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+            ) {
+                WeatherDescription(descriptionText = weatherDescriptionText)
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+
             AnimatedContent(
                 targetState = temperatureText,
                 transitionSpec = {
@@ -137,6 +190,17 @@ internal fun WeatherIconCard(
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }
+            Text(
+                text = stringResource(R.string.fever_label_feels_like),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+            AnimatedValueText(
+                value = feelsLikeText,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.onBackground,
+            )
         }
     }
 }
@@ -168,7 +232,7 @@ private fun GlassDetailCardPreview() {
     }
 }
 
-@Preview
+@Preview(showBackground = true, device = PIXEL_9_PRO)
 @Composable
 private fun WeatherIconCardPreview() {
     FeverTheme {
@@ -176,9 +240,9 @@ private fun WeatherIconCardPreview() {
             iconUrl = "https://openweathermap.org/img/wn/03d@4x.png",
             iconContentDescription = "scattered clouds",
             temperatureText = "32°C",
-            modifier = Modifier
-                .padding(16.dp)
-                .size(160.dp),
+            weatherDescriptionText = "Scattered clouds",
+            feelsLikeText = "35°C",
+            modifier = Modifier.height(320.dp),
         )
     }
 }

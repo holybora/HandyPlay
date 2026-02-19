@@ -1,11 +1,9 @@
 package com.sls.handbook.feature.fever
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,7 +23,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.Thermostat
@@ -50,7 +47,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -97,18 +93,6 @@ fun FeverScreen(
     ) {
         WeatherContent(weatherDisplay = uiState.weatherDisplay)
         ErrorSnackbar(snackbarHostState = snackbarHostState, modifier = Modifier.align(Alignment.BottomCenter))
-
-        SwipeHintFab(
-            isLoading = uiState is FeverUiState.Loading,
-            icon = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(R.string.fever_swipe_left_hint),
-            onClick = onRefresh,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .navigationBarsPadding()
-                .padding(24.dp),
-        )
-
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
             icon = Icons.AutoMirrored.Filled.ArrowForward,
@@ -179,7 +163,30 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
             enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
             exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
-            HeroSection(weatherDisplay = weatherDisplay)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(320.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                WeatherIconCard(
+                    iconUrl = weatherDisplay.iconUrl,
+                    iconContentDescription = weatherDisplay.iconContentDescription,
+                    temperatureText = weatherDisplay.temperatureText,
+                    weatherDescriptionText = weatherDisplay.descriptionText,
+                    feelsLikeText = weatherDisplay.feelsLikeText,
+                    modifier = Modifier
+                        .weight(1.2f)
+                        .fillMaxHeight(),
+                )
+                StatPillsColumn(
+                    weatherDisplay = weatherDisplay,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                )
+            }
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
@@ -188,14 +195,6 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
             exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             LocationHeader(locationName = weatherDisplay.locationName)
-        }
-        Spacer(modifier = Modifier.height(12.dp))
-        AnimatedVisibility(
-            visible = weatherDisplay.descriptionText.isNotBlank(),
-            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
-            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
-        ) {
-            WeatherDescription(descriptionText = weatherDisplay.descriptionText)
         }
         Spacer(modifier = Modifier.height(24.dp))
         AnimatedVisibility(
@@ -218,44 +217,52 @@ private fun WeatherContent(weatherDisplay: WeatherDisplayData) {
 }
 
 @Composable
-private fun HeroSection(weatherDisplay: WeatherDisplayData) {
+private fun StatPillsColumn(weatherDisplay: WeatherDisplayData, modifier: Modifier = Modifier) {
     val feverColors = LocalFeverColors.current
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        WeatherIconCard(
-            iconUrl = weatherDisplay.iconUrl,
-            iconContentDescription = weatherDisplay.iconContentDescription,
-            temperatureText = weatherDisplay.temperatureText,
-            modifier = Modifier.weight(1.2f).fillMaxHeight(),
-        )
-        Column(
-            modifier = Modifier.weight(1f).fillMaxHeight(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        AnimatedVisibility(
+            visible = weatherDisplay.highLowText.isNotBlank(),
+            modifier = Modifier.weight(1f),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
             StatPill(
                 icon = Icons.Default.Thermostat,
                 iconBackgroundColor = feverColors.iconOrange,
                 value = weatherDisplay.highLowText,
                 label = stringResource(R.string.fever_label_high_low),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxSize(),
             )
+        }
+        AnimatedVisibility(
+            visible = weatherDisplay.windText.isNotBlank(),
+            modifier = Modifier.weight(1f),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
             StatPill(
                 icon = Icons.Default.Air,
                 iconBackgroundColor = feverColors.iconBlue,
                 value = weatherDisplay.windText,
                 label = stringResource(R.string.fever_label_wind),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxSize(),
             )
+        }
+        AnimatedVisibility(
+            visible = weatherDisplay.humidityText.isNotBlank(),
+            modifier = Modifier.weight(1f),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
+        ) {
             StatPill(
                 icon = Icons.Default.WaterDrop,
                 iconBackgroundColor = feverColors.iconTeal,
                 value = weatherDisplay.humidityText,
                 label = stringResource(R.string.fever_label_humidity),
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }
@@ -321,80 +328,50 @@ private fun LocationHeader(locationName: String) {
 }
 
 @Composable
-private fun WeatherDescription(descriptionText: String) {
-    AnimatedValueText(
-        value = descriptionText,
-        style = MaterialTheme.typography.bodyLarge,
-        color = MaterialTheme.colorScheme.onBackground,
-    )
-}
-
-@Composable
 private fun DetailsSection(weatherDisplay: WeatherDisplayData) {
     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-        GlassDetailCard(
-            modifier = Modifier.fillMaxWidth(),
-            label = stringResource(R.string.fever_label_feels_like),
-            value = weatherDisplay.feelsLikeText,
-        )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        AnimatedVisibility(
+            visible = weatherDisplay.pressureText.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
-            GlassDetailCard(
-                modifier = Modifier.weight(1f),
-                label = stringResource(R.string.fever_label_pressure),
-                value = weatherDisplay.pressureText,
-            )
-            GlassDetailCard(
-                modifier = Modifier.weight(1f),
-                label = stringResource(R.string.fever_label_visibility),
-                value = weatherDisplay.visibilityText,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                GlassDetailCard(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.fever_label_pressure),
+                    value = weatherDisplay.pressureText,
+                )
+                GlassDetailCard(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.fever_label_visibility),
+                    value = weatherDisplay.visibilityText,
+                )
+            }
         }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        AnimatedVisibility(
+            visible = weatherDisplay.latitudeText.isNotBlank(),
+            enter = fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)),
+            exit = fadeOut(animationSpec = tween(durationMillis = FadeDurationMs)),
         ) {
-            GlassDetailCard(
-                modifier = Modifier.weight(1f),
-                label = stringResource(R.string.fever_label_latitude),
-                value = weatherDisplay.latitudeText,
-            )
-            GlassDetailCard(
-                modifier = Modifier.weight(1f),
-                label = stringResource(R.string.fever_label_longitude),
-                value = weatherDisplay.longitudeText,
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+            ) {
+                GlassDetailCard(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.fever_label_latitude),
+                    value = weatherDisplay.latitudeText,
+                )
+                GlassDetailCard(
+                    modifier = Modifier.weight(1f),
+                    label = stringResource(R.string.fever_label_longitude),
+                    value = weatherDisplay.longitudeText,
+                )
+            }
         }
-    }
-}
-
-@Composable
-private fun AnimatedValueText(
-    value: String,
-    style: TextStyle,
-    color: Color,
-    modifier: Modifier = Modifier,
-    fontWeight: FontWeight? = null,
-    textAlign: TextAlign? = null,
-) {
-    AnimatedContent(
-        targetState = value,
-        transitionSpec = {
-            fadeIn(animationSpec = tween(durationMillis = FadeDurationMs)) togetherWith
-                fadeOut(animationSpec = tween(durationMillis = FadeDurationMs))
-        },
-        label = "animatedValueText",
-    ) { targetValue ->
-        Text(
-            text = targetValue,
-            style = style,
-            color = color,
-            modifier = modifier,
-            fontWeight = fontWeight,
-            textAlign = textAlign,
-        )
     }
 }
 
