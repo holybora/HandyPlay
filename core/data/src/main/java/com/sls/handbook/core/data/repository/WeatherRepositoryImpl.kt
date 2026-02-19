@@ -35,7 +35,7 @@ class WeatherRepositoryImpl @Inject constructor(
         val lon = Random.nextDouble(LonMin, LonMax)
         val weather = fetchWeather(lat, lon)
         val forecastResponse = weatherApi.getForecast(lat = lat, lon = lon, appId = AppId)
-        val today = LocalDate.now()
+        val today = LocalDate.now(ZoneOffset.UTC)
         val forecast = forecastResponse.list
             .groupBy { item ->
                 Instant.ofEpochSecond(item.dt).atZone(ZoneOffset.UTC).toLocalDate()
