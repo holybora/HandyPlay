@@ -27,7 +27,7 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - `WeatherMapper.kt` — `Weather.toDisplayData(StringResolver)` extension mapping domain model to presentation model using string resources
 - `StringResolver.kt` — Interface + Hilt `@Module` for resolving Android string resources in non-Context classes (ViewModel, Mapper)
 - `FeverRoute.kt` — Route composable wrapping `FeverScreen` in `FeverTheme` for isolated theming
-- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (left arrow at BottomStart, right arrow at BottomEnd) triggering refresh. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; `ErrorContent` uses `systemBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
+- `FeverScreen.kt` — Main Travello-inspired composable with sky-blue gradient background, hero section (weather icon + stat pills), glassmorphism cards, weather details grid, dual `SwipeHintFab` buttons (ArrowBack at BottomStart, ArrowForward at BottomEnd) triggering refresh. **Implements edge-to-edge display:** `WeatherContent` uses `statusBarsPadding()`; `ErrorContent` uses `systemBarsPadding()`; FABs use `navigationBarsPadding()`. All UI labels use `stringResource()`. Includes 7 @Preview functions.
 - `FeverComponents.kt` — Reusable internal composables: `GlassCard`, `WeatherIconCard`, `GlassDetailCard`. Includes 3 @Preview functions.
 - `theme/FeverTheme.kt` — Custom `MaterialTheme` with Travello color scheme and typography; overrides app-wide theme only for Fever
 - `theme/FeverColor.kt` — Travello-inspired colors (sky blue gradient, glass white surfaces, orange/blue/teal accents) and `LocalFeverColors` CompositionLocal for extended color access
@@ -54,7 +54,7 @@ Weather screen displaying random location conditions with Travello-inspired desi
 - **StringResolver for i18n in non-Context classes:** `StringResolver` interface injected via Hilt into ViewModel/Mapper to resolve `R.string.*` resources without direct `Context` dependency
 - **Glassmorphism UI:** Semi-transparent white surfaces with borders and soft shadows simulate glass effect
 - **Colored stat pills:** Row of cards with colored circular icon backgrounds showing weather metrics (temperature, wind, humidity)
-- **Dual SwipeHintFab pattern:** Two FABs with directional arrow icons (ArrowForward on left, ArrowBack on right) hinting at swipe gestures, both triggering refresh
+- **Dual SwipeHintFab pattern:** Two FABs with directional arrow icons (ArrowBack on left, ArrowForward on right) hinting at swipe gestures, both triggering refresh
 - **Edge-to-edge inset handling:**
   - `WeatherContent` column uses `statusBarsPadding()` to avoid overlapping status bar on initial load
   - `ErrorContent` uses `systemBarsPadding()` for full system bar inset (status + navigation)

@@ -73,8 +73,8 @@ fun FeverScreen(
 
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
-            icon = Icons.AutoMirrored.Filled.ArrowForward,
-            contentDescription = stringResource(R.string.fever_swipe_right_hint),
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            contentDescription = stringResource(R.string.fever_swipe_left_hint),
             onClick = onRefresh,
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -84,8 +84,8 @@ fun FeverScreen(
 
         SwipeHintFab(
             isLoading = uiState is FeverUiState.Loading,
-            icon = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = stringResource(R.string.fever_swipe_left_hint),
+            icon = Icons.AutoMirrored.Filled.ArrowForward,
+            contentDescription = stringResource(R.string.fever_swipe_right_hint),
             onClick = onRefresh,
             modifier = Modifier
                 .align(Alignment.BottomEnd)
