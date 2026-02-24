@@ -35,11 +35,31 @@ import com.sls.handbook.feature.fever.FeverRoute
 import com.sls.handbook.feature.gallery.GalleryRoute
 import com.sls.handbook.feature.home.HomeRoute
 import com.sls.handbook.feature.ttlcache.TtlCacheRoute
+import com.sls.handbook.feature.dp.behavioral.command.CommandRoute
+import com.sls.handbook.feature.dp.behavioral.observer.ObserverRoute
+import com.sls.handbook.feature.dp.behavioral.statemachine.StateMachineRoute
+import com.sls.handbook.feature.dp.behavioral.strategy.StrategyRoute
+import com.sls.handbook.feature.dp.creational.abstractfactory.AbstractFactoryRoute
+import com.sls.handbook.feature.dp.creational.factorymethod.FactoryMethodRoute
+import com.sls.handbook.feature.dp.creational.prototype.PrototypeRoute
+import com.sls.handbook.feature.dp.structural.adapter.AdapterPatternRoute
+import com.sls.handbook.feature.dp.structural.decorator.DecoratorRoute
+import com.sls.handbook.feature.dp.structural.facade.FacadeRoute
 import com.sls.handbook.feature.welcome.WelcomeRoute
+import com.sls.handbook.navigation.AbstractFactoryDestination
+import com.sls.handbook.navigation.AdapterPatternDestination
 import com.sls.handbook.navigation.CategoryDestination
+import com.sls.handbook.navigation.CommandDestination
+import com.sls.handbook.navigation.DecoratorDestination
+import com.sls.handbook.navigation.FacadeDestination
+import com.sls.handbook.navigation.FactoryMethodDestination
 import com.sls.handbook.navigation.FeverDestination
 import com.sls.handbook.navigation.GalleryDestination
 import com.sls.handbook.navigation.HomeDestination
+import com.sls.handbook.navigation.ObserverDestination
+import com.sls.handbook.navigation.PrototypeDestination
+import com.sls.handbook.navigation.StateMachineDestination
+import com.sls.handbook.navigation.StrategyDestination
 import com.sls.handbook.navigation.TtlCacheDestination
 import com.sls.handbook.navigation.WelcomeDestination
 import com.theapache64.rebugger.Rebugger
@@ -177,6 +197,16 @@ private fun HandyPlayNavHost(
                         Topic.ID_TTL_CACHE -> navController.navigate(TtlCacheDestination)
                         Topic.ID_GALLERY -> navController.navigate(GalleryDestination)
                         Topic.ID_FEVER -> navController.navigate(FeverDestination)
+                        Topic.ID_DP_FACTORY_METHOD -> navController.navigate(FactoryMethodDestination)
+                        Topic.ID_DP_ABSTRACT_FACTORY -> navController.navigate(AbstractFactoryDestination)
+                        Topic.ID_DP_PROTOTYPE -> navController.navigate(PrototypeDestination)
+                        Topic.ID_DP_ADAPTER -> navController.navigate(AdapterPatternDestination)
+                        Topic.ID_DP_DECORATOR -> navController.navigate(DecoratorDestination)
+                        Topic.ID_DP_FACADE -> navController.navigate(FacadeDestination)
+                        Topic.ID_DP_OBSERVER -> navController.navigate(ObserverDestination)
+                        Topic.ID_DP_STRATEGY -> navController.navigate(StrategyDestination)
+                        Topic.ID_DP_COMMAND -> navController.navigate(CommandDestination)
+                        Topic.ID_DP_STATE_MACHINE -> navController.navigate(StateMachineDestination)
                     }
                 },
             )
@@ -192,6 +222,49 @@ private fun HandyPlayNavHost(
 
         composable<FeverDestination> {
             FeverRoute()
+        }
+
+        // Design Patterns - Creational
+        composable<FactoryMethodDestination> {
+            FactoryMethodRoute()
+        }
+
+        composable<AbstractFactoryDestination> {
+            AbstractFactoryRoute()
+        }
+
+        composable<PrototypeDestination> {
+            PrototypeRoute()
+        }
+
+        // Design Patterns - Structural
+        composable<AdapterPatternDestination> {
+            AdapterPatternRoute()
+        }
+
+        composable<DecoratorDestination> {
+            DecoratorRoute()
+        }
+
+        composable<FacadeDestination> {
+            FacadeRoute()
+        }
+
+        // Design Patterns - Behavioral
+        composable<ObserverDestination> {
+            ObserverRoute()
+        }
+
+        composable<StrategyDestination> {
+            StrategyRoute()
+        }
+
+        composable<CommandDestination> {
+            CommandRoute()
+        }
+
+        composable<StateMachineDestination> {
+            StateMachineRoute()
         }
     }
 }
