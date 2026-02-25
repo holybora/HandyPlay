@@ -22,3 +22,36 @@ object GalleryDestination
 
 @Serializable
 object FeverDestination
+
+// Design Patterns - Creational
+@Serializable
+object FactoryMethodDestination
+
+@Serializable
+object AbstractFactoryDestination
+
+@Serializable
+object PrototypeDestination
+
+// Design Patterns - Structural
+@Serializable
+object AdapterPatternDestination
+
+@Serializable
+object DecoratorDestination
+
+@Serializable
+object FacadeDestination
+
+// Design Patterns - Behavioral
+@Serializable
+object ObserverDestination
+
+@Serializable
+object StrategyDestination
+
+@Serializable
+object CommandDestination
+
+@Serializable
+object StateMachineDestination

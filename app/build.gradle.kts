@@ -55,6 +55,9 @@ dependencies {
     implementation(project(":feature:ttlcache"))
     implementation(project(":feature:gallery"))
     implementation(project(":feature:fever"))
+    implementation(project(":feature:dp-creational"))
+    implementation(project(":feature:dp-structural"))
+    implementation(project(":feature:dp-behavioral"))
 
     // Coverage aggregation — pulls coverage from all modules into one report
     kover(project(":core:common"))
@@ -71,6 +74,9 @@ dependencies {
     kover(project(":feature:ttlcache"))
     kover(project(":feature:gallery"))
     kover(project(":feature:fever"))
+    kover(project(":feature:dp-creational"))
+    kover(project(":feature:dp-structural"))
+    kover(project(":feature:dp-behavioral"))
 
     // AndroidX
     implementation(libs.androidx.core.ktx)
