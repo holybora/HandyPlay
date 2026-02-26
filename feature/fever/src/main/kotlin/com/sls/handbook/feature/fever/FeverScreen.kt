@@ -60,7 +60,7 @@ import com.sls.handbook.feature.fever.theme.IconTeal
 import com.sls.handbook.feature.fever.theme.LocalFeverColors
 import com.theapache64.rebugger.Rebugger
 
-internal const val FadeDurationMs = 450
+internal const val FadeDurationMs = 550
 
 @Composable
 fun FeverScreen(
@@ -411,10 +411,13 @@ private fun ForecastSection(forecast: List<DailyForecastDisplayData>) {
         ) {
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 items(forecast) { day ->
-                    ForecastDayItem(day = day)
+                    ForecastDayItem(
+                        day = day,
+                        modifier = Modifier.width(52.dp),
+                    )
                 }
             }
         }
@@ -422,10 +425,14 @@ private fun ForecastSection(forecast: List<DailyForecastDisplayData>) {
 }
 
 @Composable
-private fun ForecastDayItem(day: DailyForecastDisplayData) {
+private fun ForecastDayItem(
+    day: DailyForecastDisplayData,
+    modifier: Modifier = Modifier,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
     ) {
         Text(
             text = day.dayName,
@@ -435,6 +442,7 @@ private fun ForecastDayItem(day: DailyForecastDisplayData) {
         AsyncImage(
             model = day.iconUrl,
             contentDescription = null,
+            // Placeholder support can be added via Coil's placeholder/error params
             modifier = Modifier.size(40.dp),
         )
         Text(

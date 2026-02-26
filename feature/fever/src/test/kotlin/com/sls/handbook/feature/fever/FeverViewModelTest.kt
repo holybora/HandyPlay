@@ -1,12 +1,21 @@
 package com.sls.handbook.feature.fever
 
+import android.util.Log
 import app.cash.turbine.test
-import com.sls.handbook.core.domain.repository.WeatherRepository
+import com.sls.handbook.core.domain.usecase.GenerateRandomCoordinatesUseCase
+import com.sls.handbook.core.domain.usecase.GetCurrentWeatherUseCase
+import com.sls.handbook.core.domain.usecase.GetFiveDayForecastUseCase
+import com.sls.handbook.core.domain.usecase.GetForecastDataUseCase
+import com.sls.handbook.core.domain.usecase.GetTodayHourlyForecastUseCase
+import com.sls.handbook.core.model.Coordinates
+import com.sls.handbook.core.model.ForecastData
 import com.sls.handbook.core.model.Weather
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -24,24 +33,30 @@ import org.junit.Test
 class FeverViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
-    private val weatherRepository: WeatherRepository = mockk()
     private val stringResolver: StringResolver = mockk()
-    private val coordinatesGenerator: RandomCoordinatesGenerator = mockk()
+    private val getCurrentWeather: GetCurrentWeatherUseCase = mockk()
+    private val getForecastData: GetForecastDataUseCase = mockk()
+    private val getFiveDayForecast: GetFiveDayForecastUseCase = mockk()
+    private val getTodayHourlyForecast: GetTodayHourlyForecastUseCase = mockk()
+    private val generateRandomCoordinates: GenerateRandomCoordinatesUseCase = mockk()
 
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        every { coordinatesGenerator.generate() } returns Coordinates(10.0, 20.0)
-        coEvery {
-            weatherRepository.getWeatherWithForecast(any(), any())
-        } returns (testWeather to emptyList())
-        coEvery { weatherRepository.getHourlyForecast(any(), any()) } returns emptyList()
+        mockkStatic(Log::class)
+        every { Log.w(any<String>(), any<String>(), any<Throwable>()) } returns 0
+        every { generateRandomCoordinates() } returns Coordinates(10.0, 20.0)
+        coEvery { getCurrentWeather(any(), any(), any()) } returns testWeather
+        coEvery { getForecastData(any(), any(), any()) } returns testForecastData
+        every { getFiveDayForecast(any()) } returns emptyList()
+        every { getTodayHourlyForecast(any()) } returns emptyList()
         every { stringResolver.getString(any(), *anyVararg()) } returns "test"
     }
 
     @After
     fun tearDown() {
         Dispatchers.resetMain()
+        unmockkAll()
     }
 
     @Test
@@ -88,7 +103,7 @@ class FeverViewModelTest {
         advanceUntilIdle()
 
         // init + one refresh = exactly 2 calls
-        coVerify(exactly = 2) { weatherRepository.getWeatherWithForecast(any(), any()) }
+        coVerify(exactly = 2) { getCurrentWeather(any(), any(), any()) }
     }
 
     @Test
@@ -103,13 +118,13 @@ class FeverViewModelTest {
         advanceUntilIdle() // second refresh completes
 
         // init + 2 refreshes = exactly 3 calls
-        coVerify(exactly = 3) { weatherRepository.getWeatherWithForecast(any(), any()) }
+        coVerify(exactly = 3) { getCurrentWeather(any(), any(), any()) }
     }
 
     @Test
-    fun `emits Error when repository throws`() = runTest(testDispatcher) {
+    fun `emits Error when use case throws`() = runTest(testDispatcher) {
         coEvery {
-            weatherRepository.getWeatherWithForecast(any(), any())
+            getCurrentWeather(any(), any(), any())
         } throws RuntimeException("Network error")
 
         val viewModel = createViewModel()
@@ -124,7 +139,7 @@ class FeverViewModelTest {
     @Test
     fun `onEvent Refresh works after Error state`() = runTest(testDispatcher) {
         coEvery {
-            weatherRepository.getWeatherWithForecast(any(), any())
+            getCurrentWeather(any(), any(), any())
         } throws RuntimeException("fail")
 
         val viewModel = createViewModel()
@@ -132,8 +147,8 @@ class FeverViewModelTest {
         assertTrue(viewModel.uiState.value is FeverUiState.Error)
 
         coEvery {
-            weatherRepository.getWeatherWithForecast(any(), any())
-        } returns (testWeather to emptyList())
+            getCurrentWeather(any(), any(), any())
+        } returns testWeather
 
         viewModel.onEvent(FeverEvent.Refresh)
         advanceUntilIdle()
@@ -142,8 +157,11 @@ class FeverViewModelTest {
 
     private fun createViewModel() = FeverViewModel(
         stringResolver = stringResolver,
-        weatherRepository = weatherRepository,
-        coordinatesGenerator = coordinatesGenerator,
+        getCurrentWeather = getCurrentWeather,
+        getForecastData = getForecastData,
+        getFiveDayForecast = getFiveDayForecast,
+        getTodayHourlyForecast = getTodayHourlyForecast,
+        generateRandomCoordinates = generateRandomCoordinates,
         ioDispatcher = testDispatcher,
     )
 
@@ -163,6 +181,10 @@ class FeverViewModelTest {
             icon = "01d",
             windSpeed = 3.5,
             visibility = 10000,
+        )
+        val testForecastData = ForecastData(
+            items = emptyList(),
+            timezoneOffsetSeconds = 0,
         )
     }
 }

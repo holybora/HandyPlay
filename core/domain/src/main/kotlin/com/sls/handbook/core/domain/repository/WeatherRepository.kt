@@ -1,10 +1,9 @@
 package com.sls.handbook.core.domain.repository
 
-import com.sls.handbook.core.model.DailyForecast
-import com.sls.handbook.core.model.HourlyForecast
+import com.sls.handbook.core.model.ForecastData
 import com.sls.handbook.core.model.Weather
 
 interface WeatherRepository {
-    suspend fun getWeatherWithForecast(lat: Double, lon: Double): Pair<Weather, List<DailyForecast>>
-    suspend fun getHourlyForecast(lat: Double, lon: Double): List<HourlyForecast>
+    suspend fun getWeather(lat: Double, lon: Double, lang: String): Weather
+    suspend fun getForecastData(lat: Double, lon: Double, lang: String): ForecastData
 }
