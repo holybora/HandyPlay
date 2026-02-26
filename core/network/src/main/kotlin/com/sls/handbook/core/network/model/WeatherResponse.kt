@@ -42,10 +42,12 @@ data class SysResponse(
 
 data class ForecastResponse(
     @SerializedName("list") val list: List<ForecastItemResponse>,
+    @SerializedName("city") val city: CityResponse,
 )
 
 data class ForecastItemResponse(
     @SerializedName("dt") val dt: Long,
     @SerializedName("main") val main: MainResponse,
     @SerializedName("weather") val weather: List<WeatherConditionResponse>,
+    @SerializedName("pop") val pop: Double,
 )

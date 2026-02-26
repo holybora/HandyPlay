@@ -1,64 +1,31 @@
 package com.sls.handbook.core.data.repository
 
+import com.sls.handbook.core.domain.exception.WeatherException
 import com.sls.handbook.core.domain.repository.WeatherRepository
-import com.sls.handbook.core.model.DailyForecast
-import com.sls.handbook.core.model.HourlyForecast
+import com.sls.handbook.core.model.ForecastData
+import com.sls.handbook.core.model.ForecastItem
 import com.sls.handbook.core.model.Weather
-import com.sls.handbook.core.network.api.HourlyForecastApi
 import com.sls.handbook.core.network.api.WeatherApi
-import com.sls.handbook.core.network.model.ForecastItemResponse
-import java.time.Instant
-import java.time.LocalDate
-import java.time.ZoneOffset
+import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.coroutines.cancellation.CancellationException
+import retrofit2.HttpException
 
-private const val AppId = "ae103060692fe13422deb98285505dc6"
-private const val MiddayHour = 12
-
+/**
+ * Production implementation of [WeatherRepository] backed by the OpenWeatherMap API.
+ *
+ * Maps network DTOs from [WeatherApi] to domain model types.
+ *
+ * @param weatherApi Retrofit service for OpenWeatherMap endpoints
+ */
 @Singleton
 class WeatherRepositoryImpl @Inject constructor(
     private val weatherApi: WeatherApi,
-    private val hourlyForecastApi: HourlyForecastApi,
 ) : WeatherRepository {
 
-    override suspend fun getWeatherWithForecast(lat: Double, lon: Double): Pair<Weather, List<DailyForecast>> {
-        val weather = fetchWeather(lat, lon)
-        val forecastResponse = weatherApi.getForecast(lat = lat, lon = lon, appId = AppId)
-        val today = LocalDate.now(ZoneOffset.UTC)
-        val forecast = forecastResponse.list
-            .groupBy { item ->
-                Instant.ofEpochSecond(item.dt).atZone(ZoneOffset.UTC).toLocalDate()
-            }
-            .filterKeys { it.isAfter(today) }
-            .toSortedMap()
-            .map { (_, items) -> aggregateDay(items) }
-        return weather to forecast
-    }
-
-    override suspend fun getHourlyForecast(lat: Double, lon: Double): List<HourlyForecast> {
-        val response = hourlyForecastApi.getHourlyForecast(lat = lat, lon = lon, appId = AppId)
-        val zoneOffset = ZoneOffset.ofTotalSeconds(response.city.timezone)
-        val today = LocalDate.now(zoneOffset)
-        return response.list
-            .filter { entry ->
-                val entryDate = Instant.ofEpochSecond(entry.dt).atOffset(zoneOffset).toLocalDate()
-                entryDate == today
-            }
-            .map { entry ->
-                val condition = entry.weather.firstOrNull()
-                HourlyForecast(
-                    dt = entry.dt,
-                    temperature = entry.main.temp,
-                    icon = condition?.icon.orEmpty(),
-                    description = condition?.description.orEmpty(),
-                    pop = entry.pop,
-                )
-            }
-    }
-
-    private suspend fun fetchWeather(lat: Double, lon: Double): Weather {
-        val response = weatherApi.getWeather(lat = lat, lon = lon, appId = AppId)
+    override suspend fun getWeather(lat: Double, lon: Double, lang: String): Weather {
+        val response = weatherApiCall { weatherApi.getWeather(lat = lat, lon = lon, lang = lang) }
         val condition = response.weather.firstOrNull()
         return Weather(
             cityName = response.name,
@@ -78,16 +45,35 @@ class WeatherRepositoryImpl @Inject constructor(
         )
     }
 
-    private fun aggregateDay(items: List<ForecastItemResponse>): DailyForecast {
-        val middayItem = items.minBy { item ->
-            val hour = Instant.ofEpochSecond(item.dt).atZone(ZoneOffset.UTC).hour
-            kotlin.math.abs(hour - MiddayHour)
-        }
-        return DailyForecast(
-            dateEpochSeconds = middayItem.dt,
-            tempMin = items.minOf { it.main.tempMin },
-            tempMax = items.maxOf { it.main.tempMax },
-            icon = middayItem.weather.firstOrNull()?.icon.orEmpty(),
+    override suspend fun getForecastData(lat: Double, lon: Double, lang: String): ForecastData {
+        val response = weatherApiCall { weatherApi.getForecast(lat = lat, lon = lon, lang = lang) }
+        return ForecastData(
+            items = response.list.map { entry ->
+                val condition = entry.weather.firstOrNull()
+                ForecastItem(
+                    dt = entry.dt,
+                    temperature = entry.main.temp,
+                    tempMin = entry.main.tempMin,
+                    tempMax = entry.main.tempMax,
+                    icon = condition?.icon.orEmpty(),
+                    description = condition?.description.orEmpty(),
+                    pop = entry.pop,
+                )
+            },
+            timezoneOffsetSeconds = response.city.timezone,
         )
     }
 }
+
+private suspend fun <T> weatherApiCall(block: suspend () -> T): T =
+    try {
+        block()
+    } catch (e: CancellationException) {
+        throw e
+    } catch (e: IOException) {
+        throw WeatherException.Network(e)
+    } catch (e: HttpException) {
+        throw WeatherException.Server(e.code(), e.message(), e)
+    } catch (@Suppress("TooGenericExceptionCaught") e: Exception) {
+        throw WeatherException.DataParsing(e)
+    }

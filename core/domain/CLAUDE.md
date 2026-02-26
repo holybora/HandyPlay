@@ -15,7 +15,8 @@ Business logic and use cases layer. **JVM-only** — no Android dependencies.
 
 - `repository/JokeRepository.kt` — Repository interface `getJoke(ttlMillis)` + `JokeResult` data class
 - `repository/CategoryRepository.kt` — Repository interface `getCategories()` + `getTopicsByCategoryId()`
-- `repository/WeatherRepository.kt` — Repository interface with `getWeatherWithForecast(lat, lon)` and `getHourlyForecast(lat, lon)` for weather data access
+- `repository/WeatherRepository.kt` — Repository interface with `getWeather(lat, lon, lang)` and
+  `getForecastData(lat, lon, lang)` for weather data access
 
 ## Source
 
