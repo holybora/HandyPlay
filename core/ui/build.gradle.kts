@@ -8,8 +8,8 @@ android {
 }
 
 dependencies {
-    api(project(":core:designsystem"))
-    api(project(":core:model"))
+    implementation(project(":core:designsystem"))
+    implementation(project(":core:model"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.compose.ui)

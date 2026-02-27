@@ -118,9 +118,9 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ├── :core:ui, :core:designsystem, :core:domain, :core:model
 └── :navigation
 
-:core:data → :core:domain (api), :core:model (api), :core:common
+:core:data → :core:domain, :core:model, :core:common
 :core:domain → :core:model
-:core:ui → :core:designsystem (api), :core:model (api)
+:core:ui → :core:designsystem, :core:model
 :core:network → :core:common
 ```
 
