@@ -1,6 +1,5 @@
 package com.sls.handbook.feature.fever
 
-import android.util.Log
 import app.cash.turbine.test
 import com.sls.handbook.core.domain.usecase.GenerateRandomCoordinatesUseCase
 import com.sls.handbook.core.domain.usecase.GetCurrentWeatherUseCase
@@ -14,7 +13,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.unmockkAll
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,8 +41,6 @@ class FeverViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        mockkStatic(Log::class)
-        every { Log.w(any<String>(), any<String>(), any<Throwable>()) } returns 0
         every { generateRandomCoordinates() } returns Coordinates(10.0, 20.0)
         coEvery { getCurrentWeather(any(), any(), any()) } returns testWeather
         coEvery { getForecastData(any(), any(), any()) } returns testForecastData
