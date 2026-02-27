@@ -1,7 +1,6 @@
 plugins {
     id("handyplay.android.library")
     id("handyplay.android.hilt")
-    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -13,7 +12,6 @@ dependencies {
     implementation(project(":core:model"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.kotlinx.serialization.json)
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp.core)
