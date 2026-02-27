@@ -1,8 +1,5 @@
 package com.sls.handbook.core.model
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Weather(
     val cityName: String,
     val country: String,

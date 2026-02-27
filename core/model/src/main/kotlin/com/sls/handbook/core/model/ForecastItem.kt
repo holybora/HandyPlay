@@ -1,7 +1,5 @@
 package com.sls.handbook.core.model
 
-import kotlinx.serialization.Serializable
-
 /**
  * Single 3-hourly forecast data point from the OpenWeatherMap 5-day forecast API.
  *
@@ -13,7 +11,6 @@ import kotlinx.serialization.Serializable
  * @property description human-readable weather condition text
  * @property pop probability of precipitation, from 0.0 (none) to 1.0 (certain)
  */
-@Serializable
 data class ForecastItem(
     val dt: Long,
     val temperature: Double,

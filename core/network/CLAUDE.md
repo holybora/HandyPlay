@@ -6,12 +6,11 @@ Network/API layer with HTTP client setup and DI.
 
 - **Namespace:** `com.sls.handbook.core.network`
 - **Type:** Android Library
-- **Plugins:** `handyplay.android.library`, `handyplay.android.hilt`, `kotlin.serialization`
+- **Plugins:** `handyplay.android.library`, `handyplay.android.hilt`
 
 ## Dependencies
 
 - `:core:common`
-- `kotlinx-serialization-json`
 
 ## Key Files
 
