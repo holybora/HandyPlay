@@ -9,12 +9,10 @@ import com.sls.handbook.core.domain.usecase.GetCurrentWeatherUseCase
 import com.sls.handbook.core.domain.usecase.GetFiveDayForecastUseCase
 import com.sls.handbook.core.domain.usecase.GetForecastDataUseCase
 import com.sls.handbook.core.domain.usecase.GetTodayHourlyForecastUseCase
-import com.sls.handbook.feature.fever.di.IoDispatcher
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.cancellation.CancellationException
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -35,10 +33,8 @@ import kotlinx.coroutines.launch
  * @param getFiveDayForecast aggregates forecast data into daily summaries
  * @param getTodayHourlyForecast filters forecast data to today's hourly entries
  * @param generateRandomCoordinates produces a random lat/lon pair
- * @param ioDispatcher coroutine dispatcher for network I/O operations
  */
 @HiltViewModel
-@Suppress("LongParameterList")
 class FeverViewModel @Inject constructor(
     private val stringResolver: StringResolver,
     private val getCurrentWeather: GetCurrentWeatherUseCase,
@@ -46,7 +42,6 @@ class FeverViewModel @Inject constructor(
     private val getFiveDayForecast: GetFiveDayForecastUseCase,
     private val getTodayHourlyForecast: GetTodayHourlyForecastUseCase,
     private val generateRandomCoordinates: GenerateRandomCoordinatesUseCase,
-    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<FeverUiState>(FeverUiState.Loading)
@@ -68,7 +63,7 @@ class FeverViewModel @Inject constructor(
 
     private fun loadWeather() {
         _uiState.value = FeverUiState.Loading
-        viewModelScope.launch(ioDispatcher) {
+        viewModelScope.launch {
             try {
                 val coordinates = generateRandomCoordinates()
                 val lang = Locale.getDefault().language
