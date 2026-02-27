@@ -162,7 +162,6 @@ class FeverViewModelTest {
         getFiveDayForecast = getFiveDayForecast,
         getTodayHourlyForecast = getTodayHourlyForecast,
         generateRandomCoordinates = generateRandomCoordinates,
-        ioDispatcher = testDispatcher,
     )
 
     private companion object {
