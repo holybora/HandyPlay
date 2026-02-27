@@ -1,6 +1,7 @@
 package com.sls.handbook.core.network.di
 
 import com.sls.handbook.core.network.ApiKeyProvider
+import com.sls.handbook.core.network.BuildConfig
 import com.sls.handbook.core.network.api.JokeApi
 import com.sls.handbook.core.network.api.PicsumApi
 import com.sls.handbook.core.network.api.WeatherApi
@@ -27,7 +28,13 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(): OkHttpClient {
+    fun provideApiKeyProvider(): ApiKeyProvider = object : ApiKeyProvider {
+        override fun getApiKey(): String = BuildConfig.OPENWEATHER_API_KEY
+    }
+
+    @Provides
+    @Singleton
+    fun provideBaseOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
@@ -44,10 +51,10 @@ object NetworkModule {
     @Singleton
     @Named("weather")
     fun provideWeatherOkHttpClient(
-        okHttpClient: OkHttpClient,
+        baseOkHttpClient: OkHttpClient,
         apiKeyProvider: ApiKeyProvider,
     ): OkHttpClient {
-        return okHttpClient.newBuilder()
+        return baseOkHttpClient.newBuilder()
             .addInterceptor(ApiKeyInterceptor(apiKeyProvider))
             .build()
     }

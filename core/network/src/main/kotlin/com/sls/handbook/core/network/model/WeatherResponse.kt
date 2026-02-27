@@ -51,3 +51,7 @@ data class ForecastItemResponse(
     @SerializedName("weather") val weather: List<WeatherConditionResponse>,
     @SerializedName("pop") val pop: Double,
 )
+
+data class CityResponse(
+    @SerializedName("timezone") val timezone: Int,
+)
