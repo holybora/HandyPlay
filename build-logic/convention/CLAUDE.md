@@ -13,10 +13,12 @@ Convention plugins for standardised Gradle module configuration.
 | `handyplay.android.hilt` | `AndroidHiltConventionPlugin` | KSP + Dagger Hilt (android + compiler) |
 | `handyplay.android.test` | `AndroidTestConventionPlugin` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test) |
 | `handyplay.jvm.library` | `JvmLibraryConventionPlugin` | Pure JVM Kotlin (Java 11, no Android) |
+| `handyplay.detekt` | `DetektConventionPlugin` | Detekt static analysis + Compose rules |
 
 ## Key Files
 
 - `AndroidFeatureConventionPlugin.kt` — Most complex; auto-adds `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation` + Compose/Lifecycle/Hilt deps
+- `DetektConventionPlugin.kt` — Configures Detekt with project config file, formatting + Compose rules plugins
 - `KotlinAndroid.kt` — Shared Kotlin/Android configuration (SDK levels, JVM target)
 - `ProjectExtensions.kt` — `libs` extension for accessing version catalog
 

@@ -18,12 +18,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun WelcomeScreen(
     modifier: Modifier = Modifier,
     onStart: () -> Unit = {},
 ) {
+    Rebugger(
+        composableName = "WelcomeScreen",
+        trackMap = mapOf(
+            "onStart" to onStart,
+        ),
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()

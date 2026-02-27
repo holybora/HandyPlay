@@ -15,6 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.AccentTerracotta
 import com.sls.handbook.core.model.Category
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun CategoryCard(
@@ -22,6 +23,14 @@ fun CategoryCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "CategoryCard",
+        trackMap = mapOf(
+            "category" to category,
+            "onClick" to onClick,
+        ),
+    )
+
     Card(
         onClick = onClick,
         modifier = modifier.aspectRatio(1.4f),

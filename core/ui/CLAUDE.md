@@ -17,7 +17,7 @@ Shared composable components reused across feature modules.
 
 - `BreadcrumbBar.kt` — Clickable breadcrumb chips per segment with arrow icon separators and `onSegmentClick` callback
 - `SearchBar.kt` — Search input composable with Material3 styling
-- `BottomSearchBar.kt` — Combined search + breadcrumb in fixed bottom bar with `imePadding()` and `onSegmentClick` passthrough
+- `BottomSearchBar.kt` — Plain Column with search + breadcrumb, keyboard aware with `imePadding()`; animation logic moved to app level
 
 ## Source
 

@@ -36,6 +36,9 @@ espressoCore = "3.7.0"
 mockk = "1.13.16"
 turbine = "1.2.0"
 
+# Debug
+rebugger = "1.0.1"
+
 # Static analysis
 detekt = "1.23.8"
 detektComposeRules = "0.4.22"
@@ -86,6 +89,9 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+
+# Debug
+rebugger = { group = "io.github.theapache64", name = "rebugger", version.ref = "rebugger" }
 
 # Build logic dependencies (for convention plugins)
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }

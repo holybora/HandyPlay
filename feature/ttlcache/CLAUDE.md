@@ -38,3 +38,4 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 - ViewModel exposes `uiState: StateFlow<TtlCacheUiState>` collected via `collectAsStateWithLifecycle()`
 - Fetches jokes from `JokeRepository` with configurable TTL (1-5 seconds dropdown)
 - Displays "(fresh)" or "(from cache)" labels to demonstrate cache behavior
+- Uses `Rebugger` for recomposition tracking in Screen and Route composables

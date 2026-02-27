@@ -32,6 +32,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sls.handbook.core.designsystem.theme.HandyPlayTheme
+import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun TtlCacheScreen(
@@ -40,6 +41,15 @@ fun TtlCacheScreen(
     onGetClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    Rebugger(
+        composableName = "TtlCacheScreen",
+        trackMap = mapOf(
+            "uiState" to uiState,
+            "onTtlChange" to onTtlChange,
+            "onGetClick" to onGetClick,
+        ),
+    )
+
     when (uiState) {
         is TtlCacheUiState.Idle -> TtlCacheIdleContent(
             uiState = uiState,

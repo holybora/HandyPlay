@@ -1,6 +1,7 @@
 plugins {
     id("handyplay.android.application")
     id("handyplay.android.hilt")
+    id("handyplay.android.test")
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -28,6 +29,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -75,6 +77,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // Debug
+    implementation(libs.rebugger)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }

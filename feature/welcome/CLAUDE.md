@@ -20,4 +20,4 @@ Welcome/onboarding screen — the app's start destination.
 
 ## Source
 
-- `src/main/java/com/sls/handbook/feature/welcome/`
+- `src/main/kotlin/com/sls/handbook/feature/welcome/`
