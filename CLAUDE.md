@@ -78,7 +78,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 |--------|------|---------|
 | `:app` | Application | Entry point, NavHost, Hilt setup |
 | `:core:common` | Android Library | Shared utilities |
-| `:core:model` | JVM Library | Data models (`@Serializable`) |
+| `:core:model` | JVM Library | Data models |
 | `:core:domain` | JVM Library | Use cases / business logic |
 | `:core:data` | Android Library | Repositories, data sources |
 | `:core:network` | Android Library | API client, network DI |

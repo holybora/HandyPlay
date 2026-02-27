@@ -5,21 +5,20 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 ## Module Info
 
 - **Type:** JVM Library (no Android)
-- **Plugins:** `handyplay.jvm.library`, `kotlin.serialization`
+- **Plugins:** `handyplay.jvm.library`
 
 ## Dependencies
 
-- `kotlinx-serialization-json`
 - No internal module dependencies
 
 ## Key Files
 
-- `Category.kt` — `@Serializable` data class with `id: String`, `name: String`
-- `Topic.kt` — `@Serializable` data class with `id: String`, `name: String`, `categoryId: String`, plus companion with `ID_TTL_CACHE` constant
-- `Joke.kt` — `@Serializable` data class with `setup: String`, `punchline: String`
-- `Weather.kt` — `@Serializable` data class for current weather with lat, lon, temperature, icon, description, wind, humidity, pressure, visibility, feelsLike
-- `DailyForecast.kt` — `@Serializable` data class with date, high, low, icon, description
-- `HourlyForecast.kt` — `@Serializable` data class with dt (Unix timestamp), temperature, icon, description, pop (precipitation probability)
+- `Category.kt` — data class with `id: String`, `name: String`
+- `Topic.kt` — data class with `id: String`, `name: String`, `categoryId: String`, plus companion with `ID_TTL_CACHE` constant
+- `Joke.kt` — data class with `setup: String`, `punchline: String`
+- `Weather.kt` — data class for current weather with lat, lon, temperature, icon, description, wind, humidity, pressure, visibility, feelsLike
+- `DailyForecast.kt` — data class with date, high, low, icon, description
+- `HourlyForecast.kt` — data class with dt (Unix timestamp), temperature, icon, description, pop (precipitation probability)
 
 ## Source
 
@@ -33,6 +32,5 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 
 ## Notes
 
-- All models use `@Serializable` for kotlinx.serialization
 - Keep models as plain data classes — no business logic
 - This module is depended on by `:core:domain`, `:core:data`, `:core:ui`, and all feature modules

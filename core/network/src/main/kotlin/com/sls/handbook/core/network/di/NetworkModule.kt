@@ -27,17 +27,28 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(apiKeyProvider: ApiKeyProvider): OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(CONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT_SECONDS, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .addInterceptor(ApiKeyInterceptor(apiKeyProvider))
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = HttpLoggingInterceptor.Level.BODY
                 },
             )
+            .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("weather")
+    fun provideWeatherOkHttpClient(
+        okHttpClient: OkHttpClient,
+        apiKeyProvider: ApiKeyProvider,
+    ): OkHttpClient {
+        return okHttpClient.newBuilder()
+            .addInterceptor(ApiKeyInterceptor(apiKeyProvider))
             .build()
     }
 
@@ -78,7 +89,7 @@ object NetworkModule {
     @Provides
     @Singleton
     @Named("weather")
-    fun provideWeatherRetrofit(okHttpClient: OkHttpClient): Retrofit {
+    fun provideWeatherRetrofit(@Named("weather") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
             .baseUrl("https://api.openweathermap.org/")
             .client(okHttpClient)
