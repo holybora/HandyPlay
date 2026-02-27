@@ -5,8 +5,3 @@ plugins {
 android {
     namespace = "com.sls.handbook.feature.ttlcache"
 }
-
-dependencies {
-    implementation(project(":core:data"))
-    implementation(project(":core:common"))
-}

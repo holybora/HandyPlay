@@ -13,11 +13,6 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 - Compose + Hilt + Lifecycle + Navigation
 - `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation`
 
-## Dependencies
-
-- `:core:data` (implementation) — repository access
-- `:core:common` (implementation) — cache utilities
-
 ## Key Files
 
 - `TtlCacheScreen.kt` — Main composable with scrollable column, TTL dropdown, labeled text, code display, and GET button

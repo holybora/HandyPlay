@@ -15,7 +15,6 @@ Photo gallery screen with infinite scroll pagination and full-screen interactive
 
 ## Dependencies (explicit)
 
-- `:core:data` (implementation) — repository abstraction
 - `androidx.activity.compose` (implementation) — `BackHandler` for full-screen viewer
 - `coil.compose` (implementation) — async image loading
 - `coil.network.okhttp` (implementation) — OkHttp support for Coil
