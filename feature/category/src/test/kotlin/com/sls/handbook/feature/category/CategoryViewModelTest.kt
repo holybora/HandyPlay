@@ -3,6 +3,7 @@ package com.sls.handbook.feature.category
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.sls.handbook.core.domain.repository.CategoryRepository
+import com.sls.handbook.core.domain.usecase.GetTopicsByCategoryIdUseCase
 import com.sls.handbook.core.model.Category
 import com.sls.handbook.core.model.Topic
 import kotlinx.coroutines.test.runTest
@@ -32,6 +33,8 @@ class CategoryViewModelTest {
             }
     }
 
+    private val getTopicsByCategoryId = GetTopicsByCategoryIdUseCase(fakeRepository)
+
     private fun createSavedStateHandle(
         categoryId: String = "kotlin_fundamentals",
         categoryName: String = "Kotlin Fundamentals",
@@ -46,7 +49,7 @@ class CategoryViewModelTest {
     fun setUp() {
         viewModel = CategoryViewModel(
             savedStateHandle = createSavedStateHandle(),
-            categoryRepository = fakeRepository,
+            getTopicsByCategoryId = getTopicsByCategoryId,
         )
     }
 
@@ -177,7 +180,7 @@ class CategoryViewModelTest {
                 categoryId = "unknown",
                 categoryName = "Unknown",
             ),
-            categoryRepository = fakeRepository,
+            getTopicsByCategoryId = getTopicsByCategoryId,
         )
         vm.uiState.test {
             val state = awaitItem() as CategoryUiState.Success
