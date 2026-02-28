@@ -89,6 +89,11 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `:feature:home` | Feature | Home screen with category grid + search |
 | `:feature:category` | Feature | Category topics screen with topic grid + search |
 | `:feature:ttlcache` | Feature | TTL Cache demo screen with joke fetching |
+| `:feature:gallery` | Feature | Photo gallery with infinite scroll + full-screen viewer |
+| `:feature:fever` | Feature | Weather screen with random location conditions |
+| `:feature:dp-creational` | Feature | Creational design pattern demos (Factory Method, Abstract Factory, Prototype) |
+| `:feature:dp-structural` | Feature | Structural design pattern demos (Adapter, Decorator, Facade) |
+| `:feature:dp-behavioral` | Feature | Behavioral design pattern demos (Observer, Strategy, Command, State Machine) |
 | `:build-logic` | Included Build | Convention plugins |
 
 ## Convention Plugins (`build-logic/`)
@@ -112,13 +117,14 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 :app
 ├── :core:common, :core:designsystem, :core:ui, :core:domain, :core:data, :core:model, :core:network
 ├── :navigation
-└── :feature:welcome, :feature:home, :feature:category, :feature:ttlcache
+└── :feature:welcome, :feature:home, :feature:category, :feature:ttlcache, :feature:gallery, :feature:fever
+    :feature:dp-creational, :feature:dp-structural, :feature:dp-behavioral
 
 :feature:* (via handyplay.android.feature plugin)
 ├── :core:ui, :core:designsystem, :core:domain, :core:model
 └── :navigation
 
-:core:data → :core:domain, :core:model, :core:common
+:core:data → :core:domain, :core:model, :core:common, :core:network
 :core:domain → :core:model
 :core:ui → :core:designsystem, :core:model
 :core:network → :core:common

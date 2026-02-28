@@ -8,7 +8,7 @@ Material3 design system — theme tokens, colors, and typography.
 - **Type:** Android Library with Compose
 - **Plugins:** `handyplay.android.library`, `handyplay.android.library.compose`
 
-## Dependencies (exposed as `api`)
+## Dependencies
 
 - `androidx.compose.ui:ui`
 - `androidx.compose.ui:ui-graphics`
@@ -22,7 +22,7 @@ Material3 design system — theme tokens, colors, and typography.
 
 ## Source
 
-- `src/main/java/com/sls/handbook/core/designsystem/`
+- `src/main/kotlin/com/sls/handbook/core/designsystem/`
 
 ## Notes
 
