@@ -16,7 +16,7 @@ class CategoryUiStateTest {
 
     @Test
     fun `Success holds categoryName, topics, and searchQuery`() {
-        val topics = listOf(Topic(id = "1", name = "Test Topic", categoryId = "cat1"))
+        val topics = listOf<Topic>(Topic.KotlinFundamental.TtlCache)
         val state = CategoryUiState.Success(
             categoryName = "Test Category",
             topics = topics,
@@ -38,7 +38,7 @@ class CategoryUiStateTest {
 
     @Test
     fun `Success copy preserves unchanged fields`() {
-        val topics = listOf(Topic(id = "1", name = "Topic", categoryId = "cat"))
+        val topics = listOf<Topic>(Topic.Ui.Gallery)
         val original = CategoryUiState.Success(
             categoryName = "Category",
             topics = topics,
@@ -52,8 +52,8 @@ class CategoryUiStateTest {
 
     @Test
     fun `Success copy can update topics`() {
-        val originalTopics = listOf(Topic(id = "1", name = "Topic1", categoryId = "cat"))
-        val newTopics = listOf(Topic(id = "2", name = "Topic2", categoryId = "cat"))
+        val originalTopics = listOf<Topic>(Topic.Ui.Gallery)
+        val newTopics = listOf<Topic>(Topic.Ui.Fever)
         val original = CategoryUiState.Success(
             categoryName = "Category",
             topics = originalTopics,
@@ -71,7 +71,7 @@ class CategoryUiStateTest {
 
     @Test
     fun `Success states with same data are equal`() {
-        val topics = listOf(Topic(id = "1", name = "A", categoryId = "cat"))
+        val topics = listOf<Topic>(Topic.KotlinFundamental.TtlCache)
         val a = CategoryUiState.Success(
             categoryName = "Cat",
             topics = topics,
@@ -104,10 +104,10 @@ class CategoryUiStateTest {
 
     @Test
     fun `Success can hold multiple topics`() {
-        val topics = listOf(
-            Topic(id = "1", name = "Topic 1", categoryId = "cat"),
-            Topic(id = "2", name = "Topic 2", categoryId = "cat"),
-            Topic(id = "3", name = "Topic 3", categoryId = "cat"),
+        val topics = listOf<Topic>(
+            Topic.DesignPattern.FactoryMethod,
+            Topic.DesignPattern.Observer,
+            Topic.DesignPattern.Strategy,
         )
         val state = CategoryUiState.Success(
             categoryName = "Category",

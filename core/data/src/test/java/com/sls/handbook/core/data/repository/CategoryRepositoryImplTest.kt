@@ -43,15 +43,15 @@ class CategoryRepositoryImplTest {
     fun `getTopicsByCategoryId returns topics for ui`() {
         val topics = repository.getTopicsByCategoryId("ui")
         assertEquals(2, topics.size)
-        assertTrue(topics.any { it.id == Topic.ID_GALLERY })
-        assertTrue(topics.any { it.id == Topic.ID_FEVER })
+        assertTrue(topics.any { it is Topic.Ui.Gallery })
+        assertTrue(topics.any { it is Topic.Ui.Fever })
     }
 
     @Test
     fun `getTopicsByCategoryId returns topics for kotlin_fundamentals`() {
         val topics = repository.getTopicsByCategoryId("kotlin_fundamentals")
         assertEquals(1, topics.size)
-        assertTrue(topics.any { it.id == Topic.ID_TTL_CACHE })
+        assertTrue(topics.any { it is Topic.KotlinFundamental.TtlCache })
     }
 
     @Test

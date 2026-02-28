@@ -14,10 +14,10 @@ class GetTopicsByCategoryIdUseCaseTest {
 
         override fun getTopicsByCategoryId(categoryId: String): List<Topic> =
             when (categoryId) {
-                "kotlin_fundamentals" -> listOf(
-                    Topic("kf_1", "Variables & Types", "kotlin_fundamentals"),
-                    Topic("kf_2", "Control Flow", "kotlin_fundamentals"),
-                    Topic("kf_3", "Functions", "kotlin_fundamentals"),
+                "design_patterns" -> listOf(
+                    Topic.DesignPattern.FactoryMethod,
+                    Topic.DesignPattern.Observer,
+                    Topic.DesignPattern.Strategy,
                 )
                 else -> emptyList()
             }
@@ -27,11 +27,11 @@ class GetTopicsByCategoryIdUseCaseTest {
 
     @Test
     fun `returns topics for known category`() {
-        val topics = useCase("kotlin_fundamentals")
+        val topics = useCase("design_patterns")
         assertEquals(3, topics.size)
-        assertEquals("Variables & Types", topics[0].name)
-        assertEquals("Control Flow", topics[1].name)
-        assertEquals("Functions", topics[2].name)
+        assertEquals("Factory Method", topics[0].name)
+        assertEquals("Observer", topics[1].name)
+        assertEquals("Strategy", topics[2].name)
     }
 
     @Test
@@ -42,8 +42,8 @@ class GetTopicsByCategoryIdUseCaseTest {
 
     @Test
     fun `returned topics have correct categoryId`() {
-        val topics = useCase("kotlin_fundamentals")
-        assertTrue(topics.all { it.categoryId == "kotlin_fundamentals" })
+        val topics = useCase("design_patterns")
+        assertTrue(topics.all { it.categoryId == "design_patterns" })
     }
 
     @Test

@@ -24,10 +24,10 @@ class CategoryViewModelTest {
 
         override fun getTopicsByCategoryId(categoryId: String): List<Topic> =
             when (categoryId) {
-                "kotlin_fundamentals" -> listOf(
-                    Topic("kf_1", "Variables & Types", "kotlin_fundamentals"),
-                    Topic("kf_2", "Control Flow", "kotlin_fundamentals"),
-                    Topic("kf_3", "Functions", "kotlin_fundamentals"),
+                "design_patterns" -> listOf(
+                    Topic.DesignPattern.FactoryMethod,
+                    Topic.DesignPattern.Observer,
+                    Topic.DesignPattern.Strategy,
                 )
                 else -> emptyList()
             }
@@ -36,8 +36,8 @@ class CategoryViewModelTest {
     private val getTopicsByCategoryId = GetTopicsByCategoryIdUseCase(fakeRepository)
 
     private fun createSavedStateHandle(
-        categoryId: String = "kotlin_fundamentals",
-        categoryName: String = "Kotlin Fundamentals",
+        categoryId: String = "design_patterns",
+        categoryName: String = "Design Patterns",
     ): SavedStateHandle = SavedStateHandle(
         mapOf(
             "categoryId" to categoryId,
@@ -59,7 +59,7 @@ class CategoryViewModelTest {
             val state = awaitItem()
             assertTrue(state is CategoryUiState.Success)
             assertEquals(3, (state as CategoryUiState.Success).topics.size)
-            assertEquals("Kotlin Fundamentals", state.categoryName)
+            assertEquals("Design Patterns", state.categoryName)
             assertEquals("", state.searchQuery)
         }
     }
@@ -69,9 +69,9 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             val success = awaitItem() as CategoryUiState.Success
             val names = success.topics.map { it.name }
-            assertTrue("Variables & Types" in names)
-            assertTrue("Control Flow" in names)
-            assertTrue("Functions" in names)
+            assertTrue("Factory Method" in names)
+            assertTrue("Observer" in names)
+            assertTrue("Strategy" in names)
         }
     }
 
@@ -80,11 +80,11 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("Control")
+            viewModel.onSearchQueryChanged("Observer")
             val filtered = awaitItem() as CategoryUiState.Success
             assertEquals(1, filtered.topics.size)
-            assertEquals("Control Flow", filtered.topics.first().name)
-            assertEquals("Control", filtered.searchQuery)
+            assertEquals("Observer", filtered.topics.first().name)
+            assertEquals("Observer", filtered.searchQuery)
         }
     }
 
@@ -93,10 +93,10 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("variables")
+            viewModel.onSearchQueryChanged("factory")
             val filtered = awaitItem() as CategoryUiState.Success
             assertEquals(1, filtered.topics.size)
-            assertEquals("Variables & Types", filtered.topics.first().name)
+            assertEquals("Factory Method", filtered.topics.first().name)
         }
     }
 
@@ -105,10 +105,10 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("Func")
+            viewModel.onSearchQueryChanged("Strat")
             val filtered = awaitItem() as CategoryUiState.Success
             assertEquals(1, filtered.topics.size)
-            assertEquals("Functions", filtered.topics.first().name)
+            assertEquals("Strategy", filtered.topics.first().name)
         }
     }
 
@@ -129,7 +129,7 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("Control")
+            viewModel.onSearchQueryChanged("Observer")
             awaitItem()
 
             viewModel.onSearchQueryChanged("")
@@ -144,7 +144,7 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("Control")
+            viewModel.onSearchQueryChanged("Observer")
             awaitItem()
 
             viewModel.onSearchQueryChanged("   ")
@@ -159,9 +159,9 @@ class CategoryViewModelTest {
         viewModel.uiState.test {
             awaitItem()
 
-            viewModel.onSearchQueryChanged("Control")
+            viewModel.onSearchQueryChanged("Observer")
             val state = awaitItem() as CategoryUiState.Success
-            assertEquals("Control", state.searchQuery)
+            assertEquals("Observer", state.searchQuery)
         }
     }
 
@@ -169,7 +169,7 @@ class CategoryViewModelTest {
     fun `category name is preserved from navigation args`() = runTest {
         viewModel.uiState.test {
             val state = awaitItem() as CategoryUiState.Success
-            assertEquals("Kotlin Fundamentals", state.categoryName)
+            assertEquals("Design Patterns", state.categoryName)
         }
     }
 

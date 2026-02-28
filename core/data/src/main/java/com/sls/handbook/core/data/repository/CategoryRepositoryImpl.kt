@@ -17,23 +17,23 @@ class CategoryRepositoryImpl @Inject constructor() : CategoryRepository {
 
     private val topicsByCategory: Map<String, List<Topic>> = mapOf(
         "kotlin_fundamentals" to listOf(
-            Topic(Topic.ID_TTL_CACHE, "TTL Cache", "kotlin_fundamentals"),
+            Topic.KotlinFundamental.TtlCache,
         ),
         "ui" to listOf(
-            Topic(Topic.ID_GALLERY, "Gallery", "ui"),
-            Topic(Topic.ID_FEVER, "Fever", "ui"),
+            Topic.Ui.Gallery,
+            Topic.Ui.Fever,
         ),
         "design_patterns" to listOf(
-            Topic(Topic.ID_DP_FACTORY_METHOD, "Factory Method", "design_patterns"),
-            Topic(Topic.ID_DP_ABSTRACT_FACTORY, "Abstract Factory", "design_patterns"),
-            Topic(Topic.ID_DP_PROTOTYPE, "Prototype", "design_patterns"),
-            Topic(Topic.ID_DP_ADAPTER, "Adapter", "design_patterns"),
-            Topic(Topic.ID_DP_DECORATOR, "Decorator", "design_patterns"),
-            Topic(Topic.ID_DP_FACADE, "Facade", "design_patterns"),
-            Topic(Topic.ID_DP_OBSERVER, "Observer", "design_patterns"),
-            Topic(Topic.ID_DP_STRATEGY, "Strategy", "design_patterns"),
-            Topic(Topic.ID_DP_COMMAND, "Command", "design_patterns"),
-            Topic(Topic.ID_DP_STATE_MACHINE, "State Machine", "design_patterns"),
+            Topic.DesignPattern.FactoryMethod,
+            Topic.DesignPattern.AbstractFactory,
+            Topic.DesignPattern.Prototype,
+            Topic.DesignPattern.Adapter,
+            Topic.DesignPattern.Decorator,
+            Topic.DesignPattern.Facade,
+            Topic.DesignPattern.Observer,
+            Topic.DesignPattern.Strategy,
+            Topic.DesignPattern.Command,
+            Topic.DesignPattern.StateMachine,
         ),
     )
 

@@ -23,7 +23,7 @@ import com.theapache64.rebugger.Rebugger
 @Composable
 fun CategoryScreen(
     uiState: CategoryUiState,
-    onTopicClick: (String) -> Unit,
+    onTopicClick: (Topic) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Rebugger(
@@ -71,7 +71,7 @@ fun CategoryScreen(
                 ) { topic ->
                     TopicCard(
                         topic = topic,
-                        onClick = { onTopicClick(topic.id) },
+                        onClick = { onTopicClick(topic) },
                     )
                 }
             }
@@ -79,12 +79,12 @@ fun CategoryScreen(
     }
 }
 
-private val sampleTopics = listOf(
-    Topic(id = "1", name = "Variables & Types", categoryId = "kotlin_fundamentals"),
-    Topic(id = "2", name = "Control Flow", categoryId = "kotlin_fundamentals"),
-    Topic(id = "3", name = "Functions", categoryId = "kotlin_fundamentals"),
-    Topic(id = "4", name = "Classes & Objects", categoryId = "kotlin_fundamentals"),
-    Topic(id = "5", name = "Coroutines", categoryId = "kotlin_fundamentals"),
+private val sampleTopics: List<Topic> = listOf(
+    Topic.KotlinFundamental.TtlCache,
+    Topic.Ui.Gallery,
+    Topic.Ui.Fever,
+    Topic.DesignPattern.FactoryMethod,
+    Topic.DesignPattern.Observer,
 )
 
 @Preview(showBackground = true)

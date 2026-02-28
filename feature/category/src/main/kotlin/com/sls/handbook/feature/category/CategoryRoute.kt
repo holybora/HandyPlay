@@ -6,12 +6,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sls.handbook.core.model.Topic
 import com.theapache64.rebugger.Rebugger
 
 @Composable
 fun CategoryRoute(
     searchQuery: String,
-    onTopicClick: (String) -> Unit,
+    onTopicClick: (Topic) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: CategoryViewModel = hiltViewModel(),
 ) {

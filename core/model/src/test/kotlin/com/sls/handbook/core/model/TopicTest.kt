@@ -1,70 +1,97 @@
 package com.sls.handbook.core.model
 
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class TopicTest {
 
     @Test
-    fun `topic holds id, name, and categoryId`() {
-        val topic = Topic(id = "test_id", name = "Test Name", categoryId = "cat_1")
-        assertEquals("test_id", topic.id)
-        assertEquals("Test Name", topic.name)
-        assertEquals("cat_1", topic.categoryId)
+    fun `TtlCache returns correct id, name, and categoryId`() {
+        val topic: Topic = Topic.KotlinFundamental.TtlCache
+        assertEquals("kf_7", topic.id)
+        assertEquals("TTL Cache", topic.name)
+        assertEquals("kotlin_fundamentals", topic.categoryId)
     }
 
     @Test
-    fun `topics with same data are equal`() {
-        val a = Topic(id = "1", name = "A", categoryId = "cat")
-        val b = Topic(id = "1", name = "A", categoryId = "cat")
-        assertEquals(a, b)
+    fun `Gallery returns correct id, name, and categoryId`() {
+        val topic: Topic = Topic.Ui.Gallery
+        assertEquals("ui_1", topic.id)
+        assertEquals("Gallery", topic.name)
+        assertEquals("ui", topic.categoryId)
     }
 
     @Test
-    fun `topics with different ids are not equal`() {
-        val a = Topic(id = "1", name = "A", categoryId = "cat")
-        val b = Topic(id = "2", name = "A", categoryId = "cat")
-        assertNotEquals(a, b)
+    fun `Fever returns correct id, name, and categoryId`() {
+        val topic: Topic = Topic.Ui.Fever
+        assertEquals("ui_2", topic.id)
+        assertEquals("Fever", topic.name)
+        assertEquals("ui", topic.categoryId)
     }
 
     @Test
-    fun `topics with different names are not equal`() {
-        val a = Topic(id = "1", name = "A", categoryId = "cat")
-        val b = Topic(id = "1", name = "B", categoryId = "cat")
-        assertNotEquals(a, b)
+    fun `FactoryMethod returns correct id, name, and categoryId`() {
+        val topic: Topic = Topic.DesignPattern.FactoryMethod
+        assertEquals("dp_1", topic.id)
+        assertEquals("Factory Method", topic.name)
+        assertEquals("design_patterns", topic.categoryId)
     }
 
     @Test
-    fun `topics with different categoryIds are not equal`() {
-        val a = Topic(id = "1", name = "A", categoryId = "cat1")
-        val b = Topic(id = "1", name = "A", categoryId = "cat2")
-        assertNotEquals(a, b)
+    fun `all design pattern topics have design_patterns categoryId`() {
+        val patterns: List<Topic> = listOf(
+            Topic.DesignPattern.FactoryMethod,
+            Topic.DesignPattern.AbstractFactory,
+            Topic.DesignPattern.Prototype,
+            Topic.DesignPattern.Adapter,
+            Topic.DesignPattern.Decorator,
+            Topic.DesignPattern.Facade,
+            Topic.DesignPattern.Observer,
+            Topic.DesignPattern.Strategy,
+            Topic.DesignPattern.Command,
+            Topic.DesignPattern.StateMachine,
+        )
+        assertTrue(patterns.all { it.categoryId == "design_patterns" })
     }
 
     @Test
-    fun `topic copy works correctly`() {
-        val original = Topic(id = "1", name = "Original", categoryId = "cat")
-        val copied = original.copy(name = "Copied")
-        assertEquals("1", copied.id)
-        assertEquals("Copied", copied.name)
-        assertEquals("cat", copied.categoryId)
+    fun `TtlCache is KotlinFundamental`() {
+        assertTrue(Topic.KotlinFundamental.TtlCache is Topic.KotlinFundamental)
     }
 
     @Test
-    fun `equal topics have same hashCode`() {
-        val a = Topic(id = "1", name = "A", categoryId = "cat")
-        val b = Topic(id = "1", name = "A", categoryId = "cat")
-        assertEquals(a.hashCode(), b.hashCode())
+    fun `Gallery is Ui`() {
+        assertTrue(Topic.Ui.Gallery is Topic.Ui)
     }
 
     @Test
-    fun `companion constant ID_TTL_CACHE has correct value`() {
-        assertEquals("kf_7", Topic.ID_TTL_CACHE)
+    fun `FactoryMethod is DesignPattern`() {
+        assertTrue(Topic.DesignPattern.FactoryMethod is Topic.DesignPattern)
     }
 
     @Test
-    fun `companion constant ID_GALLERY has correct value`() {
-        assertEquals("ui_1", Topic.ID_GALLERY)
+    fun `data objects are singletons`() {
+        val a: Topic = Topic.KotlinFundamental.TtlCache
+        val b: Topic = Topic.KotlinFundamental.TtlCache
+        assertTrue(a === b)
+    }
+
+    @Test
+    fun `all design pattern topics have unique ids`() {
+        val patterns = listOf(
+            Topic.DesignPattern.FactoryMethod,
+            Topic.DesignPattern.AbstractFactory,
+            Topic.DesignPattern.Prototype,
+            Topic.DesignPattern.Adapter,
+            Topic.DesignPattern.Decorator,
+            Topic.DesignPattern.Facade,
+            Topic.DesignPattern.Observer,
+            Topic.DesignPattern.Strategy,
+            Topic.DesignPattern.Command,
+            Topic.DesignPattern.StateMachine,
+        )
+        val ids = patterns.map { it.id }
+        assertEquals(ids.size, ids.distinct().size)
     }
 }
