@@ -8,7 +8,7 @@ Shared composable components reused across feature modules.
 - **Type:** Android Library with Compose
 - **Plugins:** `handyplay.android.library`, `handyplay.android.library.compose`
 
-## Dependencies (exposed as `api`)
+## Dependencies
 
 - `:core:designsystem` — theme tokens
 - `:core:model` — data models for composable parameters

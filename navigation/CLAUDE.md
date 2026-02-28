@@ -8,18 +8,23 @@ Type-safe navigation route definitions.
 - **Type:** Android Library
 - **Plugins:** `handyplay.android.library`, `kotlin.serialization`
 
-## Dependencies (exposed as `api`)
+## Dependencies
 
 - `androidx.navigation:navigation-compose`
 - `kotlinx-serialization-json`
 
 ## Key Files
 
-- `AppDestinations.kt` — `@Serializable` destination objects: `WelcomeDestination`, `HomeDestination`
+- `AppDestinations.kt` — `@Serializable` destination objects/data classes:
+  - Core: `WelcomeDestination`, `HomeDestination`, `CategoryDestination(categoryId, categoryName)`
+  - Features: `TtlCacheDestination`, `GalleryDestination`, `FeverDestination`
+  - Creational patterns: `FactoryMethodDestination`, `AbstractFactoryDestination`, `PrototypeDestination`
+  - Structural patterns: `AdapterPatternDestination`, `DecoratorDestination`, `FacadeDestination`
+  - Behavioral patterns: `ObserverDestination`, `StrategyDestination`, `CommandDestination`, `StateMachineDestination`
 
 ## Source
 
-- `src/main/java/com/sls/handbook/navigation/`
+- `src/main/kotlin/com/sls/handbook/navigation/`
 
 ## Tests
 

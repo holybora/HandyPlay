@@ -19,6 +19,11 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 - `Weather.kt` — data class for current weather with lat, lon, temperature, icon, description, wind, humidity, pressure, visibility, feelsLike
 - `DailyForecast.kt` — data class with date, high, low, icon, description
 - `HourlyForecast.kt` — data class with dt (Unix timestamp), temperature, icon, description, pop (precipitation probability)
+- `Coordinates.kt` — data class with lat, lon
+- `ForecastData.kt` — data class combining daily and hourly forecasts
+- `ForecastItem.kt` — data class for individual forecast items
+- `GalleryImage.kt` — data class for gallery images (id, author, dimensions, URLs)
+- `PatternContent.kt` — data class for design pattern content
 
 ## Source
 
