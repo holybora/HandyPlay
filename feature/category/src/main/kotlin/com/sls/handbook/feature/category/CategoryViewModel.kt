@@ -3,7 +3,7 @@ package com.sls.handbook.feature.category
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.navigation.toRoute
-import com.sls.handbook.core.domain.repository.CategoryRepository
+import com.sls.handbook.core.domain.usecase.GetTopicsByCategoryIdUseCase
 import com.sls.handbook.navigation.CategoryDestination
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,14 +15,14 @@ import javax.inject.Inject
 @HiltViewModel
 class CategoryViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    categoryRepository: CategoryRepository,
+    getTopicsByCategoryId: GetTopicsByCategoryIdUseCase,
 ) : ViewModel() {
 
     private val destination = savedStateHandle.toRoute<CategoryDestination>()
     private val categoryId = destination.categoryId
     private val categoryName = destination.categoryName
 
-    private val allTopics = categoryRepository.getTopicsByCategoryId(categoryId)
+    private val allTopics = getTopicsByCategoryId(categoryId)
 
     private val _uiState = MutableStateFlow<CategoryUiState>(
         CategoryUiState.Success(
