@@ -25,7 +25,7 @@ Application entry point for HandyPlay. Single-activity Compose app with type-saf
 - `MainActivity.kt` — `@AndroidEntryPoint` single Activity, enables edge-to-edge with transparent system navigation bar (via `SystemBarStyle.auto(TRANSPARENT, TRANSPARENT)` and `isNavigationBarContrastEnforced = false`), sets content to `HandyPlayApp`
 - `HandyPlayApplication.kt` — `@HiltAndroidApp` Application class
 - `ui/HandyPlayApp.kt` — Root composable with `BottomSearchBarViewModel`, manages search state and destination-based visibility. Conditionally applies Scaffold padding: edge-to-edge for `FeverDestination` (line 98-101), standard padding for other destinations
-- `ui/HandyPlayNavHost.kt` — NavHost routes: `WelcomeDestination` → `HomeDestination` (pops Welcome), `HomeDestination` → `CategoryDestination`, `CategoryDestination` → `TtlCacheDestination`, `GalleryDestination`, or `FeverDestination` via `Topic.ID_*`
+- `ui/HandyPlayNavHost.kt` — NavHost routes: `WelcomeDestination` → `HomeDestination` (pops Welcome), `HomeDestination` → `CategoryDestination`, `CategoryDestination` → `TtlCacheDestination`, `GalleryDestination`, or `FeverDestination` via sealed `Topic` type matching
 - `ui/BottomSearchBarViewModel.kt` — `@HiltViewModel` managing search query, breadcrumb segments, bar visibility, and navigation events via Channel
 
 ### Debug-only: E2E Test Recording (src/debug/)

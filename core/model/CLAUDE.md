@@ -14,7 +14,7 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 ## Key Files
 
 - `Category.kt` — data class with `id: String`, `name: String`
-- `Topic.kt` — data class with `id: String`, `name: String`, `categoryId: String`, plus companion with `ID_TTL_CACHE` constant
+- `Topic.kt` — sealed class hierarchy with `id: String`, `name: String`, `categoryId: String` properties; sealed subclasses `KotlinFundamental`, `Ui`, `DesignPattern` each containing `data object` singletons for individual topics
 - `Joke.kt` — data class with `setup: String`, `punchline: String`
 - `Weather.kt` — data class for current weather with lat, lon, temperature, icon, description, wind, humidity, pressure, visibility, feelsLike
 - `DailyForecast.kt` — data class with date, high, low, icon, description
@@ -27,10 +27,10 @@ Pure Kotlin data models shared across the app. **JVM-only** — no Android depen
 ## Tests
 
 - `src/test/` — JVM unit tests
-  - `TopicTest.kt` — Data class properties, equality, copy, hashCode, companion constant tests
+  - `TopicTest.kt` — Sealed class hierarchy, singleton identity, property correctness, type-check tests
   - `JokeTest.kt` — Data class properties, equality, copy operations tests
 
 ## Notes
 
-- Keep models as plain data classes — no business logic
+- Keep models as plain data classes or sealed class hierarchies — no business logic beyond type-safe discrimination
 - This module is depended on by `:core:domain`, `:core:data`, `:core:ui`, and all feature modules

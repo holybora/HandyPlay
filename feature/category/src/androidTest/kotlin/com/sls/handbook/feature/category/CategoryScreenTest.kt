@@ -18,10 +18,10 @@ class CategoryScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private val sampleTopics = listOf(
-        Topic(id = "1", name = "Variables & Types", categoryId = "kotlin"),
-        Topic(id = "2", name = "Control Flow", categoryId = "kotlin"),
-        Topic(id = "3", name = "Functions", categoryId = "kotlin"),
+    private val sampleTopics: List<Topic> = listOf(
+        Topic.DesignPattern.FactoryMethod,
+        Topic.DesignPattern.Observer,
+        Topic.DesignPattern.Strategy,
     )
 
     @Test
@@ -35,7 +35,7 @@ class CategoryScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Variables & Types").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Factory Method").assertDoesNotExist()
     }
 
     @Test
@@ -44,7 +44,7 @@ class CategoryScreenTest {
             HandyPlayTheme {
                 CategoryScreen(
                     uiState = CategoryUiState.Success(
-                        categoryName = "Kotlin",
+                        categoryName = "Design Patterns",
                         topics = sampleTopics
                     ),
                     onTopicClick = {},
@@ -52,9 +52,9 @@ class CategoryScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Variables & Types").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Control Flow").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Functions").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Factory Method").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Observer").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Strategy").assertIsDisplayed()
     }
 
     @Test
@@ -63,7 +63,7 @@ class CategoryScreenTest {
             HandyPlayTheme {
                 CategoryScreen(
                     uiState = CategoryUiState.Success(
-                        categoryName = "Kotlin",
+                        categoryName = "Design Patterns",
                         topics = emptyList()
                     ),
                     onTopicClick = {},
@@ -71,26 +71,26 @@ class CategoryScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Variables & Types").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Factory Method").assertDoesNotExist()
     }
 
     @Test
     fun clickingTopicInvokesCallback() {
-        var clickedTopicId: String? = null
+        var clickedTopic: Topic? = null
         composeTestRule.setContent {
             HandyPlayTheme {
                 CategoryScreen(
                     uiState = CategoryUiState.Success(
-                        categoryName = "Kotlin",
+                        categoryName = "Design Patterns",
                         topics = sampleTopics
                     ),
-                    onTopicClick = { clickedTopicId = it },
+                    onTopicClick = { clickedTopic = it },
                 )
             }
         }
 
-        composeTestRule.onNodeWithText("Variables & Types").performClick()
-        assertEquals("1", clickedTopicId)
+        composeTestRule.onNodeWithText("Factory Method").performClick()
+        assertEquals(Topic.DesignPattern.FactoryMethod, clickedTopic)
     }
 
     @Test

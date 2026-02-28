@@ -192,21 +192,21 @@ private fun HandyPlayNavHost(
         composable<CategoryDestination> {
             CategoryRoute(
                 searchQuery = searchQuery,
-                onTopicClick = { topicId ->
-                    when (topicId) {
-                        Topic.ID_TTL_CACHE -> navController.navigate(TtlCacheDestination)
-                        Topic.ID_GALLERY -> navController.navigate(GalleryDestination)
-                        Topic.ID_FEVER -> navController.navigate(FeverDestination)
-                        Topic.ID_DP_FACTORY_METHOD -> navController.navigate(FactoryMethodDestination)
-                        Topic.ID_DP_ABSTRACT_FACTORY -> navController.navigate(AbstractFactoryDestination)
-                        Topic.ID_DP_PROTOTYPE -> navController.navigate(PrototypeDestination)
-                        Topic.ID_DP_ADAPTER -> navController.navigate(AdapterPatternDestination)
-                        Topic.ID_DP_DECORATOR -> navController.navigate(DecoratorDestination)
-                        Topic.ID_DP_FACADE -> navController.navigate(FacadeDestination)
-                        Topic.ID_DP_OBSERVER -> navController.navigate(ObserverDestination)
-                        Topic.ID_DP_STRATEGY -> navController.navigate(StrategyDestination)
-                        Topic.ID_DP_COMMAND -> navController.navigate(CommandDestination)
-                        Topic.ID_DP_STATE_MACHINE -> navController.navigate(StateMachineDestination)
+                onTopicClick = { topic ->
+                    when (topic) {
+                        is Topic.KotlinFundamental.TtlCache -> navController.navigate(TtlCacheDestination)
+                        is Topic.Ui.Gallery -> navController.navigate(GalleryDestination)
+                        is Topic.Ui.Fever -> navController.navigate(FeverDestination)
+                        is Topic.DesignPattern.FactoryMethod -> navController.navigate(FactoryMethodDestination)
+                        is Topic.DesignPattern.AbstractFactory -> navController.navigate(AbstractFactoryDestination)
+                        is Topic.DesignPattern.Prototype -> navController.navigate(PrototypeDestination)
+                        is Topic.DesignPattern.Adapter -> navController.navigate(AdapterPatternDestination)
+                        is Topic.DesignPattern.Decorator -> navController.navigate(DecoratorDestination)
+                        is Topic.DesignPattern.Facade -> navController.navigate(FacadeDestination)
+                        is Topic.DesignPattern.Observer -> navController.navigate(ObserverDestination)
+                        is Topic.DesignPattern.Strategy -> navController.navigate(StrategyDestination)
+                        is Topic.DesignPattern.Command -> navController.navigate(CommandDestination)
+                        is Topic.DesignPattern.StateMachine -> navController.navigate(StateMachineDestination)
                     }
                 },
             )
