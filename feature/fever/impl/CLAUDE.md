@@ -6,12 +6,12 @@ Weather screen displaying random location conditions with current weather, 5-day
 
 - **Namespace:** `com.sls.handbook.feature.fever`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature`
+- **Plugin:** `handyplay.android.feature.impl`
 
-## Auto-included by `handyplay.android.feature`
+## Auto-included by `handyplay.android.feature.impl`
 
 - Compose + Hilt + Lifecycle + Navigation
-- `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation`
+- `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:core:navigation`
 
 ## Dependencies
 
