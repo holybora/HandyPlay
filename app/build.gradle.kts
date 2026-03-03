@@ -133,15 +133,15 @@ fun launchApp() {
 
 tasks.register("installAndRun") {
     group = "install"
-    description = "Installs the Debug build and launches the app"
-    dependsOn("installDebug")
+    description = "Installs the prod Debug build and launches the app"
+    dependsOn("installProdDebug")
     doLast { launchApp() }
 }
 
 tasks.register("installAndRunRelease") {
     group = "install"
-    description = "Installs the Release build and launches the app"
-    dependsOn("installRelease")
+    description = "Installs the prod Release build and launches the app"
+    dependsOn("installProdRelease")
     doLast { launchApp() }
 }
 

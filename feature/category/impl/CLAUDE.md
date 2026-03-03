@@ -6,12 +6,12 @@ Category topics screen with topic grid and search functionality.
 
 - **Namespace:** `com.sls.handbook.feature.category`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature`
+- **Plugin:** `handyplay.android.feature.impl`
 
-## Auto-included by `handyplay.android.feature`
+## Auto-included by `handyplay.android.feature.impl`
 
 - Compose + Hilt + Lifecycle + Navigation
-- `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation`
+- `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:core:navigation`
 
 ## Key Files
 
