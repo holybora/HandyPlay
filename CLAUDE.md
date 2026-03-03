@@ -31,7 +31,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 
 # Single module tests
 ./gradlew :app:testDebugUnitTest
-./gradlew :feature:home:testDebugUnitTest
+./gradlew :feature:home:impl:testDebugUnitTest
 
 # Single test class
 ./gradlew testDebugUnitTest --tests "com.sls.handbook.ExampleUnitTest"
@@ -48,15 +48,15 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ./gradlew test :app:koverVerify          # Check coverage thresholds
 
 # Static analysis (detekt)
-./gradlew detekt                    # All modules, all source sets
-./gradlew detektMain                # Main sources only
-./gradlew :feature:home:detektMain  # Single module
-./gradlew installGitHooks           # Install pre-commit hook manually
+./gradlew detekt                              # All modules, all source sets
+./gradlew detektMain                          # Main sources only
+./gradlew :feature:home:impl:detektMain       # Single module
+./gradlew installGitHooks                     # Install pre-commit hook manually
 
 # Android Lint
-./gradlew lint                          # All modules
-./gradlew :app:lintDebug               # Single module
-./gradlew :feature:home:lintDebug      # Single feature module
+./gradlew lint                                # All modules
+./gradlew :app:lintDebug                      # Single module
+./gradlew :feature:home:impl:lintDebug        # Single feature module
 ```
 
 ## SDK & Tooling
@@ -70,40 +70,62 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **Navigation Compose:** 2.9.0 (type-safe with kotlinx.serialization)
 - **Kover:** 0.9.7 (per-project plugin, aggregated in `:app` via `kover()` dependencies)
 - **Detekt:** 1.23.8 with Compose rules (`io.nlopez.compose.rules`)
+- **Product flavors:** `demo` (fake data) / `prod` (real APIs)
 - **Dependency versions:** `gradle/libs.versions.toml`
 
 ## Module Structure
 
 | Module | Type | Purpose |
 |--------|------|---------|
-| `:app` | Application | Entry point, NavHost, Hilt setup |
-| `:core:common` | Android Library | Shared utilities |
-| `:core:model` | JVM Library | Data models |
+| `:app` | Application | Entry point, NavHost, Hilt setup, product flavors |
+| `:app-nia-catalog` | Application | Standalone component showcase app |
+| `:feature:*:api` | Android Library | Navigation keys and shared feature interfaces |
+| `:feature:*:impl` | Feature | Screens, ViewModels, feature-specific logic |
+| `:core:model` | JVM Library | Data models (`@Serializable`) |
 | `:core:domain` | JVM Library | Use cases / business logic |
 | `:core:data` | Android Library | Repositories, data sources |
-| `:core:network` | Android Library | API client, network DI |
+| `:core:database` | Android Library | Room database (placeholder) |
+| `:core:datastore` | Android Library | Proto DataStore for user preferences (placeholder) |
+| `:core:network` | Android Library | Retrofit API client, network DI |
 | `:core:designsystem` | Android Library | Material3 theme (Color, Type, Theme) |
 | `:core:ui` | Android Library | Shared composables |
-| `:navigation` | Android Library | Type-safe route definitions |
-| `:feature:welcome` | Feature | Welcome/onboarding screen |
-| `:feature:home` | Feature | Home screen with category grid + search |
-| `:feature:category` | Feature | Category topics screen with topic grid + search |
-| `:feature:ttlcache` | Feature | TTL Cache demo screen with joke fetching |
-| `:feature:gallery` | Feature | Photo gallery with infinite scroll + full-screen viewer |
-| `:feature:fever` | Feature | Weather screen with random location conditions |
-| `:feature:dp-creational` | Feature | Creational design pattern demos (Factory Method, Abstract Factory, Prototype) |
-| `:feature:dp-structural` | Feature | Structural design pattern demos (Adapter, Decorator, Facade) |
-| `:feature:dp-behavioral` | Feature | Behavioral design pattern demos (Observer, Strategy, Command, State Machine) |
+| `:core:common` | Android Library | Shared utilities |
+| `:core:analytics` | Android Library | Analytics abstraction (placeholder) |
+| `:core:navigation` | Android Library | Type-safe route definitions |
+| `:core:notifications` | Android Library | Push notification handling (placeholder) |
+| `:core:testing` | Android Library | Test runner, shared test utilities (placeholder) |
+| `:core:data-test` | Android Library | Fake repositories for tests (placeholder) |
+| `:core:screenshot-testing` | Android Library | Roborazzi screenshot test helpers (placeholder) |
+| `:lint` | JVM Library | Custom lint rules (placeholder) |
+| `:sync:work` | Android Library | WorkManager sync tasks (placeholder) |
+| `:benchmarks` | Android Library | Macrobenchmark + baseline profile generation (placeholder) |
 | `:build-logic` | Included Build | Convention plugins |
+
+### Feature Modules
+
+| Feature | API module | Impl module |
+|---------|-----------|-------------|
+| Welcome/onboarding | `:feature:welcome:api` | `:feature:welcome:impl` |
+| Home (category grid + search) | `:feature:home:api` | `:feature:home:impl` |
+| Category (topic grid + search) | `:feature:category:api` | `:feature:category:impl` |
+| TTL Cache demo | `:feature:ttlcache:api` | `:feature:ttlcache:impl` |
+| Photo gallery | `:feature:gallery:api` | `:feature:gallery:impl` |
+| Weather (Fever) | `:feature:fever:api` | `:feature:fever:impl` |
+| Creational patterns | `:feature:dp-creational:api` | `:feature:dp-creational:impl` |
+| Structural patterns | `:feature:dp-structural:api` | `:feature:dp-structural:impl` |
+| Behavioral patterns | `:feature:dp-behavioral:api` | `:feature:dp-behavioral:impl` |
 
 ## Convention Plugins (`build-logic/`)
 
 | Plugin ID | What it provides |
 |-----------|-----------------|
 | `handyplay.android.application` | Android app config (SDK, Kotlin, Java 11) |
+| `handyplay.android.application.flavors` | Demo/prod product flavors |
 | `handyplay.android.library` | Android library config (SDK, Kotlin, Java 11) |
 | `handyplay.android.library.compose` | Compose compiler + BOM |
-| `handyplay.android.feature` | Library + Compose + Hilt + core module deps |
+| `handyplay.android.feature` | Library + Compose + Hilt + core module deps (legacy, use api/impl) |
+| `handyplay.android.feature.api` | Library + serialization + `:core:navigation` API |
+| `handyplay.android.feature.impl` | Library + Compose + Hilt + core module deps |
 | `handyplay.android.hilt` | KSP + Dagger Hilt |
 | `handyplay.android.test` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test) |
 | `handyplay.jvm.library` | Pure JVM Kotlin (Java 11) |
@@ -116,13 +138,16 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ```
 :app
 ├── :core:common, :core:designsystem, :core:ui, :core:domain, :core:data, :core:model, :core:network
-├── :navigation
-└── :feature:welcome, :feature:home, :feature:category, :feature:ttlcache, :feature:gallery, :feature:fever
-    :feature:dp-creational, :feature:dp-structural, :feature:dp-behavioral
+├── :core:navigation
+└── :feature:*:impl
 
-:feature:* (via handyplay.android.feature plugin)
+:feature:*:impl (via handyplay.android.feature.impl plugin)
+├── :feature:*:api (own API module)
 ├── :core:ui, :core:designsystem, :core:domain, :core:model
-└── :navigation
+└── :core:navigation
+
+:feature:*:api (via handyplay.android.feature.api plugin)
+└── :core:navigation
 
 :core:data → :core:domain, :core:model, :core:common, :core:network
 :core:domain → :core:model
@@ -136,5 +161,6 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **DI:** Hilt (`@AndroidEntryPoint`, `@HiltViewModel`, `@Module`)
 - **State:** ViewModel + `StateFlow` + sealed `UiState` interfaces
 - **Navigation:** Type-safe destinations via `@Serializable` objects/data classes
+- **Feature modules:** Split into `:api` (navigation contracts) and `:impl` (screens/logic)
 - **Theming:** Material3 dynamic colors (API 31+) with static fallbacks
 - **Edge-to-edge** display enabled
