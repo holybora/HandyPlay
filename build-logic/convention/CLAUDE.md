@@ -7,9 +7,12 @@ Convention plugins for standardised Gradle module configuration.
 | Plugin ID | Class | What it does |
 |-----------|-------|-------------|
 | `handyplay.android.application` | `AndroidApplicationConventionPlugin` | Android app defaults (SDK 36/33, Kotlin, Java 11, auto-applies detekt + kover + lint) |
+| `handyplay.android.application.flavors` | `AndroidApplicationFlavorsConventionPlugin` | Product flavors (demo/prod with contentType dimension) |
 | `handyplay.android.library` | `AndroidLibraryConventionPlugin` | Android library defaults (SDK, Kotlin, Java 11, auto-applies detekt + kover + lint) |
 | `handyplay.android.library.compose` | `AndroidLibraryComposeConventionPlugin` | Adds Compose compiler plugin + Compose BOM |
 | `handyplay.android.feature` | `AndroidFeatureConventionPlugin` | Library + Compose + Hilt + core module deps + Lifecycle |
+| `handyplay.android.feature.api` | `AndroidFeatureApiConventionPlugin` | Feature API module (library + serialization + :core:navigation) |
+| `handyplay.android.feature.impl` | `AndroidFeatureImplConventionPlugin` | Feature implementation module (library + compose + hilt + test) |
 | `handyplay.android.hilt` | `AndroidHiltConventionPlugin` | KSP + Dagger Hilt (android + compiler) |
 | `handyplay.android.test` | `AndroidTestConventionPlugin` | Common test dependencies (JUnit, MockK, Turbine, Coroutines Test, Robolectric, Compose UI test) |
 | `handyplay.jvm.library` | `JvmLibraryConventionPlugin` | Pure JVM Kotlin (Java 11, no Android, auto-applies detekt + kover) |
@@ -19,7 +22,10 @@ Convention plugins for standardised Gradle module configuration.
 
 ## Key Files
 
-- `AndroidFeatureConventionPlugin.kt` — Most complex; auto-adds `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:navigation` + Compose/Lifecycle/Hilt deps
+- `AndroidFeatureConventionPlugin.kt` — Backward-compatibility plugin; auto-adds `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:model`, `:core:navigation` + Compose/Lifecycle/Hilt deps
+- `AndroidFeatureApiConventionPlugin.kt` — Feature API modules (library + serialization + `:core:navigation`)
+- `AndroidFeatureImplConventionPlugin.kt` — Feature implementation modules (library + compose + hilt + test)
+- `AndroidApplicationFlavorsConventionPlugin.kt` — Configures demo/prod product flavors
 - `KoverConventionPlugin.kt` — Excludes `@Composable`, `@Preview`, Hilt, and generated Android classes from coverage reports
 - `DetektConventionPlugin.kt` — Configures detekt with custom rules from `config/detekt/detekt.yml`
 - `KotlinAndroid.kt` — Shared Kotlin/Android configuration (SDK levels, JVM target)

@@ -76,5 +76,17 @@ gradlePlugin {
             id = "handyplay.android.lint"
             implementationClass = "AndroidLintConventionPlugin"
         }
+        register("androidFeatureApi") {
+            id = "handyplay.android.feature.api"
+            implementationClass = "AndroidFeatureApiConventionPlugin"
+        }
+        register("androidFeatureImpl") {
+            id = "handyplay.android.feature.impl"
+            implementationClass = "AndroidFeatureImplConventionPlugin"
+        }
+        register("androidApplicationFlavors") {
+            id = "handyplay.android.application.flavors"
+            implementationClass = "AndroidApplicationFlavorsConventionPlugin"
+        }
     }
 }

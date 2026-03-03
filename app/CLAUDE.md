@@ -7,16 +7,25 @@ Application entry point for HandyPlay. Single-activity Compose app with type-saf
 - **Namespace:** `com.sls.handbook`
 - **Application ID:** `com.sls.handbook`
 - **Version:** 1.0 (versionCode 1)
-- **Plugins:** `handyplay.android.application`, `handyplay.android.hilt`, `kotlin.compose`, `kotlin.serialization`
+- **Plugins:** `handyplay.android.application`, `handyplay.android.application.flavors`, `handyplay.android.hilt`, `handyplay.android.test`, `kotlin.compose`, `kotlin.serialization`
 
 ## Dependencies
 
+### Core Modules
+
 - `:core:common`, `:core:ui`, `:core:designsystem`, `:core:domain`, `:core:data`, `:core:model`, `:core:network`
-- `:navigation`
-- `:feature:welcome`, `:feature:home`, `:feature:category`, `:feature:ttlcache`, `:feature:gallery`, `:feature:fever`, `:feature:dp-creational`, `:feature:dp-structural`, `:feature:dp-behavioral`
+- `:core:navigation` — Type-safe navigation with `@Serializable` destinations
+
+### Features
+
+- `:feature:welcome:impl`, `:feature:home:impl`, `:feature:category:impl`, `:feature:ttlcache:impl`, `:feature:gallery:impl`, `:feature:fever:impl`, `:feature:dp-creational:impl`, `:feature:dp-structural:impl`, `:feature:dp-behavioral:impl` — Feature implementations
+
+### External
+
 - AndroidX Core, Lifecycle, Activity Compose
 - Compose BOM + Material3
 - Navigation Compose, Hilt Navigation Compose
+- Rebugger (debug builds)
 
 ## Key Files
 

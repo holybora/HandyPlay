@@ -1,5 +1,6 @@
 plugins {
     id("handyplay.android.application")
+    id("handyplay.android.application.flavors")
     id("handyplay.android.hilt")
     id("handyplay.android.test")
     alias(libs.plugins.kotlin.compose)
@@ -46,18 +47,18 @@ dependencies {
     implementation(project(":core:network"))
 
     // Navigation
-    implementation(project(":navigation"))
+    implementation(project(":core:navigation"))
 
     // Features
-    implementation(project(":feature:welcome"))
-    implementation(project(":feature:home"))
-    implementation(project(":feature:category"))
-    implementation(project(":feature:ttlcache"))
-    implementation(project(":feature:gallery"))
-    implementation(project(":feature:fever"))
-    implementation(project(":feature:dp-creational"))
-    implementation(project(":feature:dp-structural"))
-    implementation(project(":feature:dp-behavioral"))
+    implementation(project(":feature:welcome:impl"))
+    implementation(project(":feature:home:impl"))
+    implementation(project(":feature:category:impl"))
+    implementation(project(":feature:ttlcache:impl"))
+    implementation(project(":feature:gallery:impl"))
+    implementation(project(":feature:fever:impl"))
+    implementation(project(":feature:dp-creational:impl"))
+    implementation(project(":feature:dp-structural:impl"))
+    implementation(project(":feature:dp-behavioral:impl"))
 
     // Coverage aggregation — pulls coverage from all modules into one report
     kover(project(":core:common"))
@@ -67,16 +68,16 @@ dependencies {
     kover(project(":core:data"))
     kover(project(":core:model"))
     kover(project(":core:network"))
-    kover(project(":navigation"))
-    kover(project(":feature:welcome"))
-    kover(project(":feature:home"))
-    kover(project(":feature:category"))
-    kover(project(":feature:ttlcache"))
-    kover(project(":feature:gallery"))
-    kover(project(":feature:fever"))
-    kover(project(":feature:dp-creational"))
-    kover(project(":feature:dp-structural"))
-    kover(project(":feature:dp-behavioral"))
+    kover(project(":core:navigation"))
+    kover(project(":feature:welcome:impl"))
+    kover(project(":feature:home:impl"))
+    kover(project(":feature:category:impl"))
+    kover(project(":feature:ttlcache:impl"))
+    kover(project(":feature:gallery:impl"))
+    kover(project(":feature:fever:impl"))
+    kover(project(":feature:dp-creational:impl"))
+    kover(project(":feature:dp-structural:impl"))
+    kover(project(":feature:dp-behavioral:impl"))
 
     // AndroidX
     implementation(libs.androidx.core.ktx)

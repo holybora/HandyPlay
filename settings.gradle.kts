@@ -25,6 +25,7 @@ rootProject.name = "HandyPlay"
 
 // App
 include(":app")
+include(":app-nia-catalog")
 
 // Core
 include(":core:common")
@@ -34,17 +35,40 @@ include(":core:domain")
 include(":core:data")
 include(":core:model")
 include(":core:network")
-
-// Navigation
-include(":navigation")
+include(":core:database")
+include(":core:datastore")
+include(":core:analytics")
+include(":core:navigation")
+include(":core:notifications")
+include(":core:testing")
+include(":core:data-test")
+include(":core:screenshot-testing")
 
 // Features
-include(":feature:welcome")
-include(":feature:home")
-include(":feature:category")
-include(":feature:ttlcache")
-include(":feature:gallery")
-include(":feature:fever")
-include(":feature:dp-creational")
-include(":feature:dp-structural")
-include(":feature:dp-behavioral")
+include(":feature:welcome:api")
+include(":feature:welcome:impl")
+include(":feature:home:api")
+include(":feature:home:impl")
+include(":feature:category:api")
+include(":feature:category:impl")
+include(":feature:ttlcache:api")
+include(":feature:ttlcache:impl")
+include(":feature:gallery:api")
+include(":feature:gallery:impl")
+include(":feature:fever:api")
+include(":feature:fever:impl")
+include(":feature:dp-creational:api")
+include(":feature:dp-creational:impl")
+include(":feature:dp-structural:api")
+include(":feature:dp-structural:impl")
+include(":feature:dp-behavioral:api")
+include(":feature:dp-behavioral:impl")
+
+// Lint
+include(":lint")
+
+// Sync
+include(":sync:work")
+
+// Benchmarks
+include(":benchmarks")
