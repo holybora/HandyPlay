@@ -6,7 +6,7 @@ Weather screen displaying random location conditions with current weather, 5-day
 
 - **Namespace:** `com.sls.handbook.feature.fever`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -51,6 +51,7 @@ Weather screen displaying random location conditions with current weather, 5-day
 - `src/test/kotlin/com/sls/handbook/feature/fever/` — Unit tests
   - `WeatherMapperTest.kt` — Tests for current weather, daily forecast, and hourly forecast mapping
   - `HourlyDisplayDataMapperTest.kt` — Tests for hourly display data formatting (time, temperature, pop%)
+  - `FeverScreenScreenshotTest.kt` — Roborazzi screenshot tests (loading, success, error states)
 
 ## Patterns
 

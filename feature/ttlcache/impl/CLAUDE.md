@@ -6,7 +6,7 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 
 - **Namespace:** `com.sls.handbook.feature.ttlcache`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -29,6 +29,7 @@ TTL Cache demo screen that fetches random jokes to demonstrate dynamic TTL cachi
 - `src/test/` — JVM unit tests
   - `TtlCacheViewModelTest.kt` — ViewModel using MockK + Turbine
   - `TtlCacheUiStateTest.kt` — Sealed interface (Idle, Error) variants tests
+  - `TtlCacheScreenScreenshotTest.kt` — Roborazzi screenshot tests (idle, loading, withData states)
 
 ## Patterns
 

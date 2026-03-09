@@ -6,7 +6,7 @@ Welcome/onboarding screen — the app's start destination.
 
 - **Namespace:** `com.sls.handbook.feature.welcome`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -21,3 +21,4 @@ Welcome/onboarding screen — the app's start destination.
 ## Source
 
 - `src/main/java/com/sls/handbook/feature/welcome/`
+- `src/test/kotlin/com/sls/handbook/feature/welcome/WelcomeScreenScreenshotTest.kt` — Roborazzi screenshot tests (light, dark)

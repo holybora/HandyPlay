@@ -1,15 +1,30 @@
 # :core:screenshot-testing
 
-Placeholder for screenshot testing infrastructure with Roborazzi.
+Screenshot testing infrastructure with Roborazzi for JVM-based visual regression testing.
 
 ## Module Info
 
 - **Namespace:** `com.sls.handbook.core.screenshottesting`
-- **Type:** Android Library
-- **Plugin:** `handyplay.android.library`
+- **Type:** Android Library with Compose
+- **Plugins:** `handyplay.android.library`, `handyplay.android.library.compose`
+
+## Dependencies
+
+- `api`: roborazzi-core, roborazzi-compose, roborazzi-junit-rule, robolectric, junit, compose-ui-test-junit4, compose-bom
+- `implementation`: `:core:designsystem`
+
+## Key Files
+
+- `ScreenshotHelper.kt` — `DefaultRoborazziOptions` (1% threshold, 0.5x resize) and `ComposeContentTestRule.captureScreenshot()` extension for consistent screenshot capture to `src/test/screenshots/`
+- `ScreenshotTestActivity.kt` — Empty `ComponentActivity` subclass used as Compose test host for Robolectric
+- `AndroidManifest.xml` — Declares `ScreenshotTestActivity` for manifest merging into test modules
+
+## Source
+
+- `src/main/kotlin/com/sls/handbook/core/screenshottesting/`
 
 ## Notes
 
-- Scaffold module for screenshot/visual regression testing
-- Roborazzi library and Compose test utilities to be added when implementing
-- Will provide helpers and base classes for screenshot tests across features
+- All Roborazzi/Robolectric/Compose test deps are exposed as `api` so consuming test modules get them transitively
+- Feature modules add this as `testImplementation` via the `handyplay.android.roborazzi` convention plugin
+- Screenshots are recorded via `./gradlew testDebugUnitTest -Proborazzi.test.record=true` and verified via `-Proborazzi.test.verify=true`

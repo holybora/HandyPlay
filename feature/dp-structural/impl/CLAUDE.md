@@ -6,7 +6,7 @@ Structural design pattern demos — Adapter, Decorator, and Facade.
 
 - **Namespace:** `com.sls.handbook.feature.dp.structural`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -46,6 +46,9 @@ Structural design pattern demos — Adapter, Decorator, and Facade.
   - `AdapterPatternViewModelTest.kt`
   - `DecoratorViewModelTest.kt`
   - `FacadeViewModelTest.kt`
+  - `AdapterPatternScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `DecoratorScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `FacadeScreenScreenshotTest.kt` — Roborazzi screenshot test
 
 ## Patterns
 
