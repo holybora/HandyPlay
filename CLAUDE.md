@@ -57,6 +57,14 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 ./gradlew lint                                # All modules
 ./gradlew :app:lintDebug                      # Single module
 ./gradlew :feature:home:impl:lintDebug        # Single feature module
+
+# Screenshot tests (Roborazzi — JVM, no device needed)
+./gradlew testDebugUnitTest -Proborazzi.test.record=true   # Record new reference screenshots
+./gradlew testDebugUnitTest -Proborazzi.test.verify=true   # Verify screenshots match references (CI)
+./gradlew testDebugUnitTest -Proborazzi.test.compare=true  # Generate diff images without failing
+
+# Single module screenshot tests
+./gradlew :feature:home:impl:cleanTestDebugUnitTest :feature:home:impl:testDebugUnitTest -Proborazzi.test.verify=true
 ```
 
 ## SDK & Tooling
@@ -71,6 +79,8 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 - **Kover:** 0.9.7 (per-project plugin, aggregated in `:app` via `kover()` dependencies)
 - **Detekt:** 1.23.8 with Compose rules (`io.nlopez.compose.rules`)
 - **Product flavors:** `demo` (fake data) / `prod` (real APIs)
+- **Roborazzi:** 1.32.2 (library-only, no Gradle plugin — AGP 9 incompatible)
+- **Robolectric:** 4.14.1
 - **Dependency versions:** `gradle/libs.versions.toml`
 
 ## Module Structure
@@ -95,7 +105,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `:core:notifications` | Android Library | Push notification handling (placeholder) |
 | `:core:testing` | Android Library | Test runner, shared test utilities (placeholder) |
 | `:core:data-test` | Android Library | Fake repositories for tests (placeholder) |
-| `:core:screenshot-testing` | Android Library | Roborazzi screenshot test helpers (placeholder) |
+| `:core:screenshot-testing` | Android Library | Roborazzi screenshot test helpers + ScreenshotTestActivity |
 | `:lint` | JVM Library | Custom lint rules (placeholder) |
 | `:sync:work` | Android Library | WorkManager sync tasks (placeholder) |
 | `:benchmarks` | Android Library | Macrobenchmark + baseline profile generation (placeholder) |
@@ -132,6 +142,7 @@ Package: `com.sls.handbook`. Multi-module clean architecture project.
 | `handyplay.detekt` | Detekt static analysis + Compose rules |
 | `handyplay.kover` | Kover code coverage with exclusions for generated code, Hilt, and Compose (`@Composable`) |
 | `handyplay.android.lint` | Android Lint with `warningsAsErrors`, HTML/XML reports, `config/lint/lint.xml` |
+| `handyplay.android.roborazzi` | Roborazzi screenshot testing (includeAndroidResources, system property forwarding, deps) |
 
 ## Dependency Graph
 

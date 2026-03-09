@@ -6,9 +6,9 @@ import androidx.compose.ui.test.onRoot
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
 
-val DefaultRoborazziOptions = RoborazziOptions(
+fun defaultRoborazziOptions() = RoborazziOptions(
     compareOptions = RoborazziOptions.CompareOptions(
-        changeThreshold = 0.01f,
+        changeThreshold = 0.001f,
     ),
     recordOptions = RoborazziOptions.RecordOptions(
         resizeScale = 0.5,
@@ -17,7 +17,7 @@ val DefaultRoborazziOptions = RoborazziOptions(
 
 fun ComposeContentTestRule.captureScreenshot(
     screenshotName: String,
-    roborazziOptions: RoborazziOptions = DefaultRoborazziOptions,
+    roborazziOptions: RoborazziOptions = defaultRoborazziOptions(),
     content: @Composable () -> Unit,
 ) {
     setContent(content)
