@@ -88,5 +88,9 @@ gradlePlugin {
             id = "handyplay.android.application.flavors"
             implementationClass = "AndroidApplicationFlavorsConventionPlugin"
         }
+        register("androidRoborazzi") {
+            id = "handyplay.android.roborazzi"
+            implementationClass = "AndroidRoborazziConventionPlugin"
+        }
     }
 }

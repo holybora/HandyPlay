@@ -6,7 +6,7 @@ Photo gallery screen with infinite scroll pagination and full-screen interactive
 
 - **Namespace:** `com.sls.handbook.feature.gallery`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -37,6 +37,7 @@ Photo gallery screen with infinite scroll pagination and full-screen interactive
 ## Source
 
 - `src/main/kotlin/com/sls/handbook/feature/gallery/`
+- `src/test/kotlin/com/sls/handbook/feature/gallery/GalleryScreenScreenshotTest.kt` — Roborazzi screenshot tests (loading, error, content states)
 
 ## Patterns
 

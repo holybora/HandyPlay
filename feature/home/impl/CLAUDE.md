@@ -6,7 +6,7 @@ Home screen with category grid and search functionality.
 
 - **Namespace:** `com.sls.handbook.feature.home`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -24,6 +24,7 @@ Home screen with category grid and search functionality.
 ## Source
 
 - `src/main/kotlin/com/sls/handbook/feature/home/`
+- `src/test/kotlin/com/sls/handbook/feature/home/HomeScreenScreenshotTest.kt` — Roborazzi screenshot tests (light, dark, loading, empty states)
 
 ## Patterns
 

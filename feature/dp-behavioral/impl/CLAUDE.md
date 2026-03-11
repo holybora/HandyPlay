@@ -6,7 +6,7 @@ Behavioral design pattern demos — Observer, Strategy, Command, and State Machi
 
 - **Namespace:** `com.sls.handbook.feature.dp.behavioral`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -54,6 +54,10 @@ Behavioral design pattern demos — Observer, Strategy, Command, and State Machi
   - `StrategyViewModelTest.kt`
   - `CommandViewModelTest.kt`
   - `StateMachineViewModelTest.kt`
+  - `ObserverScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `StrategyScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `CommandScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `StateMachineScreenScreenshotTest.kt` — Roborazzi screenshot test
 
 ## Patterns
 

@@ -6,7 +6,7 @@ Creational design pattern demos — Factory Method, Abstract Factory, and Protot
 
 - **Namespace:** `com.sls.handbook.feature.dp.creational`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -46,6 +46,9 @@ Creational design pattern demos — Factory Method, Abstract Factory, and Protot
   - `FactoryMethodViewModelTest.kt`
   - `AbstractFactoryViewModelTest.kt`
   - `PrototypeViewModelTest.kt`
+  - `AbstractFactoryScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `FactoryMethodScreenScreenshotTest.kt` — Roborazzi screenshot test
+  - `PrototypeScreenScreenshotTest.kt` — Roborazzi screenshot test
 
 ## Patterns
 

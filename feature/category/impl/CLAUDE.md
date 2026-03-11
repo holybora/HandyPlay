@@ -6,7 +6,7 @@ Category topics screen with topic grid and search functionality.
 
 - **Namespace:** `com.sls.handbook.feature.category`
 - **Type:** Feature module
-- **Plugin:** `handyplay.android.feature.impl`
+- **Plugins:** `handyplay.android.feature.impl`, `handyplay.android.roborazzi`
 
 ## Auto-included by `handyplay.android.feature.impl`
 
@@ -29,6 +29,7 @@ Category topics screen with topic grid and search functionality.
 
 - `src/test/` — JVM unit tests
   - `CategoryUiStateTest.kt` — Sealed interface variants (Loading, Success, Error) tests
+  - `CategoryScreenScreenshotTest.kt` — Roborazzi screenshot tests (light, dark, loading, empty states)
 
 ## Patterns
 

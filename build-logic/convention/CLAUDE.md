@@ -19,6 +19,7 @@ Convention plugins for standardised Gradle module configuration.
 | `handyplay.detekt` | `DetektConventionPlugin` | Static analysis with detekt + formatting + Compose rules |
 | `handyplay.kover` | `KoverConventionPlugin` | Code coverage with exclusions for generated code, Hilt, and Compose (`@Composable`) |
 | `handyplay.android.lint` | `AndroidLintConventionPlugin` | Android Lint with `warningsAsErrors`, HTML/XML reports, `config/lint/lint.xml` |
+| `handyplay.android.roborazzi` | `AndroidRoborazziConventionPlugin` | Roborazzi screenshot testing (includeAndroidResources, system property forwarding, roborazzi + :core:screenshot-testing deps) |
 
 ## Key Files
 
@@ -30,6 +31,7 @@ Convention plugins for standardised Gradle module configuration.
 - `DetektConventionPlugin.kt` — Configures detekt with custom rules from `config/detekt/detekt.yml`
 - `KotlinAndroid.kt` — Shared Kotlin/Android configuration (SDK levels, JVM target)
 - `ProjectExtensions.kt` — `libs` extension for accessing version catalog
+- `AndroidRoborazziConventionPlugin.kt` — Roborazzi screenshot testing setup (enables `isIncludeAndroidResources`, forwards `roborazzi.test.*` Gradle properties as JVM system properties, adds roborazzi + `:core:screenshot-testing` test deps)
 
 ## Build Config
 

@@ -10,4 +10,5 @@
 .env
 .claude/settings.local.json
 /e2e-screenshots
+**/build/outputs/roborazzi/
 
