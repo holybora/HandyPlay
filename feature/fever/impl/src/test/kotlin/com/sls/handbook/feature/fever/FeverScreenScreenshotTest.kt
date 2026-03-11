@@ -22,31 +22,31 @@ class FeverScreenScreenshotTest {
     private val previewForecast = listOf(
         DailyForecastDisplayData(
             dayName = "Thu",
-            iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+            iconUrl = "01d@2x.png",
             highText = "30°",
             lowText = "22°",
         ),
         DailyForecastDisplayData(
             dayName = "Fri",
-            iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
+            iconUrl = "02d@2x.png",
             highText = "28°",
             lowText = "21°",
         ),
         DailyForecastDisplayData(
             dayName = "Sat",
-            iconUrl = "https://openweathermap.org/img/wn/10d@2x.png",
+            iconUrl = "10d@2x.png",
             highText = "25°",
             lowText = "19°",
         ),
         DailyForecastDisplayData(
             dayName = "Sun",
-            iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+            iconUrl = "03d@2x.png",
             highText = "27°",
             lowText = "20°",
         ),
         DailyForecastDisplayData(
             dayName = "Mon",
-            iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+            iconUrl = "01d@2x.png",
             highText = "31°",
             lowText = "23°",
         ),
@@ -54,7 +54,7 @@ class FeverScreenScreenshotTest {
 
     private val previewWeatherDisplay = WeatherDisplayData(
         temperatureText = "32°C",
-        iconUrl = "https://openweathermap.org/img/wn/03d@4x.png",
+        iconUrl = "03d@4x.png",
         iconContentDescription = "scattered clouds",
         highLowText = "H:35° L:28°",
         windText = "4.2 m/s",
@@ -70,31 +70,31 @@ class FeverScreenScreenshotTest {
         hourlyForecasts = listOf(
             HourlyDisplayData(
                 timeText = "Now",
-                iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+                iconUrl = "03d@2x.png",
                 temperatureText = "32°",
                 popText = "10%",
             ),
             HourlyDisplayData(
                 timeText = "14:00",
-                iconUrl = "https://openweathermap.org/img/wn/02d@2x.png",
+                iconUrl = "02d@2x.png",
                 temperatureText = "33°",
                 popText = "5%",
             ),
             HourlyDisplayData(
                 timeText = "15:00",
-                iconUrl = "https://openweathermap.org/img/wn/01d@2x.png",
+                iconUrl = "01d@2x.png",
                 temperatureText = "34°",
                 popText = "0%",
             ),
             HourlyDisplayData(
                 timeText = "16:00",
-                iconUrl = "https://openweathermap.org/img/wn/10d@2x.png",
+                iconUrl = "10d@2x.png",
                 temperatureText = "31°",
                 popText = "40%",
             ),
             HourlyDisplayData(
                 timeText = "17:00",
-                iconUrl = "https://openweathermap.org/img/wn/03d@2x.png",
+                iconUrl = "03d@2x.png",
                 temperatureText = "30°",
                 popText = "20%",
             ),

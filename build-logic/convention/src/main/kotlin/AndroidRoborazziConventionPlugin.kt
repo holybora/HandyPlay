@@ -15,6 +15,8 @@ class AndroidRoborazziConventionPlugin : Plugin<Project> {
             }
 
             tasks.withType<Test>().configureEach {
+                maxHeapSize = "1g"
+
                 val roborazziRecord = providers.gradleProperty("roborazzi.test.record")
                 val roborazziCompare = providers.gradleProperty("roborazzi.test.compare")
                 val roborazziVerify = providers.gradleProperty("roborazzi.test.verify")
